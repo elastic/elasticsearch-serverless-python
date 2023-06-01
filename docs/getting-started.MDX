@@ -1,0 +1,82 @@
+---
+id: gettingStarted
+slug: /serverless-<<[lang]>>/docs/getting-started
+title: Getting started with the Serverless <<[LANG]>> client
+description: This page contains quickstart information about the Serverless <<[LANG]>> client.
+date: 2023-04-27
+tags: ['serverless','<<[LANG]>> client','docs', 'getting started']
+---
+
+This page guides you through the installation process of the Serverless <<[LANG]>> 
+client, shows you how to instantiate the client, and how to perform basic 
+Elasticsearch operations with it.
+
+
+## Requirements
+
+* <<[LANG]>> x or higher installed on your system.
+
+
+## Installation
+
+
+### Using the command line
+
+You can install the Elasticsearch Serverless <<[LANG]>> client with the following 
+commands:
+
+```bash
+```
+
+
+## Instantiate a client
+
+You can instantiate a client by running the following command:
+
+```<<[lang]>>
+
+```
+
+You can find the Elasticsearch endpoint on the Cloud deployment management page.
+
+<DocImage url="images/copy-endpoint.gif" alt="Copy the endpoint for Elasticsearch"/>
+
+You can create a new API Key under **Stack Management** > **Security**:
+
+<DocImage url="images/setup-api-key.gif" alt="Create and copy Apy Key"/>
+
+
+## Using the API
+
+After you instantiated a client with your API key and Elasticsearch endpoint, 
+you can start ingesting documents into the Elasticsearch Service. You can use 
+the Bulk API for this. This API enables you to index, update, and delete several 
+documents in one request.
+
+
+### Creating an index and ingesting documents
+
+You can call the `bulk` API with a body parameter, an array of hashes that 
+define the action, and a document. 
+
+The following is an example of indexing some classic books into the `books` 
+index:
+
+```<<[lang]>>
+
+```
+
+When you use the client to make a request to Elasticsearch, it returns an API 
+response object. You can check the HTTP return code by calling `status` and the 
+HTTP headers by calling `headers` on the response object. The response object 
+also behaves as a Hash, so you can access the body values directly as seen on 
+the previous example with ``.
+
+
+### Searching
+
+Now that some data is available, you can search your documents using the 
+**Search API**:
+
+```<<[lang]>>
+```

@@ -1,0 +1,16 @@
+name: main
+on: [push]
+
+jobs:
+  rspec:
+    strategy:
+      matrix:
+        <<[lang]>>: [ ]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: <<[lang]>>/setup-<<[lang]>>@v1
+      with:
+        <<[lang]>>-version: ${{ matrix.<<[lang]>> }}
+    - name: Build and test with
+      run: |
