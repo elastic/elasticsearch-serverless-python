@@ -1,28 +1,24 @@
 ---
-id: gettingStarted
-slug: /serverless-<<[lang]>>/docs/getting-started
-title: Getting started with the Serverless <<[LANG]>> client
-description: This page contains quickstart information about the Serverless <<[LANG]>> client.
+id: gettingStartedServerlessPy
+slug: /serverless-python/docs/getting-started
+title: Getting started with the Serverless Python client
+description: This page contains quickstart information about the Serverless Python client.
 date: 2023-04-27
-tags: ['serverless','<<[LANG]>> client','docs', 'getting started']
+tags: ['serverless','Python client','docs', 'getting started', 'Python']
 ---
 
-This page guides you through the installation process of the Serverless <<[LANG]>> 
-client, shows you how to instantiate the client, and how to perform basic 
+This page guides you through the installation process of the Serverless Python client, shows you how to instantiate the client, and how to perform basic 
 Elasticsearch operations with it.
-
 
 ## Requirements
 
-* <<[LANG]>> x or higher installed on your system.
-
+* Python 3.7 or higher installed on your system.
 
 ## Installation
 
-
 ### Using the command line
 
-You can install the Elasticsearch Serverless <<[LANG]>> client with the following 
+You can install the Elasticsearch Serverless Python client with the following 
 commands:
 
 ```bash
@@ -33,7 +29,7 @@ commands:
 
 You can instantiate a client by running the following command:
 
-```<<[lang]>>
+```python
 
 ```
 
@@ -43,7 +39,7 @@ You can find the Elasticsearch endpoint on the Cloud deployment management page.
 
 You can create a new API Key under **Stack Management** > **Security**:
 
-<DocImage url="images/setup-api-key.gif" alt="Create and copy Apy Key"/>
+<DocImage url="images/setup-api-key.gif" alt="Create and copy API Key"/>
 
 
 ## Using the API
@@ -62,7 +58,7 @@ define the action, and a document.
 The following is an example of indexing some classic books into the `books` 
 index:
 
-```<<[lang]>>
+```python
 
 ```
 
@@ -78,5 +74,5 @@ the previous example with ``.
 Now that some data is available, you can search your documents using the 
 **Search API**:
 
-```<<[lang]>>
+```python
 ```

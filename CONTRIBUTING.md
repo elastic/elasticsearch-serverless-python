@@ -17,7 +17,7 @@ Describe how to install the library for development purposes.
    assure our users of the origin and continuing existence of the code. You only
    need to sign the CLA once.
 2. Rebase your changes. Update your local repository with the most recent code
-   from the main `elasticsearch-serverless-<<[lang]>>` repository and rebase your branch
+   from the main `elasticsearch-serverless-python` repository and rebase your branch
    on top of the latest `main` branch.
 3. Submit a pull request. Push your local changes to your forked repository
    and [submit a pull request](https://github.com/elastic/elasticsearch-serverless/pulls)
@@ -25,4 +25,4 @@ Describe how to install the library for development purposes.
    add or modify tests related to your changes so that CI will pass.
 4. Sit back and wait. There may be some discussion on your pull request and
    if changes are needed we would love to work with you to get your pull request
-   merged into `elasticsearch-serverless-<<[lang]>>`.
+   merged into `elasticsearch-serverless-python`.
