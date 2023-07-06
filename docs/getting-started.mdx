@@ -7,7 +7,8 @@ date: 2023-04-27
 tags: ['serverless','Python client','docs', 'getting started', 'Python']
 ---
 
-This page guides you through the installation process of the Serverless Python client, shows you how to instantiate the client, and how to perform basic 
+This page guides you through the installation process of the Serverless Python 
+client, shows you how to instantiate the client, and how to perform basic 
 Elasticsearch operations with it.
 
 ## Requirements
@@ -22,6 +23,7 @@ You can install the Elasticsearch Serverless Python client with the following
 commands:
 
 ```bash
+
 ```
 
 
@@ -69,10 +71,43 @@ also behaves as a Hash, so you can access the body values directly as seen on
 the previous example with ``.
 
 
+### Getting documents
+
+You can get documents by using the following code:
+
+```python
+
+```
+
 ### Searching
 
 Now that some data is available, you can search your documents using the 
 **Search API**:
 
 ```python
+
+```
+
+### Updating a document
+
+You can call the `update` API to update a document:
+
+```python
+
+```
+
+### Deleting a document
+
+You can call the `delete` API to delete a document:
+
+```python
+
+```
+
+
+### Deleting an index
+
+
+```python
+
 ```
