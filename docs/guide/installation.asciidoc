@@ -1,0 +1,20 @@
+[[installation]]
+== Installation
+
+The Python client for {es} can be installed with pip:
+
+[source,sh]
+-------------------------------------
+$ python -m pip install elasticsearch_serverless
+-------------------------------------
+
+If your application uses async/await in Python you can install with the `async` 
+extra:
+
+[source,sh]
+--------------------------------------------
+$ python -m pip install elasticsearch_serverless[async]
+--------------------------------------------
+
+Read more about 
+https://elasticsearch-serverless-python.readthedocs.io/en/master/async.html[how to use Asyncio with this project].

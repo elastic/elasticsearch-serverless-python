@@ -29,7 +29,7 @@ with open(join(base_dir, package_name, "_version.py")) as f:
         r"__versionstr__\s+=\s+[\"\']([^\"\']+)[\"\']", f.read()
     ).group(1)
 
-with open(join(base_dir, "README.md")) as f:
+with open(join(base_dir, "README.rst")) as f:
     # Remove reST raw directive from README as they're not allowed on PyPI
     # Those blocks start with a newline and continue until the next newline
     mode = None
