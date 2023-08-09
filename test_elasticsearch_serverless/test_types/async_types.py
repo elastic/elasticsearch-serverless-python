@@ -17,8 +17,8 @@
 
 from typing import Any, AsyncGenerator, Dict
 
-from elasticsearch import AsyncElasticsearch
-from elasticsearch.helpers import (
+from elasticsearch_serverless import AsyncElasticsearch
+from elasticsearch_serverless.helpers import (
     async_bulk,
     async_reindex,
     async_scan,
