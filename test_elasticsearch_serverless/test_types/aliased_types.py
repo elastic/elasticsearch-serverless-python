@@ -18,8 +18,8 @@
 from typing import Any, AsyncGenerator, Dict, Generator
 
 from elastic_transport import Transport
-from elasticsearch8 import AsyncElasticsearch, Elasticsearch
-from elasticsearch8.helpers import (
+from elasticsearch_serverless8 import AsyncElasticsearch, Elasticsearch
+from elasticsearch_serverless8.helpers import (
     async_bulk,
     async_reindex,
     async_scan,
