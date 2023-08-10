@@ -245,7 +245,8 @@ class TestTransport:
         assert 1 == len(calls)
         headers = calls[0][1]["headers"]
         assert re.search(
-            r"^es=[0-9.]+p?,py=[0-9.]+p?,t=[0-9.]+p?$", headers["x-elastic-client-meta"]
+            r"^esv=[0-9.]+p?,py=[0-9.]+p?,t=[0-9.]+p?$",
+            headers["x-elastic-client-meta"],
         )
 
         class DummyNodeWithMeta(DummyNode):
@@ -258,7 +259,7 @@ class TestTransport:
         assert 1 == len(calls)
         headers = calls[0][1]["headers"]
         assert re.search(
-            r"^es=[0-9.]+p?,py=[0-9.]+p?,t=[0-9.]+p?,dm=1.2.3$",
+            r"^esv=[0-9.]+p?,py=[0-9.]+p?,t=[0-9.]+p?,dm=1.2.3$",
             headers["x-elastic-client-meta"],
         )
         assert headers["Custom"] == "header"
@@ -272,7 +273,7 @@ class TestTransport:
         calls = client.transport.node_pool.get().calls
         assert 1 == len(calls)
         assert calls[0][1]["headers"] == {
-            "accept": "application/vnd.elasticsearch+json; compatible-with=8",
+            "accept": "application/vnd.elasticsearch+json; compatible-with=0",
         }
 
     def test_meta_header_type_error(self):
@@ -446,7 +447,7 @@ class TestTransport:
             {
                 "body": None,
                 "headers": {
-                    "accept": "application/vnd.elasticsearch+json; compatible-with=8",
+                    "accept": "application/vnd.elasticsearch+json; compatible-with=0",
                 },
                 "request_timeout": DEFAULT,
             },
@@ -613,7 +614,7 @@ def test_unsupported_product_error(headers):
         {
             "body": None,
             "headers": {
-                "accept": "application/vnd.elasticsearch+json; compatible-with=8",
+                "accept": "application/vnd.elasticsearch+json; compatible-with=0",
             },
             "request_timeout": DEFAULT,
         },
