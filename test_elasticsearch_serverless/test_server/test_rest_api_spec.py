@@ -33,7 +33,12 @@ import pytest
 import urllib3
 import yaml
 
-from elasticsearch_serverless import ApiError, Elasticsearch, ElasticsearchWarning, RequestError
+from elasticsearch_serverless import (
+    ApiError,
+    Elasticsearch,
+    ElasticsearchWarning,
+    RequestError,
+)
 from elasticsearch_serverless._sync.client.utils import _base64_auth_header
 from elasticsearch_serverless.compat import string_types
 

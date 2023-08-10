@@ -701,9 +701,13 @@ def test_log_warning_on_shard_failures(sync_client):
         bulk.append({"value": x})
     sync_client.bulk(operations=bulk, refresh=True)
 
-    with patch("elasticsearch_serverless.helpers.actions.logger") as logger_mock, patch.object(
+    with patch(
+        "elasticsearch_serverless.helpers.actions.logger"
+    ) as logger_mock, patch.object(
         sync_client, "options", return_value=sync_client
-    ), patch.object(sync_client, "scroll") as scroll_mock:
+    ), patch.object(
+        sync_client, "scroll"
+    ) as scroll_mock:
         scroll_mock.side_effect = mock_scroll_responses
         list(
             helpers.scan(
