@@ -64,7 +64,7 @@ if TYPE_CHECKING:
 SKIP_IN_PATH: Collection[Any] = (None, "", b"", [], ())
 
 # To be passed to 'client_meta_service' on the Transport
-CLIENT_META_SERVICE = ("es", client_meta_version(__versionstr__))
+CLIENT_META_SERVICE = ("esv", client_meta_version(__versionstr__))
 
 # Default User-Agent used by the client
 USER_AGENT = create_user_agent("elasticsearch-py", __versionstr__)
