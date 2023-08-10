@@ -35,7 +35,6 @@ def test(session):
     session.install(".")
     session.install("-r", "dev-requirements.txt")
 
-    python_version = tuple(int(x) for x in session.python.split("."))
     junit_xml = os.path.join(
         SOURCE_DIR, "junit", "elasticsearch-serverless-python-junit.xml"
     )
@@ -49,10 +48,6 @@ def test(session):
         "--cache-clear",
         "-vv",
     ]
-    # Python 3.6+ is required for async
-    if python_version < (3, 6):
-        pytest_argv.append("--ignore=test_elasticsearch_serverless/test_async/")
-
     session.run(*pytest_argv)
 
 
