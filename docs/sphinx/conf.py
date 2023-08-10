@@ -19,7 +19,7 @@
 import datetime
 import os
 
-import elasticsearch
+import elasticsearch_serverless
 
 extensions = ["sphinx.ext.autodoc", "sphinx.ext.doctest", "sphinx.ext.intersphinx"]
 
@@ -38,7 +38,7 @@ master_doc = "index"
 project = "Python Elasticsearch client"
 copyright = "%d, Elasticsearch B.V" % datetime.date.today().year
 
-version = elasticsearch.__versionstr__
+version = elasticsearch_serverless.__versionstr__
 release = version
 
 pygments_style = "sphinx"
