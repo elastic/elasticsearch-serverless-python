@@ -55,3 +55,18 @@ path = "elasticsearch_serverless/__init__.py"
 include = [
     "/elasticsearch_serverless",
 ]
+
+[tool.pytest]
+junit_family = "legacy"
+addopts = "-vvv -p no:logging --cov-report=term-missing --cov=elasticsearch --cov-config=.coveragerc"
+
+[tool.isort]
+profile = "black"
+
+[tool.coverage.report]
+exclude_lines = [
+    "raise NotImplementedError*",
+]
+
+[tool.mypy]
+ignore_missing_imports = true
