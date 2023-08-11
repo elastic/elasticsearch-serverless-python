@@ -1,0 +1,57 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "elasticsearch-serverless"
+dynamic = ["version"]
+description = "Python client for Elasticsearch Serverless"
+readme = "README.rst"
+license = "Apache-2.0"
+requires-python = ">=3.7, <4"
+authors = [
+    { name = "Elastic Clients Team", email = "clients-team@elastic.co" },
+]
+maintainers = [
+    { name = "Elastic Clients Team", email = "clients-team@elastic.co" },
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dependencies = [
+    "elastic-transport>=8,<9",
+]
+
+[project.optional-dependencies]
+async = [
+    "aiohttp>=3,<4",
+]
+requests = [
+    "requests>=2.4.0, <3.0.0",
+]
+
+[project.urls]
+Documentation = "https://elasticsearch-serverless-python.readthedocs.io"
+Homepage = "https://github.com/elastic/elasticsearch-serverless-python"
+"Issue Tracker" = "https://github.com/elastic/elasticsearch-serverless-python/issues"
+"Source Code" = "https://github.com/elastic/elasticsearch-serverless-python"
+
+[tool.hatch.version]
+path = "elasticsearch_serverless/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/elasticsearch_serverless",
+]
