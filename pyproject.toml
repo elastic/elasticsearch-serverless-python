@@ -30,6 +30,16 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
 ]
+keywords = [
+    "elasticsearch",
+    "elastic",
+    "kibana",
+    "mapping",
+    "REST",
+    "search",
+    "client",
+    "index",
+]
 dependencies = [
     "elastic-transport>=8,<9",
 ]
@@ -49,7 +59,8 @@ Homepage = "https://github.com/elastic/elasticsearch-serverless-python"
 "Source Code" = "https://github.com/elastic/elasticsearch-serverless-python"
 
 [tool.hatch.version]
-path = "elasticsearch_serverless/__init__.py"
+path = "elasticsearch_serverless/_version.py"
+pattern = "__versionstr__ = \"(?P<version>[^\"]+)\""
 
 [tool.hatch.build.targets.sdist]
 include = [
@@ -58,7 +69,7 @@ include = [
 
 [tool.pytest]
 junit_family = "legacy"
-addopts = "-vvv -p no:logging --cov-report=term-missing --cov=elasticsearch --cov-config=.coveragerc"
+addopts = "-vvv -p no:logging --cov-report=term-missing --cov=elasticsearch_serverless --cov-config=.pyproject.toml"
 
 [tool.isort]
 profile = "black"

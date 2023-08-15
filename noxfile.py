@@ -22,11 +22,11 @@ import nox
 SOURCE_DIR = os.path.dirname(os.path.abspath(__file__))
 SOURCE_FILES = (
     "docs/sphinx/conf.py",
-    "setup.py",
     "noxfile.py",
     "elasticsearch_serverless/",
     "test_elasticsearch_serverless/",
     "utils/",
+    "pyproject.toml",
 )
 
 
