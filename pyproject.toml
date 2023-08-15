@@ -58,10 +58,6 @@ Homepage = "https://github.com/elastic/elasticsearch-serverless-python"
 "Issue Tracker" = "https://github.com/elastic/elasticsearch-serverless-python/issues"
 "Source Code" = "https://github.com/elastic/elasticsearch-serverless-python"
 
-[tool.hatch.version]
-path = "elasticsearch_serverless/_version.py"
-pattern = "__versionstr__ = \"(?P<version>[^\"]+)\""
-
 [tool.hatch.build.targets.sdist]
 include = [
     "/elasticsearch_serverless",
