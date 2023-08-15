@@ -26,7 +26,6 @@ SOURCE_FILES = (
     "elasticsearch_serverless/",
     "test_elasticsearch_serverless/",
     "utils/",
-    "pyproject.toml",
 )
 
 
