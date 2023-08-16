@@ -3,7 +3,7 @@
 Exceptions & Warnings
 =====================
 
-.. py:module:: elasticsearch
+.. py:module:: elasticsearch_serverless
 
 API Errors
 ----------
