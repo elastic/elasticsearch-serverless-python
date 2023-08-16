@@ -51,6 +51,31 @@ async = [
 requests = [
     "requests>=2.4.0, <3.0.0",
 ]
+dev = [
+    "requests>=2, <3",
+    "aiohttp",
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+    "coverage",
+    "jinja2",
+    "python-dateutil",
+    "unasync",
+    "pyyaml>=5.4",
+    "isort",
+    "black",
+    "twine",
+    "build",
+    "nox",
+    "numpy",
+    "pandas",
+    "mapbox-vector-tile",
+]
+docs = [
+    "sphinx-rtd-theme",
+    "sphinx-autodoc-typehints",
+    "sphinx",
+]
 
 [project.urls]
 Documentation = "https://elasticsearch-serverless-python.readthedocs.io"

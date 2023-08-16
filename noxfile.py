@@ -31,8 +31,7 @@ SOURCE_FILES = (
 
 @nox.session(python=["3.7", "3.8", "3.9", "3.10", "3.11"])
 def test(session):
-    session.install(".")
-    session.install("-r", "dev-requirements.txt")
+    session.install(".[dev]")
 
     junit_xml = os.path.join(
         SOURCE_DIR, "junit", "elasticsearch-serverless-python-junit.xml"
@@ -105,10 +104,6 @@ def lint(session):
 
 @nox.session()
 def docs(session):
-    session.install(
-        "-rdev-requirements.txt", "sphinx-rtd-theme", "sphinx-autodoc-typehints"
-    )
-    session.install(".")
-    session.run("python", "-m", "pip", "install", "sphinx-autodoc-typehints")
-
+    session.install("sphinx-rtd-theme", "sphinx-autodoc-typehints")
+    session.install(".[docs]")
     session.run("sphinx-build", "docs/sphinx/", "docs/sphinx/_build", "-b", "html")
