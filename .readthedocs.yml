@@ -12,7 +12,6 @@ build:
       - "python -m pip install sphinx-rtd-theme sphinx-autodoc-typehints"
 
 python:
-  version: "3.7"
   install:
     - path: .
       extra_requirements:
