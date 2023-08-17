@@ -86,6 +86,13 @@ Homepage = "https://github.com/elastic/elasticsearch-serverless-python"
 [tool.hatch.build.targets.sdist]
 include = [
     "/elasticsearch_serverless",
+    "/CHANGELOG.md",
+    "/CONTRIBUTING.md",
+    "/LICENSE",
+    "/NOTICE",
+    "/README.rst",
+    "/setup.cfg",
+    "/docs/sphinx",
 ]
 
 [tool.pytest]
