@@ -35,7 +35,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 # General information about the project.
-project = "Python Elasticsearch serverless client"
+project = "Python Elasticsearch Serverless client"
 copyright = "%d, Elasticsearch B.V" % datetime.date.today().year
 
 version = elasticsearch_serverless.__versionstr__
