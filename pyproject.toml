@@ -72,9 +72,9 @@ dev = [
     "mapbox-vector-tile",
 ]
 docs = [
-    "sphinx-rtd-theme",
+    "sphinx-rtd-theme>=1.2.2",
     "sphinx-autodoc-typehints",
-    "sphinx",
+    "sphinx==6.2.1",
 ]
 
 [project.urls]

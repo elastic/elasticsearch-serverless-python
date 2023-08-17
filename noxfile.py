@@ -104,6 +104,5 @@ def lint(session):
 
 @nox.session()
 def docs(session):
-    session.install("sphinx-rtd-theme", "sphinx-autodoc-typehints")
     session.install(".[docs]")
     session.run("sphinx-build", "docs/sphinx/", "docs/sphinx/_build", "-b", "html")
