@@ -1,7 +1,7 @@
 Python Elasticsearch Serverless Client
 ======================================
 
-Official low-level client for Elasticsearch serverless. Its goal is to provide common
+Official low-level client for Elasticsearch Serverless. Its goal is to provide common
 ground for all Elasticsearch-related code in Python; because of this it tries
 to be opinion-free and very extendable.
 
