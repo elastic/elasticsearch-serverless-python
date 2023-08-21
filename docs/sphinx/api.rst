@@ -17,12 +17,12 @@ arguments are required for all
 Elasticsearch
 -------------
 
-.. py:module:: elasticsearch
+.. py:module:: elasticsearch_serverless
 
 .. autoclass:: Elasticsearch
    :members:
 
-.. py:module:: elasticsearch.client
+.. py:module:: elasticsearch_serverless.client
 
 Async Search
 ------------

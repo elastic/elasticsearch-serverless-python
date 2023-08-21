@@ -1,0 +1,111 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "elasticsearch-serverless"
+version = "0.1.0"
+description = "Python client for Elasticsearch Serverless"
+readme = "README.rst"
+license = "Apache-2.0"
+requires-python = ">=3.7, <4"
+authors = [
+    { name = "Elastic Clients Team", email = "clients-team@elastic.co" },
+]
+maintainers = [
+    { name = "Elastic Clients Team", email = "clients-team@elastic.co" },
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+keywords = [
+    "elasticsearch",
+    "elastic",
+    "kibana",
+    "mapping",
+    "REST",
+    "search",
+    "client",
+    "index",
+]
+dependencies = [
+    "elastic-transport>=8,<9",
+]
+
+[project.optional-dependencies]
+async = [
+    "aiohttp>=3,<4",
+]
+requests = [
+    "requests>=2.4.0, <3.0.0",
+]
+dev = [
+    "requests>=2, <3",
+    "aiohttp",
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+    "coverage",
+    "jinja2",
+    "python-dateutil",
+    "unasync",
+    "pyyaml>=5.4",
+    "isort",
+    "black",
+    "twine",
+    "build",
+    "nox",
+    "numpy",
+    "pandas",
+    "mapbox-vector-tile",
+]
+docs = [
+    "sphinx-rtd-theme>=1.2.2",
+    "sphinx-autodoc-typehints",
+    "sphinx==6.2.1",
+]
+
+[project.urls]
+Documentation = "https://elasticsearch-serverless-python.readthedocs.io"
+Homepage = "https://github.com/elastic/elasticsearch-serverless-python"
+"Issue Tracker" = "https://github.com/elastic/elasticsearch-serverless-python/issues"
+"Source Code" = "https://github.com/elastic/elasticsearch-serverless-python"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/elasticsearch_serverless",
+    "/CHANGELOG.md",
+    "/CONTRIBUTING.md",
+    "/LICENSE",
+    "/NOTICE",
+    "/README.rst",
+    "/setup.cfg",
+    "/docs/sphinx",
+]
+
+[tool.pytest]
+junit_family = "legacy"
+addopts = "-vvv -p no:logging --cov-report=term-missing --cov=elasticsearch_serverless --cov-config=.pyproject.toml"
+
+[tool.isort]
+profile = "black"
+
+[tool.coverage.report]
+exclude_lines = [
+    "raise NotImplementedError*",
+]
+
+[tool.mypy]
+ignore_missing_imports = true
