@@ -10,10 +10,10 @@ readme = "README.rst"
 license = "Apache-2.0"
 requires-python = ">=3.7, <4"
 authors = [
-    { name = "Elastic Clients Team", email = "clients-team@elastic.co" },
+    { name = "Elastic Client Library Maintainers", email = "client-libs@elastic.co" },
 ]
 maintainers = [
-    { name = "Elastic Clients Team", email = "clients-team@elastic.co" },
+    { name = "Elastic Client Library Maintainers", email = "client-libs@elastic.co" },
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
