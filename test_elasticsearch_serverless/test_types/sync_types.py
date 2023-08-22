@@ -17,8 +17,8 @@
 
 from typing import Any, Dict, Generator
 
-from elasticsearch import Elasticsearch
-from elasticsearch.helpers import bulk, reindex, scan, streaming_bulk
+from elasticsearch_serverless import Elasticsearch
+from elasticsearch_serverless.helpers import bulk, reindex, scan, streaming_bulk
 
 es = Elasticsearch(
     [{"host": "localhost", "port": 9443}],

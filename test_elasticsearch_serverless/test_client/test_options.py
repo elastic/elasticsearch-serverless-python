@@ -254,7 +254,7 @@ class TestOptions(DummyTransportTestCase):
             transport_class=DummyTransport,
             headers={"key": "val"},
         )
-        assert client._headers == { "key": "val" }
+        assert client._headers == {"key": "val"}
 
         assert len(client.transport.hosts) == 1
         node_config = client.transport.hosts[0]

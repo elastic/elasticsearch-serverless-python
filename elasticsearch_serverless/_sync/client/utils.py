@@ -16,7 +16,6 @@
 #  under the License.
 
 import base64
-import inspect
 import warnings
 from datetime import date, datetime
 from functools import wraps
@@ -41,7 +40,6 @@ from elastic_transport import (
     AsyncTransport,
     HttpHeaders,
     NodeConfig,
-    RequestsHttpNode,
     SniffOptions,
     Transport,
 )
@@ -245,7 +243,7 @@ def _escape(value: Any) -> str:
     or tuple, turn it into a comma-separated string first.
     """
 
-    # make sequences into comma-separated stings
+    # make sequences into comma-separated strings
     if isinstance(value, (list, tuple)):
         value = ",".join([_escape(item) for item in value])
 

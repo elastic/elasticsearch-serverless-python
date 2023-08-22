@@ -76,9 +76,7 @@ def resolve_auth_headers(
     resolved_api_key = api_key if api_key is not DEFAULT else None
     if resolved_api_key:
         if headers.get("authorization", None) is not None:
-            raise ValueError(
-                "Can't set 'Authorization' HTTP header"
-            )
+            raise ValueError("Can't set 'Authorization' HTTP header")
         headers["authorization"] = f"ApiKey {_base64_auth_header(resolved_api_key)}"
 
     return headers

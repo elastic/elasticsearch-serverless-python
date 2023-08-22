@@ -631,9 +631,7 @@ def test_scan_auth_kwargs_forwarded(sync_client, kwargs):
         assert data == [{"search_data": 1}]
 
     assert options.call_args_list == [
-        call(
-            request_timeout=None, **{key: val}
-        ),
+        call(request_timeout=None, **{key: val}),
         call(ignore_status=404),
     ]
 

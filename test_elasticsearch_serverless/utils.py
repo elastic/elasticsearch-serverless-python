@@ -110,7 +110,7 @@ def wipe_cluster(client):
     try:
         # If client is async we need to replace the client
         # with a synchronous one.
-        from elasticsearch import AsyncElasticsearch
+        from elasticsearch_serverless import AsyncElasticsearch
 
         if isinstance(client, AsyncElasticsearch):
             node_config = client.transport.node_pool.get().config
