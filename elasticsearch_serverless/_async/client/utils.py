@@ -25,8 +25,6 @@ from ..._sync.client.utils import (
     _quote_query,
     _rewrite_parameters,
     client_node_configs,
-    is_requests_http_auth,
-    is_requests_node_class,
 )
 
 __all__ = [
@@ -39,6 +37,4 @@ __all__ = [
     "SKIP_IN_PATH",
     "client_node_configs",
     "_rewrite_parameters",
-    "is_requests_http_auth",
-    "is_requests_node_class",
 ]

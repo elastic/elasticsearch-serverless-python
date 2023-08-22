@@ -177,36 +177,6 @@ class TestRewriteParameters:
             "using 'params' use individual API parameters"
         )
 
-    def test_ignore_deprecated_options(self):
-        with warnings.catch_warnings(record=True) as w:
-            self.wrapped_func_ignore(
-                api_key=("id", "api_key"),
-                body={"query": {"match_all": {}}},
-                params={"key": "value"},
-                param=1,
-                http_auth=("key", "value"),
-            )
-
-        assert len(w) == 1
-        assert w[0].category == DeprecationWarning
-        assert (
-            str(w[0].message)
-            == "Passing transport options in the API method is deprecated. Use 'Elasticsearch.options()' instead."
-        )
-
-        assert self.calls == [
-            ((), {"http_auth": ("key", "value")}),
-            (
-                (),
-                {
-                    "api_key": ("id", "api_key"),
-                    "body": {"query": {"match_all": {}}},
-                    "params": {"key": "value"},
-                    "param": 1,
-                },
-            ),
-        ]
-
     def test_parameter_aliases(self):
         self.wrapped_func_aliases(_source=["key1", "key2"])
         assert self.calls == [((), {"source": ["key1", "key2"]})]

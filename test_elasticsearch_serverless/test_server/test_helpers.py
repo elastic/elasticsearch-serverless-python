@@ -592,9 +592,6 @@ def test_no_scroll_id_fast_route(sync_client):
     "kwargs",
     [
         {"api_key": ("name", "value")},
-        {"http_auth": ("username", "password")},
-        {"basic_auth": ("username", "password")},
-        {"bearer_auth": "token"},
         {"headers": {"custom", "header"}},
     ],
 )
@@ -635,7 +632,7 @@ def test_scan_auth_kwargs_forwarded(sync_client, kwargs):
 
     assert options.call_args_list == [
         call(
-            request_timeout=None, **{key if key != "http_auth" else "basic_auth": val}
+            request_timeout=None, **{key: val}
         ),
         call(ignore_status=404),
     ]

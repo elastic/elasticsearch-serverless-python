@@ -79,8 +79,6 @@ from .utils import (
     _quote,
     _rewrite_parameters,
     client_node_configs,
-    is_requests_http_auth,
-    is_requests_node_class,
 )
 from .watcher import WatcherClient
 from .xpack import XPackClient
@@ -132,8 +130,6 @@ class Elasticsearch(BaseClient):
         # API
         cloud_id: t.Optional[str] = None,
         api_key: t.Optional[t.Union[str, t.Tuple[str, str]]] = None,
-        basic_auth: t.Optional[t.Union[str, t.Tuple[str, str]]] = None,
-        bearer_auth: t.Optional[str] = None,
         opaque_id: t.Optional[str] = None,
         # Node
         headers: t.Union[DefaultType, t.Mapping[str, str]] = DEFAULT,
@@ -182,7 +178,6 @@ class Elasticsearch(BaseClient):
         ] = None,
         sniffer_timeout: t.Union[DefaultType, None, float] = DEFAULT,
         sniff_on_connection_fail: t.Union[DefaultType, bool] = DEFAULT,
-        http_auth: t.Union[DefaultType, t.Any] = DEFAULT,
         maxsize: t.Union[DefaultType, int] = DEFAULT,
         # Internal use only
         _transport: t.Optional[Transport] = None,
@@ -311,26 +306,9 @@ class Elasticsearch(BaseClient):
             sniff_callback = default_sniff_callback
 
         if _transport is None:
-            requests_session_auth = None
-            if http_auth is not None and http_auth is not DEFAULT:
-                if is_requests_http_auth(http_auth):
-                    # If we're using custom requests authentication
-                    # then we need to alert the user that they also
-                    # need to use 'node_class=requests'.
-                    if not is_requests_node_class(node_class):
-                        raise ValueError(
-                            "Using a custom 'requests.auth.AuthBase' class for "
-                            "'http_auth' must be used with node_class='requests'"
-                        )
-
-                    # Reset 'http_auth' to DEFAULT so it's not consumed below.
-                    requests_session_auth = http_auth
-                    http_auth = DEFAULT
-
             node_configs = client_node_configs(
                 hosts,
                 cloud_id=cloud_id,
-                requests_session_auth=requests_session_auth,
                 connections_per_node=connections_per_node,
                 http_compress=http_compress,
                 verify_certs=verify_certs,
@@ -417,10 +395,7 @@ class Elasticsearch(BaseClient):
             self._headers["x-opaque-id"] = opaque_id
         self._headers = resolve_auth_headers(
             self._headers,
-            http_auth=http_auth,
             api_key=api_key,
-            basic_auth=basic_auth,
-            bearer_auth=bearer_auth,
         )
 
         # namespaced clients for compatibility with API names
@@ -488,8 +463,6 @@ class Elasticsearch(BaseClient):
         *,
         opaque_id: t.Union[DefaultType, str] = DEFAULT,
         api_key: t.Union[DefaultType, str, t.Tuple[str, str]] = DEFAULT,
-        basic_auth: t.Union[DefaultType, str, t.Tuple[str, str]] = DEFAULT,
-        bearer_auth: t.Union[DefaultType, str] = DEFAULT,
         headers: t.Union[DefaultType, t.Mapping[str, str]] = DEFAULT,
         request_timeout: t.Union[DefaultType, t.Optional[float]] = DEFAULT,
         ignore_status: t.Union[DefaultType, int, t.Collection[int]] = DEFAULT,
@@ -503,8 +476,6 @@ class Elasticsearch(BaseClient):
         resolved_headers = resolve_auth_headers(
             headers=resolved_headers,
             api_key=api_key,
-            basic_auth=basic_auth,
-            bearer_auth=bearer_auth,
         )
         resolved_opaque_id = opaque_id if opaque_id is not DEFAULT else None
         if resolved_opaque_id:

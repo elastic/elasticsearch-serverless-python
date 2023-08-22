@@ -50,12 +50,6 @@ class TestOptions(DummyTransportTestCase):
             ({"api_key": "key"}, {"Authorization": "ApiKey key"}),
             ({"api_key": ("id", "value")}, {"Authorization": "ApiKey aWQ6dmFsdWU="}),
             (
-                {"basic_auth": ("username", "password")},
-                {"Authorization": "Basic dXNlcm5hbWU6cGFzc3dvcmQ="},
-            ),
-            ({"basic_auth": "encoded"}, {"Authorization": "Basic encoded"}),
-            ({"bearer_auth": "bear"}, {"Authorization": "Bearer bear"}),
-            (
                 {"opaque_id": "test-id"},
                 {"X-Opaque-Id": "test-id"},
             ),
@@ -96,20 +90,16 @@ class TestOptions(DummyTransportTestCase):
         self.assert_called_with_headers(client, "HEAD", "/test", headers=headers)
 
     @pytest.mark.parametrize("api_key", [None, "api-key", ("api", "key")])
-    @pytest.mark.parametrize("bearer_auth", [None, "bearer"])
-    @pytest.mark.parametrize("basic_auth", [None, "user:pass", ("user", "pass")])
     @pytest.mark.parametrize(
         "headers", [None, {"Authorization": "value"}, {"authorization": "value"}]
     )
-    def test_options_auth_conflicts(self, api_key, bearer_auth, basic_auth, headers):
-        if sum(x is not None for x in (api_key, bearer_auth, basic_auth, headers)) < 2:
+    def test_options_auth_conflicts(self, api_key, headers):
+        if sum(x is not None for x in (api_key, headers)) < 2:
             pytest.skip("Skip the cases where 1 or fewer options are unset")
         kwargs = {
             k: v
             for k, v in {
                 "api_key": api_key,
-                "bearer_auth": bearer_auth,
-                "basic_auth": basic_auth,
                 "headers": headers,
             }.items()
             if v is not None
@@ -117,10 +107,7 @@ class TestOptions(DummyTransportTestCase):
 
         with pytest.raises(ValueError) as e:
             self.client.options(**kwargs)
-        assert str(e.value) in (
-            "Can only set one of 'api_key', 'basic_auth', and 'bearer_auth'",
-            "Can't set 'Authorization' HTTP header with other authentication options",
-        )
+        assert str(e.value) == "Can't set 'Authorization' HTTP header"
 
     def test_options_passed_to_perform_request(self):
         # Default transport options are 'DEFAULT' to rely on 'elastic_transport' defaults.
@@ -266,12 +253,8 @@ class TestOptions(DummyTransportTestCase):
             "http://localhost:9200",
             transport_class=DummyTransport,
             headers={"key": "val"},
-            basic_auth=("username", "password"),
         )
-        assert client._headers == {
-            "key": "val",
-            "authorization": "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-        }
+        assert client._headers == { "key": "val" }
 
         assert len(client.transport.hosts) == 1
         node_config = client.transport.hosts[0]

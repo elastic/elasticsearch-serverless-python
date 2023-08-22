@@ -704,7 +704,6 @@ class TestScan(object):
         "kwargs",
         [
             {"api_key": ("name", "value")},
-            {"http_auth": ("username", "password")},
             {"headers": {"custom", "header"}},
         ],
     )
@@ -752,9 +751,6 @@ class TestScan(object):
                     ]
 
                     assert data == [{"search_data": 1}]
-
-        if "http_auth" in kwargs:
-            kwargs = {"basic_auth": kwargs.pop("http_auth")}
 
         assert options.call_args_list == [
             call(request_timeout=None, **kwargs),
