@@ -32,7 +32,7 @@ endpoint.
 
 [source,py]
 ----
-from elasticsearch import Elasticsearch
+from elasticsearch_serverless import Elasticsearch
 
 client = Elasticsearch(
     "https://...",  # Elasticsearch endpoint

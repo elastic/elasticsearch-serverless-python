@@ -271,7 +271,7 @@ return `None` from the `sniffed_node_callback`, otherwise return a `NodeConfig` 
 ------------------------------------
 from typing import Optional, Dict, Any
 from elastic_transport import NodeConfig
-from elasticsearch import Elasticsearch
+from elasticsearch_serverless import Elasticsearch
 
 def filter_master_eligible_nodes(
     node_info: Dict[str, Any],
@@ -365,7 +365,7 @@ You can define custom serializers via the `serializers` parameter:
 
 [source,python]
 ------------------------------------
-from elasticsearch import Elasticsearch, JsonSerializer
+from elasticsearch_serverless import Elasticsearch, JsonSerializer
 
 class JsonSetSerializer(JsonSerializer):
     """Custom JSON serializer that handles Python sets"""
@@ -395,7 +395,7 @@ For all of the built-in HTTP node implementations like `urllib3`, `requests`, an
 
 [source,python]
 ------------------------------------
-from elasticsearch import Elasticsearch
+from elasticsearch_serverless import Elasticsearch
 
 es = Elasticsearch(
     ...,
@@ -407,7 +407,7 @@ You can also specify a custom node implementation via the `node_class` parameter
 
 [source,python]
 ------------------------------------
-from elasticsearch import Elasticsearch
+from elasticsearch_serverless import Elasticsearch
 from elastic_transport import Urllib3HttpNode
 
 class CustomHttpNode(Urllib3HttpNode):
