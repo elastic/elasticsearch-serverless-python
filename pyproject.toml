@@ -97,7 +97,7 @@ include = [
 
 [tool.pytest]
 junit_family = "legacy"
-addopts = "-vvv -p no:logging --cov-report=term-missing --cov=elasticsearch_serverless --cov-config=.pyproject.toml"
+addopts = "-vvv -p no:logging --cov-report=term-missing --cov=elasticsearch_serverless --cov-config=pyproject.toml"
 
 [tool.isort]
 profile = "black"

@@ -43,10 +43,6 @@ class TestOptions(DummyTransportTestCase):
     @pytest.mark.parametrize(
         ["options", "headers"],
         [
-            (
-                {"headers": {"authorization": "custom method"}},
-                {"Authorization": "custom method"},
-            ),
             ({"api_key": "key"}, {"Authorization": "ApiKey key"}),
             ({"api_key": ("id", "value")}, {"Authorization": "ApiKey aWQ6dmFsdWU="}),
             (
@@ -83,7 +79,6 @@ class TestOptions(DummyTransportTestCase):
         client = Elasticsearch(
             "http://localhost:9200",
             transport_class=DummyTransport,
-            headers={"Authorization": "not it"},
         )
         client = self.client.options(**options)
         client.indices.exists(index="test")
@@ -107,7 +102,7 @@ class TestOptions(DummyTransportTestCase):
 
         with pytest.raises(ValueError) as e:
             self.client.options(**kwargs)
-        assert str(e.value) == "Can't set 'Authorization' HTTP header"
+        assert str(e.value) == "Can't override 'Authorization' HTTP header"
 
     def test_options_passed_to_perform_request(self):
         # Default transport options are 'DEFAULT' to rely on 'elastic_transport' defaults.
