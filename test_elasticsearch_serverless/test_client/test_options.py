@@ -292,19 +292,6 @@ class TestOptions(DummyTransportTestCase):
             "accept": "application/vnd.elasticsearch+json; compatible-with=0",
         }
 
-        client = Elasticsearch(
-            "http://username:password@localhost:9200",
-            transport_class=DummyTransport,
-            headers={"key": "val"},
-        )
-        calls = client.transport.calls
-        node_config = client.transport.hosts[0]
-        assert node_config.headers == {
-            "authorization": "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
-            "user-agent": USER_AGENT,
-        }
-        assert client._headers == {"key": "val"}
-
     def test_user_agent_override(self):
         client = Elasticsearch(
             "http://localhost:9200",
@@ -447,3 +434,14 @@ class TestOptions(DummyTransportTestCase):
             "retry_on_status": (404,),
             "retry_on_timeout": True,
         }
+
+    def test_options_no_basic_auth(self):
+        with pytest.raises(ValueError) as e:
+            Elasticsearch(
+                "http://elastic:changeme@localhost:9200",
+                transport_class=DummyTransport,
+            )
+        assert (
+            str(e.value)
+            == "Basic HTTP authentication is not supported. An API key is required."
+        )

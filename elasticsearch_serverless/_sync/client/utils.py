@@ -147,6 +147,13 @@ def hosts_to_node_configs(hosts: _TYPE_HOSTS) -> List[NodeConfig]:
                 "'hosts' must be a list of URLs, NodeConfigs, or dictionaries"
             )
 
+    for node_config in node_configs:
+        auth_header = node_config.headers.get("authorization", None)
+        if auth_header is not None and auth_header.startswith("Basic "):
+            raise ValueError(
+                "Basic HTTP authentication is not supported. An API key is required."
+            )
+
     return node_configs
 
 

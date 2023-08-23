@@ -48,8 +48,6 @@ def es_url() -> str:
         [
             "https://localhost:9200",
             "http://localhost:9200",
-            "https://elastic:changeme@localhost:9200",
-            "http://elastic:changeme@localhost:9200",
         ]
     )
 
