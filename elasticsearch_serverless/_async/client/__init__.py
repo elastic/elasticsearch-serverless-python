@@ -130,7 +130,7 @@ class AsyncElasticsearch(BaseClient):
         opaque_id: t.Optional[str] = None,
         # Node
         headers: t.Union[DefaultType, t.Mapping[str, str]] = DEFAULT,
-        connections_per_node: t.Union[DefaultType, int] = DEFAULT,
+        connections: t.Union[DefaultType, int] = DEFAULT,
         http_compress: t.Union[DefaultType, bool] = DEFAULT,
         verify_certs: t.Union[DefaultType, bool] = DEFAULT,
         ca_certs: t.Union[DefaultType, str] = DEFAULT,
@@ -163,7 +163,6 @@ class AsyncElasticsearch(BaseClient):
             ]
         ] = None,
         http_auth: t.Union[DefaultType, t.Any] = DEFAULT,
-        maxsize: t.Union[DefaultType, int] = DEFAULT,
         # Internal use only
         _transport: t.Optional[AsyncTransport] = None,
     ) -> None:
@@ -191,19 +190,6 @@ class AsyncElasticsearch(BaseClient):
                 )
             serializers = {default_mimetype: serializer}
 
-        if maxsize is not DEFAULT:
-            if connections_per_node is not DEFAULT:
-                raise ValueError(
-                    "Can't specify both 'maxsize' and 'connections_per_node', "
-                    "instead only specify 'connections_per_node'"
-                )
-            warnings.warn(
-                "The 'maxsize' parameter is deprecated in favor of 'connections_per_node'",
-                category=DeprecationWarning,
-                stacklevel=2,
-            )
-            connections_per_node = maxsize
-
         if _transport is None:
             requests_session_auth = None
             if http_auth is not None and http_auth is not DEFAULT:
@@ -225,7 +211,7 @@ class AsyncElasticsearch(BaseClient):
                 host,
                 cloud_id=cloud_id,
                 requests_session_auth=requests_session_auth,
-                connections_per_node=connections_per_node,
+                connections_per_node=connections,
                 http_compress=http_compress,
                 verify_certs=verify_certs,
                 ca_certs=ca_certs,
