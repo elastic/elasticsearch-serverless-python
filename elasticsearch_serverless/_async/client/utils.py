@@ -16,7 +16,6 @@
 #  under the License.
 
 from ..._sync.client.utils import (
-    _TYPE_ASYNC_SNIFF_CALLBACK,
     _TYPE_HOST,
     CLIENT_META_SERVICE,
     SKIP_IN_PATH,
@@ -31,7 +30,6 @@ from ..._sync.client.utils import (
 
 __all__ = [
     "CLIENT_META_SERVICE",
-    "_TYPE_ASYNC_SNIFF_CALLBACK",
     "_base64_auth_header",
     "_quote",
     "_quote_query",

@@ -24,7 +24,6 @@ from elastic_transport import (
     AsyncTransport,
     BaseNode,
     HeadApiResponse,
-    NodeConfig,
     NodePool,
     ObjectApiResponse,
     Serializer,
@@ -33,12 +32,7 @@ from elastic_transport.client_utils import DEFAULT, DefaultType
 
 from ...exceptions import ApiError, TransportError
 from ...serializer import DEFAULT_SERIALIZERS
-from ._base import (
-    BaseClient,
-    create_sniff_callback,
-    default_sniff_callback,
-    resolve_auth_headers,
-)
+from ._base import BaseClient, resolve_auth_headers
 from .async_search import AsyncSearchClient
 from .autoscaling import AutoscalingClient
 from .cat import CatClient
@@ -160,14 +154,6 @@ class AsyncElasticsearch(BaseClient):
         max_retries: t.Union[DefaultType, int] = DEFAULT,
         retry_on_status: t.Union[DefaultType, int, t.Collection[int]] = DEFAULT,
         retry_on_timeout: t.Union[DefaultType, bool] = DEFAULT,
-        sniff_on_start: t.Union[DefaultType, bool] = DEFAULT,
-        sniff_before_requests: t.Union[DefaultType, bool] = DEFAULT,
-        sniff_on_node_failure: t.Union[DefaultType, bool] = DEFAULT,
-        sniff_timeout: t.Union[DefaultType, None, float] = DEFAULT,
-        min_delay_between_sniffing: t.Union[DefaultType, None, float] = DEFAULT,
-        sniffed_node_callback: t.Optional[
-            t.Callable[[t.Dict[str, t.Any], NodeConfig], t.Optional[NodeConfig]]
-        ] = None,
         meta_header: t.Union[DefaultType, bool] = DEFAULT,
         timeout: t.Union[DefaultType, None, float] = DEFAULT,
         host_info_callback: t.Optional[
@@ -176,8 +162,6 @@ class AsyncElasticsearch(BaseClient):
                 t.Optional[t.Dict[str, t.Union[str, int]]],
             ]
         ] = None,
-        sniffer_timeout: t.Union[DefaultType, None, float] = DEFAULT,
-        sniff_on_connection_fail: t.Union[DefaultType, bool] = DEFAULT,
         http_auth: t.Union[DefaultType, t.Any] = DEFAULT,
         maxsize: t.Union[DefaultType, int] = DEFAULT,
         # Internal use only
@@ -207,32 +191,6 @@ class AsyncElasticsearch(BaseClient):
                 )
             serializers = {default_mimetype: serializer}
 
-        if sniffer_timeout is not DEFAULT:
-            if min_delay_between_sniffing is not DEFAULT:
-                raise ValueError(
-                    "Can't specify both 'sniffer_timeout' and 'min_delay_between_sniffing', "
-                    "instead only specify 'min_delay_between_sniffing'"
-                )
-            warnings.warn(
-                "The 'sniffer_timeout' parameter is deprecated in favor of 'min_delay_between_sniffing'",
-                category=DeprecationWarning,
-                stacklevel=2,
-            )
-            min_delay_between_sniffing = sniffer_timeout
-
-        if sniff_on_connection_fail is not DEFAULT:
-            if sniff_on_node_failure is not DEFAULT:
-                raise ValueError(
-                    "Can't specify both 'sniff_on_connection_fail' and 'sniff_on_node_failure', "
-                    "instead only specify 'sniff_on_node_failure'"
-                )
-            warnings.warn(
-                "The 'sniff_on_connection_fail' parameter is deprecated in favor of 'sniff_on_node_failure'",
-                category=DeprecationWarning,
-                stacklevel=2,
-            )
-            sniff_on_node_failure = sniff_on_connection_fail
-
         if maxsize is not DEFAULT:
             if connections_per_node is not DEFAULT:
                 raise ValueError(
@@ -245,53 +203,6 @@ class AsyncElasticsearch(BaseClient):
                 stacklevel=2,
             )
             connections_per_node = maxsize
-
-        # Setting min_delay_between_sniffing=True implies sniff_before_requests=True
-        if min_delay_between_sniffing is not DEFAULT:
-            sniff_before_requests = True
-
-        sniffing_options = (
-            sniff_timeout,
-            sniff_on_start,
-            sniff_before_requests,
-            sniff_on_node_failure,
-            sniffed_node_callback,
-            min_delay_between_sniffing,
-            sniffed_node_callback,
-        )
-        if cloud_id is not None and any(
-            x is not DEFAULT and x is not None for x in sniffing_options
-        ):
-            raise ValueError(
-                "Sniffing should not be enabled when connecting to Elastic Cloud"
-            )
-
-        sniff_callback = None
-        if host_info_callback is not None:
-            if sniffed_node_callback is not None:
-                raise ValueError(
-                    "Can't specify both 'host_info_callback' and 'sniffed_node_callback', "
-                    "instead only specify 'sniffed_node_callback'"
-                )
-            warnings.warn(
-                "The 'host_info_callback' parameter is deprecated in favor of 'sniffed_node_callback'",
-                category=DeprecationWarning,
-                stacklevel=2,
-            )
-
-            sniff_callback = create_sniff_callback(
-                host_info_callback=host_info_callback
-            )
-        elif sniffed_node_callback is not None:
-            sniff_callback = create_sniff_callback(
-                sniffed_node_callback=sniffed_node_callback
-            )
-        elif (
-            sniff_on_start is True
-            or sniff_before_requests is True
-            or sniff_on_node_failure is True
-        ):
-            sniff_callback = default_sniff_callback
 
         if _transport is None:
             requests_session_auth = None
@@ -357,23 +268,10 @@ class AsyncElasticsearch(BaseClient):
             transport_kwargs["serializers"] = transport_serializers
 
             transport_kwargs["default_mimetype"] = default_mimetype
-            if sniff_on_start is not DEFAULT:
-                transport_kwargs["sniff_on_start"] = sniff_on_start
-            if sniff_before_requests is not DEFAULT:
-                transport_kwargs["sniff_before_requests"] = sniff_before_requests
-            if sniff_on_node_failure is not DEFAULT:
-                transport_kwargs["sniff_on_node_failure"] = sniff_on_node_failure
-            if sniff_timeout is not DEFAULT:
-                transport_kwargs["sniff_timeout"] = sniff_timeout
-            if min_delay_between_sniffing is not DEFAULT:
-                transport_kwargs[
-                    "min_delay_between_sniffing"
-                ] = min_delay_between_sniffing
 
             _transport = transport_class(
                 [node_config],
                 client_meta_service=CLIENT_META_SERVICE,
-                sniff_callback=sniff_callback,
                 **transport_kwargs,
             )
 

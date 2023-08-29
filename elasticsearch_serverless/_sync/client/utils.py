@@ -23,7 +23,6 @@ from functools import wraps
 from typing import (
     TYPE_CHECKING,
     Any,
-    Awaitable,
     Callable,
     Collection,
     Dict,
@@ -37,14 +36,7 @@ from typing import (
     Union,
 )
 
-from elastic_transport import (
-    AsyncTransport,
-    HttpHeaders,
-    NodeConfig,
-    RequestsHttpNode,
-    SniffOptions,
-    Transport,
-)
+from elastic_transport import HttpHeaders, NodeConfig, RequestsHttpNode
 from elastic_transport.client_utils import (
     DEFAULT,
     client_meta_version,
@@ -70,11 +62,6 @@ CLIENT_META_SERVICE = ("esv", client_meta_version(__versionstr__))
 USER_AGENT = create_user_agent("elasticsearch-py", __versionstr__)
 
 _TYPE_HOST = Union[str, Mapping, NodeConfig]
-
-_TYPE_ASYNC_SNIFF_CALLBACK = Callable[
-    [AsyncTransport, SniffOptions], Awaitable[List[NodeConfig]]
-]
-_TYPE_SYNC_SNIFF_CALLBACK = Callable[[Transport, SniffOptions], List[NodeConfig]]
 
 _TRANSPORT_OPTIONS = {
     "api_key",
@@ -234,7 +221,7 @@ def _escape(value: Any) -> str:
     or tuple, turn it into a comma-separated string first.
     """
 
-    # make sequences into comma-separated stings
+    # make sequences into comma-separated strings
     if isinstance(value, (list, tuple)):
         value = ",".join([_escape(item) for item in value])
 

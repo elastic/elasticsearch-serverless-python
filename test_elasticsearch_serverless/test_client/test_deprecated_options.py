@@ -22,48 +22,6 @@ import pytest
 from elasticsearch_serverless import Elasticsearch, JsonSerializer
 
 
-def test_sniff_on_connection_fail():
-    with warnings.catch_warnings(record=True) as w:
-        client = Elasticsearch("http://localhost:9200", sniff_on_connection_fail=True)
-    assert client.transport._sniff_on_node_failure is True
-    assert len(w) == 1
-    assert w[0].category == DeprecationWarning
-    assert str(w[0].message) == (
-        "The 'sniff_on_connection_fail' parameter is deprecated in favor of 'sniff_on_node_failure'"
-    )
-
-    with pytest.raises(ValueError) as e:
-        Elasticsearch(
-            "http://localhost:9200",
-            sniff_on_connection_fail=True,
-            sniff_on_node_failure=True,
-        )
-    assert (
-        str(e.value)
-        == "Can't specify both 'sniff_on_connection_fail' and 'sniff_on_node_failure', instead only specify 'sniff_on_node_failure'"
-    )
-
-
-def test_sniffer_timeout():
-    with warnings.catch_warnings(record=True) as w:
-        client = Elasticsearch("http://localhost:9200", sniffer_timeout=1)
-    assert client.transport._min_delay_between_sniffing == 1
-    assert len(w) == 1
-    assert w[0].category == DeprecationWarning
-    assert str(w[0].message) == (
-        "The 'sniffer_timeout' parameter is deprecated in favor of 'min_delay_between_sniffing'"
-    )
-
-    with pytest.raises(ValueError) as e:
-        Elasticsearch(
-            "http://localhost:9200", sniffer_timeout=1, min_delay_between_sniffing=1
-        )
-    assert (
-        str(e.value)
-        == "Can't specify both 'sniffer_timeout' and 'min_delay_between_sniffing', instead only specify 'min_delay_between_sniffing'"
-    )
-
-
 def test_http_auth():
     with warnings.catch_warnings(record=True) as w:
         client = Elasticsearch(

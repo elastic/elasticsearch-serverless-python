@@ -17,15 +17,11 @@
 
 from typing import Any, Dict, Generator
 
-from elasticsearch import Elasticsearch
-from elasticsearch.helpers import bulk, reindex, scan, streaming_bulk
+from elasticsearch_serverless import Elasticsearch
+from elasticsearch_serverless.helpers import bulk, reindex, scan, streaming_bulk
 
 es = Elasticsearch(
-    [{"host": "localhost", "port": 9443}],
-    sniff_on_start=True,
-    sniffer_timeout=0.1,
-    sniff_timeout=1,
-    sniff_on_connection_fail=False,
+    {"host": "localhost", "port": 9443},
     max_retries=1,
     retry_on_status={100, 400, 503},
     retry_on_timeout=True,
