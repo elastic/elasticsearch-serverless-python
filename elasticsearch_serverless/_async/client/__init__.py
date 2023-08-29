@@ -73,12 +73,12 @@ from .tasks import TasksClient
 from .text_structure import TextStructureClient
 from .transform import TransformClient
 from .utils import (
-    _TYPE_HOSTS,
+    _TYPE_HOST,
     CLIENT_META_SERVICE,
     SKIP_IN_PATH,
     _quote,
     _rewrite_parameters,
-    client_node_configs,
+    client_node_config,
     is_requests_http_auth,
     is_requests_node_class,
 )
@@ -127,7 +127,7 @@ class AsyncElasticsearch(BaseClient):
 
     def __init__(
         self,
-        hosts: t.Optional[_TYPE_HOSTS] = None,
+        host: t.Optional[_TYPE_HOST] = None,
         *,
         # API
         cloud_id: t.Optional[str] = None,
@@ -187,8 +187,8 @@ class AsyncElasticsearch(BaseClient):
         # Internal use only
         _transport: t.Optional[AsyncTransport] = None,
     ) -> None:
-        if hosts is None and cloud_id is None and _transport is None:
-            raise ValueError("Either 'hosts' or 'cloud_id' must be specified")
+        if host is None and cloud_id is None and _transport is None:
+            raise ValueError("Either 'host' or 'cloud_id' must be specified")
 
         if timeout is not DEFAULT:
             if request_timeout is not DEFAULT:
@@ -327,8 +327,8 @@ class AsyncElasticsearch(BaseClient):
                     requests_session_auth = http_auth
                     http_auth = DEFAULT
 
-            node_configs = client_node_configs(
-                hosts,
+            node_config = client_node_config(
+                host,
                 cloud_id=cloud_id,
                 requests_session_auth=requests_session_auth,
                 connections_per_node=connections_per_node,
@@ -392,7 +392,7 @@ class AsyncElasticsearch(BaseClient):
                 ] = min_delay_between_sniffing
 
             _transport = transport_class(
-                node_configs,
+                [node_config],
                 client_meta_service=CLIENT_META_SERVICE,
                 sniff_callback=sniff_callback,
                 **transport_kwargs,

@@ -311,14 +311,12 @@ class TestTransport:
 
     def test_request_will_fail_after_x_retries(self):
         client = Elasticsearch(
-            [
-                NodeConfig(
-                    "http",
-                    "localhost",
-                    9200,
-                    _extras={"exception": ConnectionError("abandon ship!")},
-                )
-            ],
+            NodeConfig(
+                "http",
+                "localhost",
+                9200,
+                _extras={"exception": ConnectionError("abandon ship!")},
+            ),
             node_class=DummyNode,
         )
 
@@ -336,20 +334,12 @@ class TestTransport:
 
     def test_failed_connection_will_be_marked_as_dead(self):
         client = Elasticsearch(
-            [
-                NodeConfig(
-                    "http",
-                    "localhost",
-                    9200,
-                    _extras={"exception": ConnectionError("abandon ship!")},
-                ),
-                NodeConfig(
-                    "http",
-                    "localhost",
-                    9201,
-                    _extras={"exception": ConnectionError("abandon ship!")},
-                ),
-            ],
+            NodeConfig(
+                "http",
+                "localhost",
+                9200,
+                _extras={"exception": ConnectionError("abandon ship!")},
+            ),
             node_class=DummyNode,
         )
 
@@ -359,23 +349,16 @@ class TestTransport:
 
     def test_resurrected_connection_will_be_marked_as_live_on_success(self):
         client = Elasticsearch(
-            [
-                NodeConfig("http", "localhost", 9200),
-                NodeConfig("http", "localhost", 9201),
-            ],
+            NodeConfig("http", "localhost", 9200),
             node_class=DummyNode,
         )
         node1 = client.transport.node_pool.get()
-        node2 = client.transport.node_pool.get()
-        assert node1 is not node2
         client.transport.node_pool.mark_dead(node1)
-        client.transport.node_pool.mark_dead(node2)
         assert len(client.transport.node_pool._alive_nodes) == 0
 
         client.info()
 
         assert len(client.transport.node_pool._alive_nodes) == 1
-        assert len(client.transport.node_pool._dead_consecutive_failures) == 1
 
     @pytest.mark.parametrize(
         ["nodes_info_response", "node_host"],
@@ -383,11 +366,9 @@ class TestTransport:
     )
     def test_sniff_will_use_seed_connections(self, nodes_info_response, node_host):
         client = Elasticsearch(
-            [
-                NodeConfig(
-                    "http", "localhost", 9200, _extras={"data": nodes_info_response}
-                )
-            ],
+            NodeConfig(
+                "http", "localhost", 9200, _extras={"data": nodes_info_response}
+            ),
             node_class=DummyNode,
             sniff_on_start=True,
         )
@@ -398,7 +379,7 @@ class TestTransport:
 
     def test_sniff_on_start_ignores_sniff_timeout(self):
         client = Elasticsearch(
-            [NodeConfig("http", "localhost", 9200, _extras={"data": CLUSTER_NODES})],
+            NodeConfig("http", "localhost", 9200, _extras={"data": CLUSTER_NODES}),
             node_class=DummyNode,
             sniff_on_start=True,
             sniff_timeout=12,
@@ -421,7 +402,7 @@ class TestTransport:
 
     def test_sniff_uses_sniff_timeout(self):
         client = Elasticsearch(
-            [NodeConfig("http", "localhost", 9200, _extras={"data": CLUSTER_NODES})],
+            NodeConfig("http", "localhost", 9200, _extras={"data": CLUSTER_NODES}),
             node_class=DummyNode,
             sniff_before_requests=True,
             sniff_timeout=12,
@@ -455,7 +436,7 @@ class TestTransport:
 
     def test_sniff_reuses_node_instances(self):
         client = Elasticsearch(
-            [NodeConfig("http", "1.1.1.1", 123, _extras={"data": CLUSTER_NODES})],
+            NodeConfig("http", "1.1.1.1", 123, _extras={"data": CLUSTER_NODES}),
             node_class=DummyNode,
             sniff_on_start=True,
         )
@@ -466,7 +447,7 @@ class TestTransport:
 
     def test_sniff_after_n_seconds(self):
         client = Elasticsearch(  # noqa: F821
-            [NodeConfig("http", "localhost", 9200, _extras={"data": CLUSTER_NODES})],
+            NodeConfig("http", "localhost", 9200, _extras={"data": CLUSTER_NODES}),
             node_class=DummyNode,
             min_delay_between_sniffing=5,
         )
@@ -513,14 +494,12 @@ class TestTransport:
 
     def test_sniffing_master_only_filtered_by_default(self):
         client = Elasticsearch(  # noqa: F821
-            [
-                NodeConfig(
-                    "http",
-                    "localhost",
-                    9200,
-                    _extras={"data": CLUSTER_NODES_MASTER_ONLY},
-                )
-            ],
+            NodeConfig(
+                "http",
+                "localhost",
+                9200,
+                _extras={"data": CLUSTER_NODES_MASTER_ONLY},
+            ),
             node_class=DummyNode,
             sniff_on_start=True,
         )
@@ -538,14 +517,12 @@ class TestTransport:
             )
 
         client = Elasticsearch(  # noqa: F821
-            [
-                NodeConfig(
-                    "http",
-                    "localhost",
-                    9200,
-                    _extras={"data": CLUSTER_NODES_MASTER_ONLY},
-                )
-            ],
+            NodeConfig(
+                "http",
+                "localhost",
+                9200,
+                _extras={"data": CLUSTER_NODES_MASTER_ONLY},
+            ),
             node_class=DummyNode,
             sniff_on_start=True,
             sniffed_node_callback=sniffed_node_callback,
@@ -566,14 +543,12 @@ class TestTransport:
 
         with warnings.catch_warnings(record=True) as w:
             client = Elasticsearch(  # noqa: F821
-                [
-                    NodeConfig(
-                        "http",
-                        "localhost",
-                        9200,
-                        _extras={"data": CLUSTER_NODES_MASTER_ONLY},
-                    )
-                ],
+                NodeConfig(
+                    "http",
+                    "localhost",
+                    9200,
+                    _extras={"data": CLUSTER_NODES_MASTER_ONLY},
+                ),
                 node_class=DummyNode,
                 sniff_on_start=True,
                 host_info_callback=host_info_callback,
@@ -595,7 +570,7 @@ class TestTransport:
 @pytest.mark.parametrize("headers", [{}, {"X-elastic-product": "BAD HEADER"}])
 def test_unsupported_product_error(headers):
     client = Elasticsearch(
-        [NodeConfig("http", "localhost", 9200, _extras={"headers": headers})],
+        NodeConfig("http", "localhost", 9200, _extras={"headers": headers}),
         meta_header=False,
         node_class=DummyNode,
     )
@@ -624,11 +599,9 @@ def test_unsupported_product_error(headers):
 @pytest.mark.parametrize("status", [401, 403, 413, 500])
 def test_unsupported_product_error_not_raised_on_non_2xx(status):
     client = Elasticsearch(
-        [
-            NodeConfig(
-                "http", "localhost", 9200, _extras={"headers": {}, "status": status}
-            )
-        ],
+        NodeConfig(
+            "http", "localhost", 9200, _extras={"headers": {}, "status": status}
+        ),
         meta_header=False,
         node_class=DummyNode,
     )
@@ -643,17 +616,15 @@ def test_unsupported_product_error_not_raised_on_non_2xx(status):
 @pytest.mark.parametrize("status", [404, 500])
 def test_api_error_raised_before_product_error(status):
     client = Elasticsearch(
-        [
-            NodeConfig(
-                "http",
-                "localhost",
-                9200,
-                _extras={
-                    "headers": {"X-elastic-product": "BAD HEADER"},
-                    "status": status,
-                },
-            )
-        ],
+        NodeConfig(
+            "http",
+            "localhost",
+            9200,
+            _extras={
+                "headers": {"X-elastic-product": "BAD HEADER"},
+                "status": status,
+            },
+        ),
         meta_header=False,
         node_class=DummyNode,
     )
@@ -683,7 +654,7 @@ def test_api_error_raised_before_product_error(status):
 )
 def test_warning_header(headers):
     client = Elasticsearch(
-        [NodeConfig("http", "localhost", 9200, _extras={"headers": headers})],
+        NodeConfig("http", "localhost", 9200, _extras={"headers": headers}),
         meta_header=False,
         node_class=DummyNode,
     )

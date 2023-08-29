@@ -69,7 +69,7 @@ CLIENT_META_SERVICE = ("esv", client_meta_version(__versionstr__))
 # Default User-Agent used by the client
 USER_AGENT = create_user_agent("elasticsearch-py", __versionstr__)
 
-_TYPE_HOSTS = Union[str, List[Union[str, Mapping[str, Union[str, int]], NodeConfig]]]
+_TYPE_HOST = Union[str, Mapping, NodeConfig]
 
 _TYPE_ASYNC_SNIFF_CALLBACK = Callable[
     [AsyncTransport, SniffOptions], Awaitable[List[NodeConfig]]
@@ -88,21 +88,21 @@ _TRANSPORT_OPTIONS = {
 F = TypeVar("F", bound=Callable[..., Any])
 
 
-def client_node_configs(
-    hosts: Optional[_TYPE_HOSTS],
+def client_node_config(
+    host: Optional[_TYPE_HOST],
     cloud_id: Optional[str],
     requests_session_auth: Optional[Any] = None,
     **kwargs: Any,
-) -> List[NodeConfig]:
+) -> NodeConfig:
     if cloud_id is not None:
-        if hosts is not None:
+        if host is not None:
             raise ValueError(
-                "The 'cloud_id' and 'hosts' parameters are mutually exclusive"
+                "The 'cloud_id' and 'host' parameters are mutually exclusive"
             )
-        node_configs = cloud_id_to_node_configs(cloud_id)
+        node_config = cloud_id_to_node_config(cloud_id)
     else:
-        assert hosts is not None
-        node_configs = hosts_to_node_configs(hosts)
+        assert host is not None
+        node_config = host_to_node_config(host)
 
     # Remove all values which are 'DEFAULT' to avoid overwriting actual defaults.
     node_options = {k: v for k, v in kwargs.items() if v is not DEFAULT}
@@ -118,52 +118,35 @@ def client_node_configs(
             "requests.session.auth"
         ] = requests_session_auth
 
-    def apply_node_options(node_config: NodeConfig) -> NodeConfig:
-        """Needs special handling of headers since .replace() wipes out existing headers"""
-        nonlocal node_options
-        headers = node_config.headers.copy()  # type: ignore[attr-defined]
+    headers = node_config.headers.copy()  # type: ignore[attr-defined]
 
-        headers_to_add = node_options.pop("headers", ())
-        if headers_to_add:
-            headers.update(headers_to_add)
+    headers_to_add = node_options.pop("headers", ())
+    if headers_to_add:
+        headers.update(headers_to_add)
 
-        headers.setdefault("user-agent", USER_AGENT)
-        headers.freeze()
-        node_options["headers"] = headers
-        return node_config.replace(**node_options)
+    headers.setdefault("user-agent", USER_AGENT)
+    headers.freeze()
+    node_options["headers"] = headers
 
-    return [apply_node_options(node_config) for node_config in node_configs]
+    return node_config.replace(**node_options)
 
 
-def hosts_to_node_configs(hosts: _TYPE_HOSTS) -> List[NodeConfig]:
-    """Transforms the many formats of 'hosts' into NodeConfigs"""
-
-    # To make the logic here simpler we reroute everything to be List[X]
-    if not isinstance(hosts, (tuple, list)):
-        return hosts_to_node_configs([hosts])
-
-    node_configs: List[NodeConfig] = []
-    for host in hosts:
-        if isinstance(host, NodeConfig):
-            node_configs.append(host)
-
-        elif isinstance(host, str):
-            node_configs.append(url_to_node_config(host))
-
-        elif isinstance(host, Mapping):
-            node_configs.append(host_mapping_to_node_config(host))
-        else:
-            raise ValueError(
-                "'hosts' must be a list of URLs, NodeConfigs, or dictionaries"
-            )
-
-    return node_configs
+def host_to_node_config(host: _TYPE_HOST) -> NodeConfig:
+    """Transforms the many formats of 'host' into NodeConfig"""
+    if isinstance(host, NodeConfig):
+        return host
+    elif isinstance(host, str):
+        return url_to_node_config(host)
+    elif isinstance(host, Mapping):
+        return host_mapping_to_node_config(host)
+    else:
+        raise ValueError("'host' must be a URL, NodeConfig, or dictionary")
 
 
 def host_mapping_to_node_config(host: Mapping[str, Union[str, int]]) -> NodeConfig:
     """Converts an old-style dictionary host specification to a NodeConfig"""
 
-    allow_hosts_keys = {
+    allow_host_keys = {
         "scheme",
         "host",
         "port",
@@ -171,13 +154,13 @@ def host_mapping_to_node_config(host: Mapping[str, Union[str, int]]) -> NodeConf
         "url_prefix",
         "use_ssl",
     }
-    disallowed_keys = set(host.keys()).difference(allow_hosts_keys)
+    disallowed_keys = set(host.keys()).difference(allow_host_keys)
     if disallowed_keys:
         bad_keys_used = "', '".join(sorted(disallowed_keys))
-        allowed_keys = "', '".join(sorted(allow_hosts_keys))
+        allowed_keys = "', '".join(sorted(allow_host_keys))
         raise ValueError(
             f"Can't specify the options '{bad_keys_used}' via a "
-            f"dictionary in 'hosts', only '{allowed_keys}' options "
+            f"dictionary in 'host', only '{allowed_keys}' options "
             "are allowed"
         )
 
@@ -221,20 +204,18 @@ def host_mapping_to_node_config(host: Mapping[str, Union[str, int]]) -> NodeConf
     return NodeConfig(**options)  # type: ignore
 
 
-def cloud_id_to_node_configs(cloud_id: str) -> List[NodeConfig]:
+def cloud_id_to_node_config(cloud_id: str) -> NodeConfig:
     """Transforms an Elastic Cloud ID into a NodeConfig"""
     es_addr = parse_cloud_id(cloud_id).es_address
     if es_addr is None or not all(es_addr):
         raise ValueError("Cloud ID missing host and port information for Elasticsearch")
     host, port = es_addr
-    return [
-        NodeConfig(
-            scheme="https",
-            host=host,
-            port=port,
-            http_compress=True,
-        )
-    ]
+    return NodeConfig(
+        scheme="https",
+        host=host,
+        port=port,
+        http_compress=True,
+    )
 
 
 def _base64_auth_header(auth_value: Union[str, List[str], Tuple[str, str]]) -> str:
