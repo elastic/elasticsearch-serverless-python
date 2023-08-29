@@ -25,7 +25,6 @@ from elastic_transport import (
     HeadApiResponse,
     NodeConfig,
     NodePool,
-    NodeSelector,
     ObjectApiResponse,
     Serializer,
     Transport,
@@ -153,8 +152,6 @@ class Elasticsearch(BaseClient):
         request_timeout: t.Union[DefaultType, None, float] = DEFAULT,
         node_class: t.Union[DefaultType, t.Type[BaseNode]] = DEFAULT,
         node_pool_class: t.Union[DefaultType, t.Type[NodePool]] = DEFAULT,
-        randomize_nodes_in_pool: t.Union[DefaultType, bool] = DEFAULT,
-        node_selector_class: t.Union[DefaultType, t.Type[NodeSelector]] = DEFAULT,
         dead_node_backoff_factor: t.Union[DefaultType, float] = DEFAULT,
         max_dead_node_backoff: t.Union[DefaultType, float] = DEFAULT,
         serializer: t.Optional[Serializer] = None,
@@ -173,7 +170,6 @@ class Elasticsearch(BaseClient):
         ] = None,
         meta_header: t.Union[DefaultType, bool] = DEFAULT,
         timeout: t.Union[DefaultType, None, float] = DEFAULT,
-        randomize_hosts: t.Union[DefaultType, bool] = DEFAULT,
         host_info_callback: t.Optional[
             t.Callable[
                 [t.Dict[str, t.Any], t.Dict[str, t.Union[str, int]]],
@@ -210,19 +206,6 @@ class Elasticsearch(BaseClient):
                     "together. Instead only specify one of the other."
                 )
             serializers = {default_mimetype: serializer}
-
-        if randomize_hosts is not DEFAULT:
-            if randomize_nodes_in_pool is not DEFAULT:
-                raise ValueError(
-                    "Can't specify both 'randomize_hosts' and 'randomize_nodes_in_pool', "
-                    "instead only specify 'randomize_nodes_in_pool'"
-                )
-            warnings.warn(
-                "The 'randomize_hosts' parameter is deprecated in favor of 'randomize_nodes_in_pool'",
-                category=DeprecationWarning,
-                stacklevel=2,
-            )
-            randomize_nodes_in_pool = randomize_hosts
 
         if sniffer_timeout is not DEFAULT:
             if min_delay_between_sniffing is not DEFAULT:
@@ -348,10 +331,6 @@ class Elasticsearch(BaseClient):
                 transport_kwargs["node_class"] = node_class
             if node_pool_class is not DEFAULT:
                 transport_kwargs["node_pool_class"] = node_class
-            if randomize_nodes_in_pool is not DEFAULT:
-                transport_kwargs["randomize_nodes_in_pool"] = randomize_nodes_in_pool
-            if node_selector_class is not DEFAULT:
-                transport_kwargs["node_selector_class"] = node_selector_class
             if dead_node_backoff_factor is not DEFAULT:
                 transport_kwargs["dead_node_backoff_factor"] = dead_node_backoff_factor
             if max_dead_node_backoff is not DEFAULT:

@@ -64,25 +64,6 @@ def test_sniffer_timeout():
     )
 
 
-def test_randomize_hosts():
-    with warnings.catch_warnings(record=True) as w:
-        Elasticsearch("http://localhost:9200", randomize_hosts=True)
-    assert len(w) == 1
-    assert w[0].category == DeprecationWarning
-    assert str(w[0].message) == (
-        "The 'randomize_hosts' parameter is deprecated in favor of 'randomize_nodes_in_pool'"
-    )
-
-    with pytest.raises(ValueError) as e:
-        Elasticsearch(
-            "http://localhost:9200", randomize_hosts=True, randomize_nodes_in_pool=True
-        )
-    assert (
-        str(e.value)
-        == "Can't specify both 'randomize_hosts' and 'randomize_nodes_in_pool', instead only specify 'randomize_nodes_in_pool'"
-    )
-
-
 def test_http_auth():
     with warnings.catch_warnings(record=True) as w:
         client = Elasticsearch(
