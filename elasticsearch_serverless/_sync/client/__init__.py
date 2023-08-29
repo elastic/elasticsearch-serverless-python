@@ -131,7 +131,7 @@ class Elasticsearch(BaseClient):
         # Node
         headers: t.Union[DefaultType, t.Mapping[str, str]] = DEFAULT,
         connections: t.Union[DefaultType, int] = DEFAULT,
-        http_compress: t.Union[DefaultType, bool] = DEFAULT,
+        http_compress: t.Union[DefaultType, bool] = True,
         verify_certs: t.Union[DefaultType, bool] = DEFAULT,
         ca_certs: t.Union[DefaultType, str] = DEFAULT,
         client_cert: t.Union[DefaultType, str] = DEFAULT,
