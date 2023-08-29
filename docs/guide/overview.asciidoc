@@ -14,10 +14,6 @@ Language clients are forward compatible; meaning that clients support communicat
 with greater or equal minor versions of Elasticsearch. Elasticsearch language clients
 are only backwards compatible with default distributions and without guarantees made.
 
-If you have a need to have multiple versions installed at the same time older
-versions are also released as `elasticsearch2` and `elasticsearch5`.
-
-
 [discrete]
 === Example use
 
@@ -28,8 +24,7 @@ Simple use-case:
 >>> from datetime import datetime
 >>> from elasticsearch_serverless import Elasticsearch
 
-# Connect to 'http://localhost:9200'
->>> es = Elasticsearch("http://localhost:9200")
+>>> es = Elasticsearch("https://...")
 
 # Datetimes will be serialized:
 >>> es.index(index="my-index-000001", id=42, document={"any": "data", "timestamp": datetime.now()})
