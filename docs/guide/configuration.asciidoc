@@ -5,6 +5,97 @@ This page contains information about the most important configuration options of
 the Python {es} client.
 
 [discrete]
+[[tls-and-ssl]]
+=== TLS/SSL
+
+The options in this section will only be necessary when connecting to Elasticsearch Serverless via a proxy not managed by Elastic that uses its own certificates.
+
+[discrete]
+==== Verifying certificates
+
+The typical route to verify a cluster certificate is via a "CA bundle" which can be specified via the `ca_certs` parameter. If no options are given and the https://github.com/certifi/python-certifi[certifi package] is installed then certifi's CA bundle is used by default.
+
+If you have your own CA bundle to use you can configure via the `ca_certs` parameter:
+
+[source,python]
+------------------------------------
+es = Elasticsearch(
+    cloud_id='deployment-name:ABCD...',
+    ca_certs="/path/to/certs.pem"
+)
+------------------------------------
+
+If using a generated certificate or certificate with a known fingerprint you can use the `ssl_assert_fingerprint` to specify the fingerprint which tries to match the server's leaf certificate during the TLS handshake. If there is any matching certificate the connection is verified, otherwise a `TlsError` is raised.
+
+In Python 3.9 and earlier only the leaf certificate will be verified but in Python 3.10+ private APIs are used to verify any certificate in the certificate chain. This helps when using certificates that are generated on a multi-node cluster.
+
+[source,python]
+------------------------------------
+es = Elasticsearch(
+    cloud_id='deployment-name:ABCD...',
+    ssl_assert_fingerprint=(
+        "315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3"
+    )
+)
+------------------------------------
+
+To disable certificate verification use the `verify_certs=False` parameter. This option should be avoided in production, instead use the other options to verify the clusters' certificate.
+
+[source,python]
+------------------------------------
+es = Elasticsearch(
+    cloud_id='deployment-name:ABCD...',
+    verify_certs=False
+)
+------------------------------------
+
+[discrete]
+==== TLS versions
+
+Configuring the minimum TLS version to connect to is done via the `ssl_version` parameter. By default this is set to a minimum value of TLSv1.2. In Python 3.7+ you can use the new `ssl.TLSVersion` enumeration to specify versions.
+
+[source,python]
+------------------------------------
+import ssl
+es = Elasticsearch(
+    ...,
+    ssl_version=ssl.TLSVersion.TLSv1_2
+)
+------------------------------------
+
+[discrete]
+==== Client TLS certificate authentication
+
+Elasticsearch can be configured to authenticate clients via TLS client certificates. Client certificate and keys can be configured via the `client_cert` and `client_key` parameters:
+
+[source,python]
+------------------------------------
+es = Elasticsearch(
+    ...,
+    client_cert="/path/to/cert.pem",
+    client_key="/path/to/key.pem",
+)
+------------------------------------
+
+
+[discrete]
+==== Using an SSLContext
+
+For advanced users an `ssl.SSLContext` object can be used for configuring TLS via the `ssl_context` parameter. The `ssl_context` parameter can't be combined with any other TLS options except for the `ssl_assert_fingerprint` parameter.
+
+[source,python]
+------------------------------------
+import ssl
+# Create and configure an SSLContext
+ctx = ssl.create_default_context()
+ctx.load_verify_locations(...)
+es = Elasticsearch(
+    ...,
+    ssl_context=ctx
+)
+------------------------------------
+
+[discrete]
 [[compression]]
 === HTTP compression
 
