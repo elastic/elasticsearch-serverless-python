@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "elasticsearch-serverless"
-version = "0.1.0+20231031"
+version = "0.1.0.20231031"
 description = "Python client for Elasticsearch Serverless"
 readme = "README.rst"
 license = "Apache-2.0"
