@@ -35,7 +35,7 @@ endpoint.
 from elasticsearch_serverless import Elasticsearch
 
 client = Elasticsearch(
-    "https://...",  # Elasticsearch endpoint
+    cloud_id="deployment-name:ABCD...",  # Cloud ID provided by Elastic
     api_key=('api-key-id', 'api-key-secret'),  # API key ID and secret
 )
 ----
