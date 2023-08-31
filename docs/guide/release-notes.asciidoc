@@ -1,6 +1,6 @@
 [[release-notes]]
 == Release notes
 
-=== 0.1.0+20231031
+=== 0.1.0.20231031
 
 Initial release

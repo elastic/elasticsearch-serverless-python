@@ -46,13 +46,9 @@ The client's features include:
 
 * Translating basic Python data types to and from JSON
 
-* Configurable automatic discovery of cluster nodes
-
 * Persistent connections
 
-* Load balancing (with pluggable selection strategy) across all available nodes
-
-* Node timeouts on transient errors
+* Timeouts on transient errors
 
 * Thread safety
 

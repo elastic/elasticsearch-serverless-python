@@ -11,7 +11,7 @@ https://www.elastic.co/guide/en/cloud/current/ec-getting-started.html[Elastic Cl
 is the easiest way to get started with {es}. When connecting to Elastic Cloud 
 with the Python {es} client you should always use the `cloud_id` 
 parameter to connect. You can find this value within the "Manage Deployment" 
-page after you've created a cluster (look in the top-left if you're in Kibana).
+page after you've created a project (look in the top-left if you're in Kibana).
 
 We recommend using a Cloud ID whenever possible because your client will be 
 automatically configured for optimal use with Elastic Cloud including HTTPS and 
@@ -22,9 +22,9 @@ HTTP compression.
 from elasticsearch_serverless import Elasticsearch
 
 # Found in the 'Manage Deployment' page
-CLOUD_ID = "deployment-name:dXMtZWFzdDQuZ2Nw..."
+CLOUD_ID = "project-name:dXMtZWFzdDQuZ2Nw..."
 
-# Create the client instance
+# Create the client project
 client = Elasticsearch(
     cloud_id=CLOUD_ID,
     api_key=("api-key-id", "api-key-secret")
@@ -72,7 +72,7 @@ from elasticsearch_serverless import Elasticsearch
 
 # Client initialization
 client = Elasticsearch(
-    cloud_id="deployment-name:ABCD...",
+    cloud_id="project-name:ABCD...",
     api_key=...
 )
 
@@ -92,7 +92,7 @@ from elasticsearch_serverless import Elasticsearch
 
 # Client initialization
 client = Elasticsearch(
-    cloud_id="deployment-name:ABCD...",
+    cloud_id="project-name:ABCD...",
     api_key=...
 )
 
@@ -113,7 +113,7 @@ from elasticsearch_serverless import Elasticsearch
 
 # Client initialization
 client = Elasticsearch(
-    cloud_id="deployment-name:ABCD...",
+    cloud_id="project-name:ABCD...",
     api_key=...
 )
 

@@ -13,38 +13,38 @@ The options in this section will only be necessary when connecting to Elasticsea
 [discrete]
 ==== Verifying certificates
 
-The typical route to verify a cluster certificate is via a "CA bundle" which can be specified via the `ca_certs` parameter. If no options are given and the https://github.com/certifi/python-certifi[certifi package] is installed then certifi's CA bundle is used by default.
+The typical route to verify a certificate is via a "CA bundle" which can be specified via the `ca_certs` parameter. If no options are given and the https://github.com/certifi/python-certifi[certifi package] is installed then certifi's CA bundle is used by default.
 
 If you have your own CA bundle to use you can configure via the `ca_certs` parameter:
 
 [source,python]
 ------------------------------------
 es = Elasticsearch(
-    cloud_id='deployment-name:ABCD...',
+    cloud_id='project-name:ABCD...',
     ca_certs="/path/to/certs.pem"
 )
 ------------------------------------
 
 If using a generated certificate or certificate with a known fingerprint you can use the `ssl_assert_fingerprint` to specify the fingerprint which tries to match the server's leaf certificate during the TLS handshake. If there is any matching certificate the connection is verified, otherwise a `TlsError` is raised.
 
-In Python 3.9 and earlier only the leaf certificate will be verified but in Python 3.10+ private APIs are used to verify any certificate in the certificate chain. This helps when using certificates that are generated on a multi-node cluster.
+In Python 3.9 and earlier only the leaf certificate will be verified but in Python 3.10+ private APIs are used to verify any certificate in the certificate chain.
 
 [source,python]
 ------------------------------------
 es = Elasticsearch(
-    cloud_id='deployment-name:ABCD...',
+    cloud_id='project-name:ABCD...',
     ssl_assert_fingerprint=(
         "315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3"
     )
 )
 ------------------------------------
 
-To disable certificate verification use the `verify_certs=False` parameter. This option should be avoided in production, instead use the other options to verify the clusters' certificate.
+To disable certificate verification use the `verify_certs=False` parameter. This option should be avoided in production, instead use the other options to verify the certificate.
 
 [source,python]
 ------------------------------------
 es = Elasticsearch(
-    cloud_id='deployment-name:ABCD...',
+    cloud_id='project-name:ABCD...',
     verify_certs=False
 )
 ------------------------------------
@@ -117,7 +117,7 @@ es = Elasticsearch(
 [[timeouts]]
 === Request timeouts
 
-Requests can be configured to timeout if taking too long to be serviced. The `request_timeout` parameter can be passed via the client constructor or the client `.options()` method. When the request times out the node will raise a `ConnectionTimeout` exception which can trigger retries.
+Requests can be configured to timeout if taking too long to be serviced. The `request_timeout` parameter can be passed via the client constructor or the client `.options()` method. When the request times out the project will raise a `ConnectionTimeout` exception which can trigger retries.
 
 Setting `request_timeout` to `None` will disable timeouts.
 
@@ -305,7 +305,7 @@ es = Elasticsearch(
 [discrete]
 ==== HTTP connections
 
-The client maintains a pool of HTTP connections to the Elasticsearch Serverless instance to allow for concurrent requests. This value is configurable via the `connections` parameter:
+The client maintains a pool of HTTP connections to the Elasticsearch Serverless project to allow for concurrent requests. This value is configurable via the `connections` parameter:
 
 [source,python]
 ------------------------------------

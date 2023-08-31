@@ -35,13 +35,13 @@ endpoint.
 from elasticsearch_serverless import Elasticsearch
 
 client = Elasticsearch(
-    cloud_id="deployment-name:ABCD...",  # Cloud ID provided by Elastic
+    cloud_id="project-name:ABCD...",  # Cloud ID provided by Elastic
     api_key=('api-key-id', 'api-key-secret'),  # API key ID and secret
 )
 ----
 
 Your Elasticsearch endpoint can be found on the **My deployment** page of your 
-deployment:
+project:
 
 image::images/es-endpoint.jpg[alt="Finding Elasticsearch endpoint",align="center"]
 
