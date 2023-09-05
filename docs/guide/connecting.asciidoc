@@ -42,7 +42,13 @@ client.info()
 Authenticating to Elasticsearch Serverless is done using the API keys provided by Elastic.
 Note that you should provide the values of `id` and `api_key` in a tuple.
 
-API keys can be provided to the client constructor or via the per-request `.options()` method:
+API keys can be provided to the client constructor, like in the example above, or via the per-request `.options()` method:
+
+[source,python]
+----
+client.options(api_key=("api-key-id", "api-key-secret")).info()
+# {'name': 'instance-0000000000', 'cluster_name': ...}
+----
 
 [discrete]
 [[connecting-faas]]
