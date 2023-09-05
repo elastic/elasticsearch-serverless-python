@@ -157,12 +157,6 @@ class AsyncElasticsearch(BaseClient):
         retry_on_timeout: t.Union[DefaultType, bool] = DEFAULT,
         meta_header: t.Union[DefaultType, bool] = DEFAULT,
         timeout: t.Union[DefaultType, None, float] = DEFAULT,
-        host_info_callback: t.Optional[
-            t.Callable[
-                [t.Dict[str, t.Any], t.Dict[str, t.Union[str, int]]],
-                t.Optional[t.Dict[str, t.Union[str, int]]],
-            ]
-        ] = None,
         http_auth: t.Union[DefaultType, t.Any] = DEFAULT,
         # Internal use only
         _transport: t.Optional[AsyncTransport] = None,
