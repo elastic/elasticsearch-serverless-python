@@ -29,30 +29,30 @@ class TestSerializers(DummyTransportTestCase):
         self.client.get(index="test0", id="1")
         assert len(calls) == 1
         assert calls[("GET", "/test0/_doc/1")][0]["headers"] == {
-            "Accept": "application/vnd.elasticsearch+json; compatible-with=0"
+            "Accept": "application/vnd.elasticsearch+json; compatible-with=8"
         }
 
         # Search with body
         self.client.search(index="test1", query={"match_all": {}})
         assert len(calls) == 2
         assert calls[("POST", "/test1/_search")][0]["headers"] == {
-            "Accept": "application/vnd.elasticsearch+json; compatible-with=0",
-            "Content-Type": "application/vnd.elasticsearch+json; compatible-with=0",
+            "Accept": "application/vnd.elasticsearch+json; compatible-with=8",
+            "Content-Type": "application/vnd.elasticsearch+json; compatible-with=8",
         }
 
         # Search without body
         self.client.search(index="test2")
         assert len(calls) == 3
         assert calls[("POST", "/test2/_search")][0]["headers"] == {
-            "Accept": "application/vnd.elasticsearch+json; compatible-with=0",
+            "Accept": "application/vnd.elasticsearch+json; compatible-with=8",
         }
 
         # Bulk uses x-ndjson
         self.client.bulk(operations=[])
         assert len(calls) == 4
         assert calls[("PUT", "/_bulk")][0]["headers"] == {
-            "Accept": "application/vnd.elasticsearch+json; compatible-with=0",
-            "Content-Type": "application/vnd.elasticsearch+x-ndjson; compatible-with=0",
+            "Accept": "application/vnd.elasticsearch+json; compatible-with=8",
+            "Content-Type": "application/vnd.elasticsearch+x-ndjson; compatible-with=8",
         }
 
     @pytest.mark.parametrize("mime_subtype", ["json", "x-ndjson"])

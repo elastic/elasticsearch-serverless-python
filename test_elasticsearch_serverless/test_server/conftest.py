@@ -21,7 +21,7 @@ import pytest
 
 import elasticsearch_serverless
 
-from ..utils import CA_CERTS, wipe_cluster
+from ..utils import wipe_cluster
 
 # Information about the Elasticsearch instance running, if any
 # Used for
@@ -31,18 +31,20 @@ ELASTICSEARCH_REST_API_TESTS = []
 
 
 @pytest.fixture(scope="session")
-def sync_client_factory(elasticsearch_url):
+def sync_client_factory(elasticsearch_url, elasticsearch_api_key):
     client = None
     try:
-        # Configure the client with certificates and optionally
+        # Configure the client with API key and optionally
         # an HTTP conn class depending on 'PYTHON_CONNECTION_CLASS' envvar
-        kw = {"ca_certs": CA_CERTS}
+        kw = {'api_key': elasticsearch_api_key}
         if "PYTHON_CONNECTION_CLASS" in os.environ:
             kw["node_class"] = os.environ["PYTHON_CONNECTION_CLASS"]
 
         # We do this little dance with the URL to force
         # Requests to respect 'headers: None' within rest API spec tests.
-        client = elasticsearch_serverless.Elasticsearch(elasticsearch_url, **kw)
+        client = elasticsearch_serverless.Elasticsearch(
+            elasticsearch_url, **kw
+        )
 
         # Wipe the cluster before we start testing just in case it wasn't wiped
         # cleanly from the previous run of pytest?

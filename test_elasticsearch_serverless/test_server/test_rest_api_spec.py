@@ -42,7 +42,7 @@ from elasticsearch_serverless import (
 from elasticsearch_serverless._sync.client.utils import _base64_auth_header
 from elasticsearch_serverless.compat import string_types
 
-from ..utils import CA_CERTS, es_url, parse_version
+from ..utils import es_api_key, es_url, parse_version
 
 # some params had to be changed in python, keep track of them so we can rename
 # those in the tests accordingly
@@ -555,7 +555,7 @@ YAML_TEST_SPECS = []
 try:
     # Construct the HTTP and Elasticsearch client
     http = urllib3.PoolManager(retries=10)
-    client = Elasticsearch(es_url(), request_timeout=3, ca_certs=CA_CERTS)
+    client = Elasticsearch(es_url(), api_key=es_api_key(), request_timeout=3)
 
     # Make a request to Elasticsearch for the build hash, we'll be looking for
     # an artifact with this same hash to download test specs for.
@@ -593,7 +593,13 @@ try:
         )
 
     # Download the zip and start reading YAML from the files in memory
-    package_zip = zipfile.ZipFile(io.BytesIO(http.request("GET", package_url).data))
+    package_zip = zipfile.ZipFile(
+        io.BytesIO(
+            http.request(
+                "GET", package_url, headers={"content-type": "application/json"}
+            ).data
+        )
+    )
     for yaml_file in package_zip.namelist():
         if not re.match(r"^rest-api-spec/test/.*\.ya?ml$", yaml_file):
             continue

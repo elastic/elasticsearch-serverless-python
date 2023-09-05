@@ -21,7 +21,7 @@ import pytest
 
 from elasticsearch_serverless import Elasticsearch
 
-from .utils import CA_CERTS, es_url, es_version
+from .utils import es_api_key, es_url, es_version
 
 
 @pytest.fixture(scope="session")
@@ -33,11 +33,14 @@ def elasticsearch_url():
 
 
 @pytest.fixture(scope="session")
-def ca_certs():
-    return CA_CERTS
+def elasticsearch_api_key():
+    try:
+        return es_api_key()
+    except RuntimeError as e:
+        pytest.skip(str(e))
 
 
 @pytest.fixture(scope="session")
-def elasticsearch_version(elasticsearch_url, ca_certs) -> Tuple[int, ...]:
+def elasticsearch_version(elasticsearch_url) -> Tuple[int, ...]:
     """Returns the version of the current Elasticsearch cluster"""
-    return es_version(Elasticsearch(elasticsearch_url, ca_certs=ca_certs))
+    return es_version(Elasticsearch(elasticsearch_url))
