@@ -469,3 +469,19 @@ class TestOptions(DummyTransportTestCase):
             "retry_on_status": (404,),
             "retry_on_timeout": True,
         }
+
+    def test_host_vs_hosts(self):
+        with pytest.raises(ValueError) as e:
+            Elasticsearch(
+                host="http://localhost:9200",
+                hosts=["http://localhost:9200", "http://localhost:9201"],
+                transport_class=DummyTransport,
+            )
+        assert str(e.value) == "Can't specify both 'host' and 'hosts'"
+
+        with pytest.raises(ValueError) as e:
+            Elasticsearch(
+                hosts=["http://localhost:9200", "http://localhost:9201"],
+                transport_class=DummyTransport,
+            )
+        assert str(e.value) == "Can't specify more than one host in 'hosts'"

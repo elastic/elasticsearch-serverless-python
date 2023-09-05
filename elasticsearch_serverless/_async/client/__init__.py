@@ -121,6 +121,7 @@ class AsyncElasticsearch(BaseClient):
     def __init__(
         self,
         host: t.Optional[_TYPE_HOST] = None,
+        hosts: t.Optional[t.List[_TYPE_HOST]] = None,
         *,
         # API
         cloud_id: t.Optional[str] = None,
@@ -166,6 +167,14 @@ class AsyncElasticsearch(BaseClient):
         # Internal use only
         _transport: t.Optional[AsyncTransport] = None,
     ) -> None:
+        if host is not None and hosts is not None:
+            raise ValueError("Can't specify both 'host' and 'hosts'")
+
+        if hosts is not None:
+            if len(hosts) > 1:
+                raise ValueError("Can't specify more than one host in 'hosts'")
+            host = hosts[0]
+
         if host is None and cloud_id is None and _transport is None:
             raise ValueError("Either 'host' or 'cloud_id' must be specified")
 
