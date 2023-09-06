@@ -12,7 +12,7 @@ Elasticsearch Serverless Python Client
 .. image:: https://img.shields.io/conda/vn/conda-forge/elasticsearch-serverless?color=blue
    :target: https://anaconda.org/conda-forge/elasticsearch-serverless
 
-.. image:: https://pepy.tech/badge/elasticsearch
+.. image:: https://static.pepy.tech/badge/elasticsearch-serverless
    :target: https://pepy.tech/project/elasticsearch-serverless?versions=*
 
 .. image:: https://clients-ci.elastic.co/job/elastic+elasticsearch-serverless-python+main/badge/icon
