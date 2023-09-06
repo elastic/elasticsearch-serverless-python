@@ -29,8 +29,6 @@ def main():
         "AsyncElasticsearch": "Elasticsearch",
         # We don't want to rewrite this class
         "AsyncSearchClient": "AsyncSearchClient",
-        # Handling typing.Awaitable[...] isn't done yet by unasync.
-        "_TYPE_ASYNC_SNIFF_CALLBACK": "_TYPE_SYNC_SNIFF_CALLBACK",
     }
     rules = [
         unasync.Rule(

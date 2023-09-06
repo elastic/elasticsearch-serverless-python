@@ -24,9 +24,7 @@ from elastic_transport import (
     AsyncTransport,
     BaseNode,
     HeadApiResponse,
-    NodeConfig,
     NodePool,
-    NodeSelector,
     ObjectApiResponse,
     Serializer,
 )
@@ -34,12 +32,7 @@ from elastic_transport.client_utils import DEFAULT, DefaultType
 
 from ...exceptions import ApiError, TransportError
 from ...serializer import DEFAULT_SERIALIZERS
-from ._base import (
-    BaseClient,
-    create_sniff_callback,
-    default_sniff_callback,
-    resolve_auth_headers,
-)
+from ._base import BaseClient, resolve_auth_headers
 from .async_search import AsyncSearchClient
 from .autoscaling import AutoscalingClient
 from .cat import CatClient
@@ -73,12 +66,12 @@ from .tasks import TasksClient
 from .text_structure import TextStructureClient
 from .transform import TransformClient
 from .utils import (
-    _TYPE_HOSTS,
+    _TYPE_HOST,
     CLIENT_META_SERVICE,
     SKIP_IN_PATH,
     _quote,
     _rewrite_parameters,
-    client_node_configs,
+    client_node_config,
     is_requests_http_auth,
     is_requests_node_class,
 )
@@ -127,7 +120,8 @@ class AsyncElasticsearch(BaseClient):
 
     def __init__(
         self,
-        hosts: t.Optional[_TYPE_HOSTS] = None,
+        host: t.Optional[_TYPE_HOST] = None,
+        hosts: t.Optional[t.List[_TYPE_HOST]] = None,
         *,
         # API
         cloud_id: t.Optional[str] = None,
@@ -137,8 +131,8 @@ class AsyncElasticsearch(BaseClient):
         opaque_id: t.Optional[str] = None,
         # Node
         headers: t.Union[DefaultType, t.Mapping[str, str]] = DEFAULT,
-        connections_per_node: t.Union[DefaultType, int] = DEFAULT,
-        http_compress: t.Union[DefaultType, bool] = DEFAULT,
+        connections: t.Union[DefaultType, int] = DEFAULT,
+        http_compress: t.Union[DefaultType, bool] = True,
         verify_certs: t.Union[DefaultType, bool] = DEFAULT,
         ca_certs: t.Union[DefaultType, str] = DEFAULT,
         client_cert: t.Union[DefaultType, str] = DEFAULT,
@@ -153,8 +147,6 @@ class AsyncElasticsearch(BaseClient):
         request_timeout: t.Union[DefaultType, None, float] = DEFAULT,
         node_class: t.Union[DefaultType, t.Type[BaseNode]] = DEFAULT,
         node_pool_class: t.Union[DefaultType, t.Type[NodePool]] = DEFAULT,
-        randomize_nodes_in_pool: t.Union[DefaultType, bool] = DEFAULT,
-        node_selector_class: t.Union[DefaultType, t.Type[NodeSelector]] = DEFAULT,
         dead_node_backoff_factor: t.Union[DefaultType, float] = DEFAULT,
         max_dead_node_backoff: t.Union[DefaultType, float] = DEFAULT,
         serializer: t.Optional[Serializer] = None,
@@ -163,32 +155,22 @@ class AsyncElasticsearch(BaseClient):
         max_retries: t.Union[DefaultType, int] = DEFAULT,
         retry_on_status: t.Union[DefaultType, int, t.Collection[int]] = DEFAULT,
         retry_on_timeout: t.Union[DefaultType, bool] = DEFAULT,
-        sniff_on_start: t.Union[DefaultType, bool] = DEFAULT,
-        sniff_before_requests: t.Union[DefaultType, bool] = DEFAULT,
-        sniff_on_node_failure: t.Union[DefaultType, bool] = DEFAULT,
-        sniff_timeout: t.Union[DefaultType, None, float] = DEFAULT,
-        min_delay_between_sniffing: t.Union[DefaultType, None, float] = DEFAULT,
-        sniffed_node_callback: t.Optional[
-            t.Callable[[t.Dict[str, t.Any], NodeConfig], t.Optional[NodeConfig]]
-        ] = None,
         meta_header: t.Union[DefaultType, bool] = DEFAULT,
         timeout: t.Union[DefaultType, None, float] = DEFAULT,
-        randomize_hosts: t.Union[DefaultType, bool] = DEFAULT,
-        host_info_callback: t.Optional[
-            t.Callable[
-                [t.Dict[str, t.Any], t.Dict[str, t.Union[str, int]]],
-                t.Optional[t.Dict[str, t.Union[str, int]]],
-            ]
-        ] = None,
-        sniffer_timeout: t.Union[DefaultType, None, float] = DEFAULT,
-        sniff_on_connection_fail: t.Union[DefaultType, bool] = DEFAULT,
         http_auth: t.Union[DefaultType, t.Any] = DEFAULT,
-        maxsize: t.Union[DefaultType, int] = DEFAULT,
         # Internal use only
         _transport: t.Optional[AsyncTransport] = None,
     ) -> None:
-        if hosts is None and cloud_id is None and _transport is None:
-            raise ValueError("Either 'hosts' or 'cloud_id' must be specified")
+        if host is not None and hosts is not None:
+            raise ValueError("Can't specify both 'host' and 'hosts'")
+
+        if hosts is not None:
+            if len(hosts) > 1:
+                raise ValueError("Can't specify more than one host in 'hosts'")
+            host = hosts[0]
+
+        if host is None and cloud_id is None and _transport is None:
+            raise ValueError("Either 'host' or 'cloud_id' must be specified")
 
         if timeout is not DEFAULT:
             if request_timeout is not DEFAULT:
@@ -211,105 +193,6 @@ class AsyncElasticsearch(BaseClient):
                 )
             serializers = {default_mimetype: serializer}
 
-        if randomize_hosts is not DEFAULT:
-            if randomize_nodes_in_pool is not DEFAULT:
-                raise ValueError(
-                    "Can't specify both 'randomize_hosts' and 'randomize_nodes_in_pool', "
-                    "instead only specify 'randomize_nodes_in_pool'"
-                )
-            warnings.warn(
-                "The 'randomize_hosts' parameter is deprecated in favor of 'randomize_nodes_in_pool'",
-                category=DeprecationWarning,
-                stacklevel=2,
-            )
-            randomize_nodes_in_pool = randomize_hosts
-
-        if sniffer_timeout is not DEFAULT:
-            if min_delay_between_sniffing is not DEFAULT:
-                raise ValueError(
-                    "Can't specify both 'sniffer_timeout' and 'min_delay_between_sniffing', "
-                    "instead only specify 'min_delay_between_sniffing'"
-                )
-            warnings.warn(
-                "The 'sniffer_timeout' parameter is deprecated in favor of 'min_delay_between_sniffing'",
-                category=DeprecationWarning,
-                stacklevel=2,
-            )
-            min_delay_between_sniffing = sniffer_timeout
-
-        if sniff_on_connection_fail is not DEFAULT:
-            if sniff_on_node_failure is not DEFAULT:
-                raise ValueError(
-                    "Can't specify both 'sniff_on_connection_fail' and 'sniff_on_node_failure', "
-                    "instead only specify 'sniff_on_node_failure'"
-                )
-            warnings.warn(
-                "The 'sniff_on_connection_fail' parameter is deprecated in favor of 'sniff_on_node_failure'",
-                category=DeprecationWarning,
-                stacklevel=2,
-            )
-            sniff_on_node_failure = sniff_on_connection_fail
-
-        if maxsize is not DEFAULT:
-            if connections_per_node is not DEFAULT:
-                raise ValueError(
-                    "Can't specify both 'maxsize' and 'connections_per_node', "
-                    "instead only specify 'connections_per_node'"
-                )
-            warnings.warn(
-                "The 'maxsize' parameter is deprecated in favor of 'connections_per_node'",
-                category=DeprecationWarning,
-                stacklevel=2,
-            )
-            connections_per_node = maxsize
-
-        # Setting min_delay_between_sniffing=True implies sniff_before_requests=True
-        if min_delay_between_sniffing is not DEFAULT:
-            sniff_before_requests = True
-
-        sniffing_options = (
-            sniff_timeout,
-            sniff_on_start,
-            sniff_before_requests,
-            sniff_on_node_failure,
-            sniffed_node_callback,
-            min_delay_between_sniffing,
-            sniffed_node_callback,
-        )
-        if cloud_id is not None and any(
-            x is not DEFAULT and x is not None for x in sniffing_options
-        ):
-            raise ValueError(
-                "Sniffing should not be enabled when connecting to Elastic Cloud"
-            )
-
-        sniff_callback = None
-        if host_info_callback is not None:
-            if sniffed_node_callback is not None:
-                raise ValueError(
-                    "Can't specify both 'host_info_callback' and 'sniffed_node_callback', "
-                    "instead only specify 'sniffed_node_callback'"
-                )
-            warnings.warn(
-                "The 'host_info_callback' parameter is deprecated in favor of 'sniffed_node_callback'",
-                category=DeprecationWarning,
-                stacklevel=2,
-            )
-
-            sniff_callback = create_sniff_callback(
-                host_info_callback=host_info_callback
-            )
-        elif sniffed_node_callback is not None:
-            sniff_callback = create_sniff_callback(
-                sniffed_node_callback=sniffed_node_callback
-            )
-        elif (
-            sniff_on_start is True
-            or sniff_before_requests is True
-            or sniff_on_node_failure is True
-        ):
-            sniff_callback = default_sniff_callback
-
         if _transport is None:
             requests_session_auth = None
             if http_auth is not None and http_auth is not DEFAULT:
@@ -327,11 +210,11 @@ class AsyncElasticsearch(BaseClient):
                     requests_session_auth = http_auth
                     http_auth = DEFAULT
 
-            node_configs = client_node_configs(
-                hosts,
+            node_config = client_node_config(
+                host,
                 cloud_id=cloud_id,
                 requests_session_auth=requests_session_auth,
-                connections_per_node=connections_per_node,
+                connections_per_node=connections,
                 http_compress=http_compress,
                 verify_certs=verify_certs,
                 ca_certs=ca_certs,
@@ -348,10 +231,6 @@ class AsyncElasticsearch(BaseClient):
                 transport_kwargs["node_class"] = node_class
             if node_pool_class is not DEFAULT:
                 transport_kwargs["node_pool_class"] = node_class
-            if randomize_nodes_in_pool is not DEFAULT:
-                transport_kwargs["randomize_nodes_in_pool"] = randomize_nodes_in_pool
-            if node_selector_class is not DEFAULT:
-                transport_kwargs["node_selector_class"] = node_selector_class
             if dead_node_backoff_factor is not DEFAULT:
                 transport_kwargs["dead_node_backoff_factor"] = dead_node_backoff_factor
             if max_dead_node_backoff is not DEFAULT:
@@ -378,23 +257,10 @@ class AsyncElasticsearch(BaseClient):
             transport_kwargs["serializers"] = transport_serializers
 
             transport_kwargs["default_mimetype"] = default_mimetype
-            if sniff_on_start is not DEFAULT:
-                transport_kwargs["sniff_on_start"] = sniff_on_start
-            if sniff_before_requests is not DEFAULT:
-                transport_kwargs["sniff_before_requests"] = sniff_before_requests
-            if sniff_on_node_failure is not DEFAULT:
-                transport_kwargs["sniff_on_node_failure"] = sniff_on_node_failure
-            if sniff_timeout is not DEFAULT:
-                transport_kwargs["sniff_timeout"] = sniff_timeout
-            if min_delay_between_sniffing is not DEFAULT:
-                transport_kwargs[
-                    "min_delay_between_sniffing"
-                ] = min_delay_between_sniffing
 
             _transport = transport_class(
-                node_configs,
+                [node_config],
                 client_meta_service=CLIENT_META_SERVICE,
-                sniff_callback=sniff_callback,
                 **transport_kwargs,
             )
 

@@ -17,18 +17,7 @@
 
 import re
 import warnings
-from typing import (
-    Any,
-    Callable,
-    Collection,
-    Dict,
-    Iterable,
-    List,
-    Mapping,
-    Optional,
-    Tuple,
-    Union,
-)
+from typing import Any, Collection, Iterable, Mapping, Optional, Tuple, Union
 
 from elastic_transport import (
     ApiResponse,
@@ -36,9 +25,7 @@ from elastic_transport import (
     HeadApiResponse,
     HttpHeaders,
     ListApiResponse,
-    NodeConfig,
     ObjectApiResponse,
-    SniffOptions,
     TextApiResponse,
     Transport,
 )
@@ -49,12 +36,10 @@ from ...compat import warn_stacklevel
 from ...exceptions import (
     HTTP_EXCEPTIONS,
     ApiError,
-    ConnectionError,
     ElasticsearchWarning,
-    SerializationError,
     UnsupportedProductError,
 )
-from .utils import _TYPE_SYNC_SNIFF_CALLBACK, _base64_auth_header, _quote_query
+from .utils import _base64_auth_header, _quote_query
 
 _WARNING_RE = re.compile(r"\"([^\"]*)\"")
 _COMPAT_MIMETYPE_TEMPLATE = "application/vnd.elasticsearch+%s; compatible-with=" + str(
@@ -133,104 +118,6 @@ def resolve_auth_headers(
             headers["authorization"] = f"Bearer {resolved_bearer_auth}"
 
     return headers
-
-
-def create_sniff_callback(
-    host_info_callback: Optional[
-        Callable[[Dict[str, Any], Dict[str, Any]], Optional[Dict[str, Any]]]
-    ] = None,
-    sniffed_node_callback: Optional[
-        Callable[[Dict[str, Any], NodeConfig], Optional[NodeConfig]]
-    ] = None,
-) -> _TYPE_SYNC_SNIFF_CALLBACK:
-    assert (host_info_callback is None) != (sniffed_node_callback is None)
-
-    # Wrap the deprecated 'host_info_callback' into 'sniffed_node_callback'
-    if host_info_callback is not None:
-
-        def _sniffed_node_callback(
-            node_info: Dict[str, Any], node_config: NodeConfig
-        ) -> Optional[NodeConfig]:
-            assert host_info_callback is not None
-            if (
-                host_info_callback(  # type ignore[misc]
-                    node_info, {"host": node_config.host, "port": node_config.port}
-                )
-                is None
-            ):
-                return None
-            return node_config
-
-        sniffed_node_callback = _sniffed_node_callback
-
-    def sniff_callback(
-        transport: Transport, sniff_options: SniffOptions
-    ) -> List[NodeConfig]:
-        for _ in transport.node_pool.all():
-            try:
-                meta, node_infos = transport.perform_request(
-                    "GET",
-                    "/_nodes/_all/http",
-                    headers={
-                        "accept": "application/vnd.elasticsearch+json; compatible-with=8"
-                    },
-                    request_timeout=(
-                        sniff_options.sniff_timeout
-                        if not sniff_options.is_initial_sniff
-                        else None
-                    ),
-                )
-            except (SerializationError, ConnectionError):
-                continue
-
-            if not 200 <= meta.status <= 299:
-                continue
-
-            node_configs = []
-            for node_info in node_infos.get("nodes", {}).values():
-                address = node_info.get("http", {}).get("publish_address")
-                if not address or ":" not in address:
-                    continue
-
-                if "/" in address:
-                    # Support 7.x host/ip:port behavior where http.publish_host has been set.
-                    fqdn, ipaddress = address.split("/", 1)
-                    host = fqdn
-                    _, port_str = ipaddress.rsplit(":", 1)
-                    port = int(port_str)
-                else:
-                    host, port_str = address.rsplit(":", 1)
-                    port = int(port_str)
-
-                assert sniffed_node_callback is not None
-                sniffed_node = sniffed_node_callback(
-                    node_info, meta.node.replace(host=host, port=port)
-                )
-                if sniffed_node is None:
-                    continue
-
-                # Use the node which was able to make the request as a base.
-                node_configs.append(sniffed_node)
-
-            if node_configs:
-                return node_configs
-
-        return []
-
-    return sniff_callback
-
-
-def _default_sniffed_node_callback(
-    node_info: Dict[str, Any], node_config: NodeConfig
-) -> Optional[NodeConfig]:
-    if node_info.get("roles", []) == ["master"]:
-        return None
-    return node_config
-
-
-default_sniff_callback = create_sniff_callback(
-    sniffed_node_callback=_default_sniffed_node_callback
-)
 
 
 class BaseClient:

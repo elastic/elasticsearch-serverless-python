@@ -18,7 +18,7 @@ To install the latest version of the client, run the following command:
 
 [source,shell]
 --------------------------
-python -m pip install elasticsearch
+python -m pip install elasticsearch_serverless
 --------------------------
 
 Refer to the <<installation>> page to learn more.
@@ -32,16 +32,16 @@ endpoint.
 
 [source,py]
 ----
-from elasticsearch import Elasticsearch
+from elasticsearch_serverless import Elasticsearch
 
 client = Elasticsearch(
-    "https://...",  # Elasticsearch endpoint
+    cloud_id="project-name:ABCD...",  # Cloud ID provided by Elastic
     api_key=('api-key-id', 'api-key-secret'),  # API key ID and secret
 )
 ----
 
 Your Elasticsearch endpoint can be found on the **My deployment** page of your 
-deployment:
+project:
 
 image::images/es-endpoint.jpg[alt="Finding Elasticsearch endpoint",align="center"]
 

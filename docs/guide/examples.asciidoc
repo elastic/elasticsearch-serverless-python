@@ -21,8 +21,8 @@ To index a document, you need to specify three pieces of information: `index`,
 [source,py]
 ----------------------------
 from datetime import datetime
-from elasticsearch import Elasticsearch
-es = Elasticsearch('https://localhost:9200')
+from elasticsearch_serverless import Elasticsearch
+es = Elasticsearch(cloud_id='project-name:ABCD...')
 
 doc = {
     'author': 'author_name',
@@ -84,9 +84,9 @@ To update a document, you need to specify three pieces of information: `index`,
 [source,py]
 ----------------------------
 from datetime import datetime
-from elasticsearch import Elasticsearch
+from elasticsearch_serverless import Elasticsearch
 
-client = Elasticsearch('https://localhost:9200')
+client = Elasticsearch(cloud_id='project-name:ABCD...')
 
 doc = {
     'author': 'author_name',

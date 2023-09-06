@@ -33,10 +33,6 @@ from elasticsearch_serverless8.helpers import (
 es = Elasticsearch(
     [{"host": "localhost", "port": 9443}],
     transport_class=Transport,
-    sniff_on_start=True,
-    sniffer_timeout=0.1,
-    sniff_timeout=1,
-    sniff_on_connection_fail=False,
     max_retries=1,
     retry_on_status={100, 400, 503},
     retry_on_timeout=True,
@@ -101,11 +97,7 @@ def reindex_types() -> None:
 
 
 es2 = AsyncElasticsearch(
-    [{"host": "localhost", "port": 9443}],
-    sniff_on_start=True,
-    sniffer_timeout=0.1,
-    sniff_timeout=1,
-    sniff_on_connection_fail=False,
+    {"host": "localhost", "port": 9443},
     max_retries=1,
     retry_on_status={100, 400, 503},
     retry_on_timeout=True,

@@ -18,10 +18,8 @@
 
 from __future__ import unicode_literals
 
-import asyncio
 import re
 import warnings
-from typing import Any, Dict, Optional, Union
 
 import pytest
 from elastic_transport import ApiResponseMeta, BaseAsyncNode, HttpHeaders, NodeConfig
@@ -280,14 +278,12 @@ class TestTransport:
 
     async def test_request_will_fail_after_x_retries(self):
         client = AsyncElasticsearch(
-            [
-                NodeConfig(
-                    "http",
-                    "localhost",
-                    9200,
-                    _extras={"exception": ConnectionError("abandon ship!")},
-                )
-            ],
+            NodeConfig(
+                "http",
+                "localhost",
+                9200,
+                _extras={"exception": ConnectionError("abandon ship!")},
+            ),
             node_class=DummyNode,
         )
 
@@ -305,20 +301,12 @@ class TestTransport:
 
     async def test_failed_connection_will_be_marked_as_dead(self):
         client = AsyncElasticsearch(
-            [
-                NodeConfig(
-                    "http",
-                    "localhost",
-                    9200,
-                    _extras={"exception": ConnectionError("abandon ship!")},
-                ),
-                NodeConfig(
-                    "http",
-                    "localhost",
-                    9201,
-                    _extras={"exception": ConnectionError("abandon ship!")},
-                ),
-            ],
+            NodeConfig(
+                "http",
+                "localhost",
+                9200,
+                _extras={"exception": ConnectionError("abandon ship!")},
+            ),
             node_class=DummyNode,
         )
 
@@ -328,347 +316,22 @@ class TestTransport:
 
     async def test_resurrected_connection_will_be_marked_as_live_on_success(self):
         client = AsyncElasticsearch(
-            [
-                NodeConfig("http", "localhost", 9200),
-                NodeConfig("http", "localhost", 9201),
-            ],
+            NodeConfig("http", "localhost", 9200),
             node_class=DummyNode,
         )
         node1 = client.transport.node_pool.get()
-        node2 = client.transport.node_pool.get()
-        assert node1 is not node2
         client.transport.node_pool.mark_dead(node1)
-        client.transport.node_pool.mark_dead(node2)
         assert len(client.transport.node_pool._alive_nodes) == 0
 
         await client.info()
 
         assert len(client.transport.node_pool._alive_nodes) == 1
-        assert len(client.transport.node_pool._dead_consecutive_failures) == 1
-
-    @pytest.mark.parametrize(
-        ["nodes_info_response", "node_host"],
-        [(CLUSTER_NODES, "1.1.1.1"), (CLUSTER_NODES_7x_PUBLISH_HOST, "somehost.tld")],
-    )
-    async def test_sniff_will_use_seed_connections(
-        self, nodes_info_response, node_host
-    ):
-        client = AsyncElasticsearch(
-            [
-                NodeConfig(
-                    "http", "localhost", 9200, _extras={"data": nodes_info_response}
-                )
-            ],
-            node_class=DummyNode,
-            sniff_on_start=True,
-        )
-
-        # Async sniffing happens in the background.
-        await client.transport._async_call()
-        assert client.transport._sniffing_task is not None
-        await client.transport._sniffing_task
-
-        node_configs = [node.config for node in client.transport.node_pool.all()]
-        assert len(node_configs) == 2
-        assert NodeConfig("http", node_host, 123) in node_configs
-
-    async def test_sniff_on_start_ignores_sniff_timeout(self):
-        client = AsyncElasticsearch(
-            [NodeConfig("http", "localhost", 9200, _extras={"data": CLUSTER_NODES})],
-            node_class=DummyNode,
-            sniff_on_start=True,
-            sniff_timeout=12,
-            meta_header=False,
-        )
-
-        # Async sniffing happens in the background.
-        await client.transport._async_call()
-        assert client.transport._sniffing_task is not None
-        await client.transport._sniffing_task
-
-        calls = client.transport.node_pool.all()[0].calls
-
-        assert len(calls) == 1
-        assert calls[0] == (
-            ("GET", "/_nodes/_all/http"),
-            {
-                "body": None,
-                "headers": {
-                    "accept": "application/vnd.elasticsearch+json; compatible-with=8"
-                },
-                "request_timeout": None,  # <-- Should be None instead of 12
-            },
-        )
-
-    async def test_sniff_uses_sniff_timeout(self):
-        client = AsyncElasticsearch(
-            [NodeConfig("http", "localhost", 9200, _extras={"data": CLUSTER_NODES})],
-            node_class=DummyNode,
-            sniff_before_requests=True,
-            sniff_timeout=12,
-            meta_header=False,
-        )
-        await client.info()
-
-        # Async sniffing happens in the background.
-        assert client.transport._sniffing_task is not None
-        await client.transport._sniffing_task
-
-        calls = client.transport.node_pool.all()[0].calls
-
-        assert len(calls) == 2
-        assert calls[0] == (
-            ("GET", "/"),
-            {
-                "body": None,
-                "headers": {
-                    "accept": "application/vnd.elasticsearch+json; compatible-with=0",
-                },
-                "request_timeout": DEFAULT,
-            },
-        )
-        assert calls[1] == (
-            ("GET", "/_nodes/_all/http"),
-            {
-                "body": None,
-                "headers": {
-                    "accept": "application/vnd.elasticsearch+json; compatible-with=8"
-                },
-                "request_timeout": 12,
-            },
-        )
-
-    async def test_sniff_on_start_awaits_before_request(self):
-        client = AsyncElasticsearch(
-            [NodeConfig("http", "localhost", 9200, _extras={"data": CLUSTER_NODES})],
-            node_class=DummyNode,
-            sniff_on_start=True,
-            sniff_timeout=12,
-            meta_header=False,
-        )
-
-        await client.info()
-
-        calls = client.transport.node_pool.all()[0].calls
-
-        assert len(calls) == 2
-        # The sniff request happens first.
-        assert calls[0][0] == ("GET", "/_nodes/_all/http")
-        assert calls[1][0] == ("GET", "/")
-
-    async def test_sniff_reuses_node_instances(self):
-        client = AsyncElasticsearch(
-            [NodeConfig("http", "1.1.1.1", 123, _extras={"data": CLUSTER_NODES})],
-            node_class=DummyNode,
-            sniff_on_start=True,
-        )
-
-        assert len(client.transport.node_pool) == 1
-        await client.info()
-        assert len(client.transport.node_pool) == 1
-
-    @pytest.mark.parametrize(
-        ["extra_key", "extra_value"],
-        [("exception", ConnectionError("Abandon ship!")), ("status", 500)],
-    )
-    async def test_sniff_on_node_failure_triggers(self, extra_key, extra_value):
-        client = AsyncElasticsearch(
-            [
-                NodeConfig("http", "localhost", 9200, _extras={extra_key: extra_value}),
-                NodeConfig("http", "localhost", 9201, _extras={"data": CLUSTER_NODES}),
-            ],
-            node_class=DummyNode,
-            sniff_on_node_failure=True,
-            randomize_nodes_in_pool=False,
-            max_retries=0,
-        )
-
-        request_failed_in_error = False
-        try:
-            await client.info()
-        except (ConnectionError, ApiError):
-            request_failed_in_error = True
-
-        assert client.transport._sniffing_task is not None
-        await client.transport._sniffing_task
-
-        assert request_failed_in_error
-        assert len(client.transport.node_pool) == 3
-
-    async def test_sniff_after_n_seconds(self, event_loop):
-        client = AsyncElasticsearch(  # noqa: F821
-            [NodeConfig("http", "localhost", 9200, _extras={"data": CLUSTER_NODES})],
-            node_class=DummyNode,
-            min_delay_between_sniffing=5,
-        )
-        client.transport._last_sniffed_at = event_loop.time()
-
-        await client.info()
-
-        for _ in range(4):
-            await client.info()
-            await asyncio.sleep(0)
-
-        assert 1 == len(client.transport.node_pool)
-
-        client.transport._last_sniffed_at = event_loop.time() - 5.1
-
-        await client.info()
-        await client.transport._sniffing_task  # Need to wait for the sniffing task to complete
-
-        assert 2 == len(client.transport.node_pool)
-        assert "http://1.1.1.1:123" in (
-            node.base_url for node in client.transport.node_pool.all()
-        )
-        assert (
-            event_loop.time() - 1
-            < client.transport._last_sniffed_at
-            < event_loop.time() + 0.01
-        )
-
-    @pytest.mark.parametrize(
-        "kwargs",
-        [
-            {"sniff_on_start": True},
-            {"sniff_on_connection_fail": True},
-            {"sniff_on_node_failure": True},
-            {"sniff_before_requests": True},
-            {"sniffer_timeout": 1},
-            {"sniff_timeout": 1},
-        ],
-    )
-    async def test_sniffing_disabled_on_elastic_cloud(self, kwargs):
-        with pytest.raises(ValueError) as e:
-            AsyncElasticsearch(
-                cloud_id="cluster:dXMtZWFzdC0xLmF3cy5mb3VuZC5pbyQ0ZmE4ODIxZTc1NjM0MDMyYmVkMWNmMjIxMTBlMmY5NyQ0ZmE4ODIxZTc1NjM0MDMyYmVkMWNmMjIxMTBlMmY5Ng==",
-                **kwargs,
-            )
-
-        assert (
-            str(e.value)
-            == "Sniffing should not be enabled when connecting to Elastic Cloud"
-        )
-
-    async def test_sniff_on_start_close_unlocks_async_calls(self, event_loop):
-        client = AsyncElasticsearch(  # noqa: F821
-            [
-                NodeConfig(
-                    "http",
-                    "localhost",
-                    9200,
-                    _extras={"delay": 10, "data": CLUSTER_NODES},
-                ),
-            ],
-            node_class=DummyNode,
-            sniff_on_start=True,
-        )
-
-        # Start making _async_calls() before we cancel
-        tasks = []
-        start_time = event_loop.time()
-        for _ in range(3):
-            tasks.append(event_loop.create_task(client.info()))
-            await asyncio.sleep(0)
-
-        # Close the transport while the sniffing task is active! :(
-        await client.transport.close()
-
-        # Now we start waiting on all those _async_calls()
-        await asyncio.gather(*tasks)
-        end_time = event_loop.time()
-        duration = end_time - start_time
-
-        # A lot quicker than 10 seconds defined in 'delay'
-        assert duration < 1
-
-    async def test_sniffing_master_only_filtered_by_default(self):
-        client = AsyncElasticsearch(  # noqa: F821
-            [
-                NodeConfig(
-                    "http",
-                    "localhost",
-                    9200,
-                    _extras={"data": CLUSTER_NODES_MASTER_ONLY},
-                )
-            ],
-            node_class=DummyNode,
-            sniff_on_start=True,
-        )
-        await client.transport._async_call()
-
-        assert len(client.transport.node_pool) == 2
-
-    async def test_sniff_node_callback(self):
-        def sniffed_node_callback(
-            node_info: Dict[str, Any], node_config: NodeConfig
-        ) -> Optional[NodeConfig]:
-            return (
-                node_config
-                if node_info["http"]["publish_address"].endswith(":124")
-                else None
-            )
-
-        client = AsyncElasticsearch(  # noqa: F821
-            [
-                NodeConfig(
-                    "http",
-                    "localhost",
-                    9200,
-                    _extras={"data": CLUSTER_NODES_MASTER_ONLY},
-                )
-            ],
-            node_class=DummyNode,
-            sniff_on_start=True,
-            sniffed_node_callback=sniffed_node_callback,
-        )
-        await client.transport._async_call()
-
-        assert len(client.transport.node_pool) == 2
-
-        ports = {node.config.port for node in client.transport.node_pool.all()}
-        assert ports == {9200, 124}
-
-    async def test_sniffing_deprecated_host_info_callback(self):
-        def host_info_callback(
-            node_info: Dict[str, Any], host: Dict[str, Union[int, str]]
-        ) -> Dict[str, Any]:
-            return (
-                host if node_info["http"]["publish_address"].endswith(":124") else None
-            )
-
-        with warnings.catch_warnings(record=True) as w:
-            client = AsyncElasticsearch(  # noqa: F821
-                [
-                    NodeConfig(
-                        "http",
-                        "localhost",
-                        9200,
-                        _extras={"data": CLUSTER_NODES_MASTER_ONLY},
-                    )
-                ],
-                node_class=DummyNode,
-                sniff_on_start=True,
-                host_info_callback=host_info_callback,
-            )
-            await client.transport._async_call()
-
-        assert len(w) == 1
-        assert w[0].category == DeprecationWarning
-        assert (
-            str(w[0].message)
-            == "The 'host_info_callback' parameter is deprecated in favor of 'sniffed_node_callback'"
-        )
-
-        assert len(client.transport.node_pool) == 2
-
-        ports = {node.config.port for node in client.transport.node_pool.all()}
-        assert ports == {9200, 124}
 
 
 @pytest.mark.parametrize("headers", [{}, {"X-elastic-product": "BAD HEADER"}])
 async def test_unsupported_product_error(headers):
     client = AsyncElasticsearch(
-        [NodeConfig("http", "localhost", 9200, _extras={"headers": headers})],
+        NodeConfig("http", "localhost", 9200, _extras={"headers": headers}),
         meta_header=False,
         node_class=DummyNode,
     )
@@ -697,11 +360,9 @@ async def test_unsupported_product_error(headers):
 @pytest.mark.parametrize("status", [401, 403, 413, 500])
 async def test_unsupported_product_error_not_raised_on_non_2xx(status):
     client = AsyncElasticsearch(
-        [
-            NodeConfig(
-                "http", "localhost", 9200, _extras={"headers": {}, "status": status}
-            )
-        ],
+        NodeConfig(
+            "http", "localhost", 9200, _extras={"headers": {}, "status": status}
+        ),
         meta_header=False,
         node_class=DummyNode,
     )
@@ -716,17 +377,15 @@ async def test_unsupported_product_error_not_raised_on_non_2xx(status):
 @pytest.mark.parametrize("status", [404, 500])
 async def test_api_error_raised_before_product_error(status):
     client = AsyncElasticsearch(
-        [
-            NodeConfig(
-                "http",
-                "localhost",
-                9200,
-                _extras={
-                    "headers": {"X-elastic-product": "BAD HEADER"},
-                    "status": status,
-                },
-            )
-        ],
+        NodeConfig(
+            "http",
+            "localhost",
+            9200,
+            _extras={
+                "headers": {"X-elastic-product": "BAD HEADER"},
+                "status": status,
+            },
+        ),
         meta_header=False,
         node_class=DummyNode,
     )
@@ -756,7 +415,7 @@ async def test_api_error_raised_before_product_error(status):
 )
 async def test_warning_header(headers):
     client = AsyncElasticsearch(
-        [NodeConfig("http", "localhost", 9200, _extras={"headers": headers})],
+        NodeConfig("http", "localhost", 9200, _extras={"headers": headers}),
         meta_header=False,
         node_class=DummyNode,
     )

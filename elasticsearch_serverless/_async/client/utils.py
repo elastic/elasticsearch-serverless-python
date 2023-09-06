@@ -16,28 +16,26 @@
 #  under the License.
 
 from ..._sync.client.utils import (
-    _TYPE_ASYNC_SNIFF_CALLBACK,
-    _TYPE_HOSTS,
+    _TYPE_HOST,
     CLIENT_META_SERVICE,
     SKIP_IN_PATH,
     _base64_auth_header,
     _quote,
     _quote_query,
     _rewrite_parameters,
-    client_node_configs,
+    client_node_config,
     is_requests_http_auth,
     is_requests_node_class,
 )
 
 __all__ = [
     "CLIENT_META_SERVICE",
-    "_TYPE_ASYNC_SNIFF_CALLBACK",
     "_base64_auth_header",
     "_quote",
     "_quote_query",
-    "_TYPE_HOSTS",
+    "_TYPE_HOST",
     "SKIP_IN_PATH",
-    "client_node_configs",
+    "client_node_config",
     "_rewrite_parameters",
     "is_requests_http_auth",
     "is_requests_node_class",
