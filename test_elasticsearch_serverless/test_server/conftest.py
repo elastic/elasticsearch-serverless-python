@@ -36,15 +36,13 @@ def sync_client_factory(elasticsearch_url, elasticsearch_api_key):
     try:
         # Configure the client with API key and optionally
         # an HTTP conn class depending on 'PYTHON_CONNECTION_CLASS' envvar
-        kw = {'api_key': elasticsearch_api_key}
+        kw = {"api_key": elasticsearch_api_key}
         if "PYTHON_CONNECTION_CLASS" in os.environ:
             kw["node_class"] = os.environ["PYTHON_CONNECTION_CLASS"]
 
         # We do this little dance with the URL to force
         # Requests to respect 'headers: None' within rest API spec tests.
-        client = elasticsearch_serverless.Elasticsearch(
-            elasticsearch_url, **kw
-        )
+        client = elasticsearch_serverless.Elasticsearch(elasticsearch_url, **kw)
 
         # Wipe the cluster before we start testing just in case it wasn't wiped
         # cleanly from the previous run of pytest?

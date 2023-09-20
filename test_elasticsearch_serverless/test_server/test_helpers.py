@@ -66,7 +66,10 @@ def test_bulk_actions_remain_unchanged(sync_client):
 def test_bulk_all_documents_get_inserted(sync_client):
     docs = [{"answer": x, "_id": x} for x in range(100)]
     for ok, item in helpers.streaming_bulk(
-        sync_client, docs, index="test-index", refresh=True,
+        sync_client,
+        docs,
+        index="test-index",
+        refresh=True,
     ):
         assert ok
 
@@ -873,7 +876,9 @@ def test_reindex_accepts_a_query(sync_client):
 
 @pytest.mark.usefixtures("reindex_setup")
 def test_all_documents_get_moved(sync_client):
-    helpers.reindex(sync_client, "test_index", "prod_index", bulk_kwargs={"refresh": True})
+    helpers.reindex(
+        sync_client, "test_index", "prod_index", bulk_kwargs={"refresh": True}
+    )
 
     assert sync_client.indices.exists(index="prod_index")
     assert 50 == sync_client.count(index="prod_index", q="type:questions")["count"]

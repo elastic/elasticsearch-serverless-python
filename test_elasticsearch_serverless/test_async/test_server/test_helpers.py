@@ -921,7 +921,12 @@ class TestReindex(object):
         )["_source"]
 
     async def test_all_documents_get_moved(self, async_client, reindex_setup):
-        await helpers.async_reindex(async_client, "test_index", "prod_index", bulk_kwargs={"refresh": True})
+        await helpers.async_reindex(
+            async_client,
+            "test_index",
+            "prod_index",
+            bulk_kwargs={"refresh": "wait_for"},
+        )
 
         assert await async_client.indices.exists(index="prod_index")
         assert (
