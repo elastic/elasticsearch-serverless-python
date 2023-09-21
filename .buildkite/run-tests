@@ -28,6 +28,7 @@ run_qaf() {
 cleanup() {
   echo -e "--- :elasticsearch: Tear down serverless instance EC_PROJECT_NAME"
   run_qaf 'qaf elastic-cloud projects delete'
+  rm -rf cloud.json
 }
 trap cleanup EXIT
 
