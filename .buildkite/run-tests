@@ -37,7 +37,7 @@ deployment=$(docker run --rm \
   -v "$(pwd)/cloud.json:/root/.elastic/cloud.json" \
   docker.elastic.co/employees/dolaru/qaf:latest \
   bash -c 'qaf elastic-cloud projects create --project-type elasticsearch && \
-  qaf elastic-cloud projects describe --as-json --show-credentials') \
+  qaf elastic-cloud projects describe --as-json --show-credentials')
 
 ES_API_SECRET_KEY=$(echo "$deployment" | jq -r '.credentials.api_key')
 ELASTICSEARCH_URL=$(echo "$deployment" | jq -r '.elasticsearch.url')
