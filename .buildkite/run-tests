@@ -70,6 +70,9 @@ docker run \
   -e STACK_VERSION \
   -e TEST_SUITE \
   -e GITHUB_TOKEN \
+  -e AIOHTTP_NO_EXTENSIONS \
+  -e FROZENLIST_NO_EXTENSIONS \
+  -e YARL_NO_EXTENSIONS \
   --name elasticsearch-serverless-python-tests \
   --volume "$(pwd)/junit:/code/elasticsearch-serverless-python/junit" \
   --rm \
