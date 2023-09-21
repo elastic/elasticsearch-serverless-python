@@ -67,7 +67,7 @@ class CatClient(NamespacedClient):
         Shows information about currently configured aliases to indices including filter
         and routing infos.
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/cat-alias.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-alias.html>`_
 
         :param name: A comma-separated list of aliases to retrieve. Supports wildcards
             (`*`). To retrieve all aliases, omit this parameter or use `*` or `_all`.
@@ -146,7 +146,7 @@ class CatClient(NamespacedClient):
         """
         Returns information about existing component_templates templates.
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/cat-component-templates.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-component-templates.html>`_
 
         :param name: The name of the component template. Accepts wildcard expressions.
             If omitted, all component templates are returned.
@@ -222,7 +222,7 @@ class CatClient(NamespacedClient):
         Provides quick access to the document count of the entire cluster, or individual
         indices.
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/cat-count.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-count.html>`_
 
         :param index: Comma-separated list of data streams, indices, and aliases used
             to limit the request. Supports wildcards (`*`). To target all data streams
@@ -297,7 +297,7 @@ class CatClient(NamespacedClient):
         """
         Returns help for the Cat APIs.
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/cat.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat.html>`_
 
         :param format: Specifies the format to return the columnar data in, can be set
             to `text`, `json`, `cbor`, `yaml`, or `smile`.
@@ -395,7 +395,7 @@ class CatClient(NamespacedClient):
         Returns information about indices: number of primaries and replicas, document
         counts, disk size, ...
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/cat-indices.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-indices.html>`_
 
         :param index: Comma-separated list of data streams, indices, and aliases used
             to limit the request. Supports wildcards (`*`). To target all data streams
@@ -540,7 +540,7 @@ class CatClient(NamespacedClient):
         """
         Gets configuration and usage information about data frame analytics jobs.
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/cat-dfanalytics.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-dfanalytics.html>`_
 
         :param id: The ID of the data frame analytics to fetch
         :param allow_no_match: Whether to ignore if a wildcard expression matches no
@@ -671,7 +671,7 @@ class CatClient(NamespacedClient):
         """
         Gets configuration and usage information about datafeeds.
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/cat-datafeeds.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-datafeeds.html>`_
 
         :param datafeed_id: A numerical character string that uniquely identifies the
             datafeed.
@@ -808,7 +808,7 @@ class CatClient(NamespacedClient):
         """
         Gets configuration and usage information about anomaly detection jobs.
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/cat-anomaly-detectors.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-anomaly-detectors.html>`_
 
         :param job_id: Identifier for the anomaly detection job.
         :param allow_no_match: Specifies what to do when the request: * Contains wildcard
@@ -948,7 +948,7 @@ class CatClient(NamespacedClient):
         """
         Gets configuration and usage information about inference trained models.
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/cat-trained-model.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-trained-model.html>`_
 
         :param model_id: A unique identifier for the trained model.
         :param allow_no_match: Specifies what to do when the request: contains wildcard
@@ -1091,7 +1091,7 @@ class CatClient(NamespacedClient):
         """
         Gets configuration and usage information about transforms.
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/cat-transforms.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-transforms.html>`_
 
         :param transform_id: A transform identifier or a wildcard expression. If you
             do not specify one of these options, the API returns information for all

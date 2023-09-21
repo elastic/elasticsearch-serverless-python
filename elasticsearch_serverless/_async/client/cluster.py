@@ -43,7 +43,7 @@ class ClusterClient(NamespacedClient):
         """
         Deletes a component template
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/indices-component-template.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-component-template.html>`_
 
         :param name: Comma-separated list or wildcard expression of component template
             names used to limit the request.
@@ -93,7 +93,7 @@ class ClusterClient(NamespacedClient):
         """
         Returns information about whether a particular component template exist
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/indices-component-template.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-component-template.html>`_
 
         :param name: Comma-separated list of component template names used to limit the
             request. Wildcard (*) expressions are supported.
@@ -146,7 +146,7 @@ class ClusterClient(NamespacedClient):
         """
         Returns one or more component templates
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/indices-component-template.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-component-template.html>`_
 
         :param name: Comma-separated list of component template names used to limit the
             request. Wildcard (`*`) expressions are supported.
@@ -186,60 +186,6 @@ class ClusterClient(NamespacedClient):
         )
 
     @_rewrite_parameters()
-    async def get_settings(
-        self,
-        *,
-        error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
-        flat_settings: t.Optional[bool] = None,
-        human: t.Optional[bool] = None,
-        include_defaults: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
-        pretty: t.Optional[bool] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
-    ) -> ObjectApiResponse[t.Any]:
-        """
-        Returns cluster settings.
-
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/cluster-get-settings.html>`_
-
-        :param flat_settings: If `true`, returns settings in flat format.
-        :param include_defaults: If `true`, returns default cluster settings from the
-            local node.
-        :param master_timeout: Period to wait for a connection to the master node. If
-            no response is received before the timeout expires, the request fails and
-            returns an error.
-        :param timeout: Period to wait for a response. If no response is received before
-            the timeout expires, the request fails and returns an error.
-        """
-        __path = "/_cluster/settings"
-        __query: t.Dict[str, t.Any] = {}
-        if error_trace is not None:
-            __query["error_trace"] = error_trace
-        if filter_path is not None:
-            __query["filter_path"] = filter_path
-        if flat_settings is not None:
-            __query["flat_settings"] = flat_settings
-        if human is not None:
-            __query["human"] = human
-        if include_defaults is not None:
-            __query["include_defaults"] = include_defaults
-        if master_timeout is not None:
-            __query["master_timeout"] = master_timeout
-        if pretty is not None:
-            __query["pretty"] = pretty
-        if timeout is not None:
-            __query["timeout"] = timeout
-        __headers = {"accept": "application/json"}
-        return await self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
-        )
-
-    @_rewrite_parameters()
     async def info(
         self,
         *,
@@ -273,7 +219,7 @@ class ClusterClient(NamespacedClient):
         """
         Returns different information about the cluster.
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/cluster-info.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-info.html>`_
 
         :param target: Limits the information returned to the specific target. Supports
             a comma-separated list, such as http,ingest.
@@ -288,52 +234,6 @@ class ClusterClient(NamespacedClient):
             __query["filter_path"] = filter_path
         if human is not None:
             __query["human"] = human
-        if pretty is not None:
-            __query["pretty"] = pretty
-        __headers = {"accept": "application/json"}
-        return await self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
-        )
-
-    @_rewrite_parameters()
-    async def pending_tasks(
-        self,
-        *,
-        error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
-        human: t.Optional[bool] = None,
-        local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
-        pretty: t.Optional[bool] = None,
-    ) -> ObjectApiResponse[t.Any]:
-        """
-        Returns a list of any cluster-level changes (e.g. create index, update mapping,
-        allocate or fail shard) which have not yet been executed.
-
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/cluster-pending.html>`_
-
-        :param local: If `true`, the request retrieves information from the local node
-            only. If `false`, information is retrieved from the master node.
-        :param master_timeout: Period to wait for a connection to the master node. If
-            no response is received before the timeout expires, the request fails and
-            returns an error.
-        """
-        __path = "/_cluster/pending_tasks"
-        __query: t.Dict[str, t.Any] = {}
-        if error_trace is not None:
-            __query["error_trace"] = error_trace
-        if filter_path is not None:
-            __query["filter_path"] = filter_path
-        if human is not None:
-            __query["human"] = human
-        if local is not None:
-            __query["local"] = local
-        if master_timeout is not None:
-            __query["master_timeout"] = master_timeout
         if pretty is not None:
             __query["pretty"] = pretty
         __headers = {"accept": "application/json"}
@@ -367,7 +267,7 @@ class ClusterClient(NamespacedClient):
         """
         Creates or updates a component template
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/indices-component-template.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-component-template.html>`_
 
         :param name: Name of the component template to create. Elasticsearch includes
             the following built-in component templates: `logs-mappings`; 'logs-settings`;
@@ -428,112 +328,4 @@ class ClusterClient(NamespacedClient):
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "PUT", __path, params=__query, headers=__headers, body=__body
-        )
-
-    @_rewrite_parameters(
-        body_fields=True,
-    )
-    async def put_settings(
-        self,
-        *,
-        error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
-        flat_settings: t.Optional[bool] = None,
-        human: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
-        persistent: t.Optional[t.Mapping[str, t.Any]] = None,
-        pretty: t.Optional[bool] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
-        transient: t.Optional[t.Mapping[str, t.Any]] = None,
-    ) -> ObjectApiResponse[t.Any]:
-        """
-        Updates the cluster settings.
-
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/cluster-update-settings.html>`_
-
-        :param flat_settings: Return settings in flat format (default: false)
-        :param master_timeout: Explicit operation timeout for connection to master node
-        :param persistent:
-        :param timeout: Explicit operation timeout
-        :param transient:
-        """
-        __path = "/_cluster/settings"
-        __query: t.Dict[str, t.Any] = {}
-        __body: t.Dict[str, t.Any] = {}
-        if error_trace is not None:
-            __query["error_trace"] = error_trace
-        if filter_path is not None:
-            __query["filter_path"] = filter_path
-        if flat_settings is not None:
-            __query["flat_settings"] = flat_settings
-        if human is not None:
-            __query["human"] = human
-        if master_timeout is not None:
-            __query["master_timeout"] = master_timeout
-        if persistent is not None:
-            __body["persistent"] = persistent
-        if pretty is not None:
-            __query["pretty"] = pretty
-        if timeout is not None:
-            __query["timeout"] = timeout
-        if transient is not None:
-            __body["transient"] = transient
-        __headers = {"accept": "application/json", "content-type": "application/json"}
-        return await self.perform_request(  # type: ignore[return-value]
-            "PUT", __path, params=__query, headers=__headers, body=__body
-        )
-
-    @_rewrite_parameters()
-    async def stats(
-        self,
-        *,
-        node_id: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
-        error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
-        flat_settings: t.Optional[bool] = None,
-        human: t.Optional[bool] = None,
-        pretty: t.Optional[bool] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
-    ) -> ObjectApiResponse[t.Any]:
-        """
-        Returns high-level overview of cluster statistics.
-
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/cluster-stats.html>`_
-
-        :param node_id: Comma-separated list of node filters used to limit returned information.
-            Defaults to all nodes in the cluster.
-        :param flat_settings: If `true`, returns settings in flat format.
-        :param timeout: Period to wait for each node to respond. If a node does not respond
-            before its timeout expires, the response does not include its stats. However,
-            timed out nodes are included in the response’s `_nodes.failed` property.
-            Defaults to no timeout.
-        """
-        if node_id not in SKIP_IN_PATH:
-            __path = f"/_cluster/stats/nodes/{_quote(node_id)}"
-        else:
-            __path = "/_cluster/stats"
-        __query: t.Dict[str, t.Any] = {}
-        if error_trace is not None:
-            __query["error_trace"] = error_trace
-        if filter_path is not None:
-            __query["filter_path"] = filter_path
-        if flat_settings is not None:
-            __query["flat_settings"] = flat_settings
-        if human is not None:
-            __query["human"] = human
-        if pretty is not None:
-            __query["pretty"] = pretty
-        if timeout is not None:
-            __query["timeout"] = timeout
-        __headers = {"accept": "application/json"}
-        return await self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
         )
