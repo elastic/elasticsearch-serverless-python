@@ -11,9 +11,8 @@ set -euo pipefail
 CLOUD_ACCESS_KEY=$(vault read -field="$EC_ENV" secret/ci/elastic-elasticsearch-serverless-python/cloud-access)
 echo "{\"api_key\":{\"$EC_ENV\":\"$CLOUD_ACCESS_KEY\"}}" > "$(pwd)/cloud.json"
 
-# ensure serverless instance is deleted even if script errors
-cleanup() {
-  echo -e "--- :elasticsearch: Tear down serverless instance EC_PROJECT_NAME"
+run_qaf() {
+  cmd=$1
   docker run --rm \
     -e EC_REGISTER_BACKEND \
     -e EC_ENV \
@@ -22,22 +21,20 @@ cleanup() {
     -e VAULT_TOKEN \
     -v "$(pwd)/cloud.json:/root/.elastic/cloud.json" \
     docker.elastic.co/employees/dolaru/qaf:latest \
-    bash -c 'qaf elastic-cloud projects delete'
+    bash -c "$cmd"
+}
+
+# ensure serverless instance is deleted even if script errors
+cleanup() {
+  echo -e "--- :elasticsearch: Tear down serverless instance EC_PROJECT_NAME"
+  run_qaf 'qaf elastic-cloud projects delete'
 }
 trap cleanup EXIT
 
 echo -e "--- :elasticsearch: Start serverless instance"
 
-deployment=$(docker run --rm \
-  -e EC_REGISTER_BACKEND \
-  -e EC_ENV \
-  -e EC_REGION \
-  -e EC_PROJECT_NAME \
-  -e VAULT_TOKEN \
-  -v "$(pwd)/cloud.json:/root/.elastic/cloud.json" \
-  docker.elastic.co/employees/dolaru/qaf:latest \
-  bash -c 'qaf elastic-cloud projects create --project-type elasticsearch && \
-  qaf elastic-cloud projects describe --as-json --show-credentials')
+run_qaf "qaf elastic-cloud projects create --project-type elasticsearch"
+deployment=$(run_qaf "qaf elastic-cloud projects describe --as-json --show-credentials")
 
 ES_API_SECRET_KEY=$(echo "$deployment" | jq -r '.credentials.api_key')
 ELASTICSEARCH_URL=$(echo "$deployment" | jq -r '.elasticsearch.url')
