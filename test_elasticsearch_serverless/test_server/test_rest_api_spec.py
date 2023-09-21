@@ -540,7 +540,9 @@ try:
     http = urllib3.PoolManager(retries=10)
     client = Elasticsearch(es_url(), api_key=es_api_key(), request_timeout=3)
 
-    yaml_tests_url = "https://api.github.com/repos/elastic/serverless-clients-tests/zipball/572c72b5b32f145e62a966563688e46401d3d28a"
+    yaml_tests_url = (
+        "https://api.github.com/repos/elastic/serverless-clients-tests/zipball/main"
+    )
 
     # Download the zip and start reading YAML from the files in memory
     package_zip = zipfile.ZipFile(
