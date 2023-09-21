@@ -112,9 +112,7 @@ def test_mapbox_vector_tile_error(elasticsearch_url, mvt_setup, node_class):
 
 
 @pytest.mark.parametrize("node_class", ["urllib3", "requests"])
-def test_mapbox_vector_tile_response(
-    elasticsearch_url, mvt_setup, node_class
-):
+def test_mapbox_vector_tile_response(elasticsearch_url, mvt_setup, node_class):
     try:
         import mapbox_vector_tile
     except ImportError:
