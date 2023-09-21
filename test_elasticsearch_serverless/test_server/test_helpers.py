@@ -694,7 +694,7 @@ def test_log_warning_on_shard_failures(sync_client):
     for x in range(4):
         bulk.append({"index": {"_index": "test_index"}})
         bulk.append({"value": x})
-    sync_client.bulk(operations=bulk)
+    sync_client.bulk(operations=bulk, refresh=True)
 
     with patch(
         "elasticsearch_serverless.helpers.actions.logger"
