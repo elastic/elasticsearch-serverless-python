@@ -41,13 +41,6 @@ class TestOverriddenUrlTargets(DummyTransportTestCase):
         self.client.update(index="test-index", id="test-id", body={})
         self.assert_url_called("POST", "/test-index/_update/test-id")
 
-    def test_cluster_stats(self):
-        self.client.cluster.stats()
-        self.assert_url_called("GET", "/_cluster/stats")
-
-        self.client.cluster.stats(node_id="test-node")
-        self.assert_url_called("GET", "/_cluster/stats/nodes/test-node")
-
     def test_index_uses_post_if_id_is_empty(self):
         self.client.index(index="my-index", id="", document={})
         self.assert_url_called("POST", "/my-index/_doc")
