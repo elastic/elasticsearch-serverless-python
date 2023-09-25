@@ -39,7 +39,7 @@ class SecurityClient(NamespacedClient):
         Enables authentication as a user and retrieve information about the authenticated
         user.
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/security-api-authenticate.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-authenticate.html>`_
         """
         __path = "/_security/_authenticate"
         __query: t.Dict[str, t.Any] = {}
@@ -54,43 +54,6 @@ class SecurityClient(NamespacedClient):
         __headers = {"accept": "application/json"}
         return self.perform_request(  # type: ignore[return-value]
             "GET", __path, params=__query, headers=__headers
-        )
-
-    @_rewrite_parameters()
-    def clear_api_key_cache(
-        self,
-        *,
-        ids: t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]],
-        error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
-        human: t.Optional[bool] = None,
-        pretty: t.Optional[bool] = None,
-    ) -> ObjectApiResponse[t.Any]:
-        """
-        Clear a subset or all entries from the API key cache.
-
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/security-api-clear-api-key-cache.html>`_
-
-        :param ids: Comma-separated list of API key IDs to evict from the API key cache.
-            To evict all API keys, use `*`. Does not support other wildcard patterns.
-        """
-        if ids in SKIP_IN_PATH:
-            raise ValueError("Empty value passed for parameter 'ids'")
-        __path = f"/_security/api_key/{_quote(ids)}/_clear_cache"
-        __query: t.Dict[str, t.Any] = {}
-        if error_trace is not None:
-            __query["error_trace"] = error_trace
-        if filter_path is not None:
-            __query["filter_path"] = filter_path
-        if human is not None:
-            __query["human"] = human
-        if pretty is not None:
-            __query["pretty"] = pretty
-        __headers = {"accept": "application/json"}
-        return self.perform_request(  # type: ignore[return-value]
-            "POST", __path, params=__query, headers=__headers
         )
 
     @_rewrite_parameters(
@@ -116,7 +79,7 @@ class SecurityClient(NamespacedClient):
         """
         Creates an API key for access without requiring basic authentication.
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/security-api-create-api-key.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-create-api-key.html>`_
 
         :param expiration: Expiration time for the API key. By default, API keys never
             expire.
@@ -182,7 +145,7 @@ class SecurityClient(NamespacedClient):
         """
         Retrieves information for one or more API keys.
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/security-api-get-api-key.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-get-api-key.html>`_
 
         :param id: An API key id. This parameter cannot be used with any of `name`, `realm_name`
             or `username`.
@@ -230,6 +193,78 @@ class SecurityClient(NamespacedClient):
     @_rewrite_parameters(
         body_fields=True,
     )
+    def has_privileges(
+        self,
+        *,
+        user: t.Optional[str] = None,
+        application: t.Optional[
+            t.Union[t.List[t.Mapping[str, t.Any]], t.Tuple[t.Mapping[str, t.Any], ...]]
+        ] = None,
+        cluster: t.Optional[
+            t.Union[
+                t.List[
+                    t.Union[
+                        "t.Literal['all', 'cancel_task', 'create_snapshot', 'grant_api_key', 'manage', 'manage_api_key', 'manage_ccr', 'manage_enrich', 'manage_ilm', 'manage_index_templates', 'manage_ingest_pipelines', 'manage_logstash_pipelines', 'manage_ml', 'manage_oidc', 'manage_own_api_key', 'manage_pipeline', 'manage_rollup', 'manage_saml', 'manage_security', 'manage_service_account', 'manage_slm', 'manage_token', 'manage_transform', 'manage_user_profile', 'manage_watcher', 'monitor', 'monitor_ml', 'monitor_rollup', 'monitor_snapshot', 'monitor_text_structure', 'monitor_transform', 'monitor_watcher', 'read_ccr', 'read_ilm', 'read_pipeline', 'read_slm', 'transport_client']",
+                        str,
+                    ]
+                ],
+                t.Tuple[
+                    t.Union[
+                        "t.Literal['all', 'cancel_task', 'create_snapshot', 'grant_api_key', 'manage', 'manage_api_key', 'manage_ccr', 'manage_enrich', 'manage_ilm', 'manage_index_templates', 'manage_ingest_pipelines', 'manage_logstash_pipelines', 'manage_ml', 'manage_oidc', 'manage_own_api_key', 'manage_pipeline', 'manage_rollup', 'manage_saml', 'manage_security', 'manage_service_account', 'manage_slm', 'manage_token', 'manage_transform', 'manage_user_profile', 'manage_watcher', 'monitor', 'monitor_ml', 'monitor_rollup', 'monitor_snapshot', 'monitor_text_structure', 'monitor_transform', 'monitor_watcher', 'read_ccr', 'read_ilm', 'read_pipeline', 'read_slm', 'transport_client']",
+                        str,
+                    ],
+                    ...,
+                ],
+            ]
+        ] = None,
+        error_trace: t.Optional[bool] = None,
+        filter_path: t.Optional[
+            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
+        ] = None,
+        human: t.Optional[bool] = None,
+        index: t.Optional[
+            t.Union[t.List[t.Mapping[str, t.Any]], t.Tuple[t.Mapping[str, t.Any], ...]]
+        ] = None,
+        pretty: t.Optional[bool] = None,
+    ) -> ObjectApiResponse[t.Any]:
+        """
+        Determines whether the specified user has a specified list of privileges.
+
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-has-privileges.html>`_
+
+        :param user: Username
+        :param application:
+        :param cluster: A list of the cluster privileges that you want to check.
+        :param index:
+        """
+        if user not in SKIP_IN_PATH:
+            __path = f"/_security/user/{_quote(user)}/_has_privileges"
+        else:
+            __path = "/_security/user/_has_privileges"
+        __body: t.Dict[str, t.Any] = {}
+        __query: t.Dict[str, t.Any] = {}
+        if application is not None:
+            __body["application"] = application
+        if cluster is not None:
+            __body["cluster"] = cluster
+        if error_trace is not None:
+            __query["error_trace"] = error_trace
+        if filter_path is not None:
+            __query["filter_path"] = filter_path
+        if human is not None:
+            __query["human"] = human
+        if index is not None:
+            __body["index"] = index
+        if pretty is not None:
+            __query["pretty"] = pretty
+        __headers = {"accept": "application/json", "content-type": "application/json"}
+        return self.perform_request(  # type: ignore[return-value]
+            "POST", __path, params=__query, headers=__headers, body=__body
+        )
+
+    @_rewrite_parameters(
+        body_fields=True,
+    )
     def invalidate_api_key(
         self,
         *,
@@ -249,7 +284,7 @@ class SecurityClient(NamespacedClient):
         """
         Invalidates one or more API keys.
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/security-api-invalidate-api-key.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-invalidate-api-key.html>`_
 
         :param id:
         :param ids: A list of API key ids. This parameter cannot be used with any of
@@ -329,7 +364,7 @@ class SecurityClient(NamespacedClient):
         """
         Retrieves information for API keys using a subset of query DSL
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/security-api-query-api-key.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-query-api-key.html>`_
 
         :param from_: Starting document offset. By default, you cannot page through more
             than 10,000 hits using the from and size parameters. To page through more
@@ -411,7 +446,7 @@ class SecurityClient(NamespacedClient):
         """
         Updates attributes of an existing API key.
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/generated/security-api-update-api-key.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-update-api-key.html>`_
 
         :param id: The ID of the API key to update.
         :param metadata: Arbitrary metadata that you want to associate with the API key.
