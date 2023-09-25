@@ -66,7 +66,10 @@ def test_bulk_actions_remain_unchanged(sync_client):
 def test_bulk_all_documents_get_inserted(sync_client):
     docs = [{"answer": x, "_id": x} for x in range(100)]
     for ok, item in helpers.streaming_bulk(
-        sync_client, docs, index="test-index", refresh=True
+        sync_client,
+        docs,
+        index="test-index",
+        refresh=True,
     ):
         assert ok
 
@@ -79,10 +82,8 @@ def test_bulk_all_errors_from_chunk_are_raised_on_failure(sync_client):
         index="i",
         body={
             "mappings": {"properties": {"a": {"type": "integer"}}},
-            "settings": {"number_of_shards": 1, "number_of_replicas": 0},
         },
     )
-    sync_client.cluster.health(wait_for_status="yellow")
 
     try:
         for ok, _ in helpers.streaming_bulk(
@@ -172,12 +173,12 @@ def test_bulk_rejected_documents_are_retried(sync_client):
             chunk_size=1,
             max_retries=1,
             initial_backoff=0,
+            refresh=True,
         )
     )
     assert 3 == len(results)
     print(results)
     assert [True, True, True] == [r[0] for r in results]
-    sync_client.indices.refresh(index="i")
     res = sync_client.search(index="i")
     assert {"value": 3, "relation": "eq"} == res["hits"]["total"]
     assert 4 == failing_client._called
@@ -211,11 +212,11 @@ def test_bulk_rejected_documents_are_retried_when_bytes_or_string(
             chunk_size=1,
             max_retries=1,
             initial_backoff=0,
+            refresh=True,
         )
     )
     assert 3 == len(results)
     assert [True, True, True] == [r[0] for r in results]
-    sync_client.indices.refresh(index="i")
     res = sync_client.search(index="i")
     assert {"value": 3, "relation": "eq"} == res["hits"]["total"]
     assert 4 == failing_client._called
@@ -248,11 +249,11 @@ def test_bulk_rejected_documents_are_retried_at_most_max_retries_times(sync_clie
             chunk_size=1,
             max_retries=1,
             initial_backoff=0,
+            refresh=True,
         )
     )
     assert 3 == len(results)
     assert [False, True, True] == [r[0] for r in results]
-    sync_client.indices.refresh(index="i")
     res = sync_client.search(index="i")
     assert {"value": 2, "relation": "eq"} == res["hits"]["total"]
     assert 4 == failing_client._called
@@ -323,9 +324,7 @@ def test_errors_are_reported_correctly(sync_client):
     sync_client.indices.create(
         index="i",
         mappings={"properties": {"a": {"type": "integer"}}},
-        settings={"number_of_shards": 1, "number_of_replicas": 0},
     )
-    sync_client.cluster.health(wait_for_status="yellow")
 
     success, failed = helpers.bulk(
         sync_client,
@@ -348,9 +347,7 @@ def test_error_is_raised(sync_client):
     sync_client.indices.create(
         index="i",
         mappings={"properties": {"a": {"type": "integer"}}},
-        settings={"number_of_shards": 1, "number_of_replicas": 0},
     )
-    sync_client.cluster.health(wait_for_status="yellow")
 
     with pytest.raises(helpers.BulkIndexError):
         helpers.bulk(
@@ -395,9 +392,7 @@ def test_errors_are_collected_properly(sync_client):
     sync_client.indices.create(
         index="i",
         mappings={"properties": {"a": {"type": "integer"}}},
-        settings={"number_of_shards": 1, "number_of_replicas": 0},
     )
-    sync_client.cluster.health(wait_for_status="yellow")
 
     success, failed = helpers.bulk(
         sync_client,
@@ -868,8 +863,8 @@ def test_reindex_accepts_a_query(sync_client):
         "test_index",
         "prod_index",
         query={"query": {"bool": {"filter": {"term": {"type": "answers"}}}}},
+        bulk_kwargs={"refresh": True},
     )
-    sync_client.indices.refresh()
 
     assert sync_client.indices.exists(index="prod_index")
     assert 50 == sync_client.count(index="prod_index", q="type:answers")["count"]
@@ -881,8 +876,9 @@ def test_reindex_accepts_a_query(sync_client):
 
 @pytest.mark.usefixtures("reindex_setup")
 def test_all_documents_get_moved(sync_client):
-    helpers.reindex(sync_client, "test_index", "prod_index")
-    sync_client.indices.refresh()
+    helpers.reindex(
+        sync_client, "test_index", "prod_index", bulk_kwargs={"refresh": True}
+    )
 
     assert sync_client.indices.exists(index="prod_index")
     assert 50 == sync_client.count(index="prod_index", q="type:questions")["count"]
@@ -896,7 +892,6 @@ def test_all_documents_get_moved(sync_client):
 @pytest.fixture(scope="function")
 def parent_child_reindex_setup(sync_client):
     body = {
-        "settings": {"number_of_shards": 1, "number_of_replicas": 0},
         "mappings": {
             "properties": {
                 "question_answer": {
@@ -915,8 +910,8 @@ def parent_child_reindex_setup(sync_client):
         id=47,
         routing=42,
         body={"some": "data", "question_answer": {"name": "answer", "parent": 42}},
+        refresh=True,
     )
-    sync_client.indices.refresh(index="test-index")
 
 
 @pytest.mark.usefixtures("parent_child_reindex_setup")
@@ -972,7 +967,6 @@ def reindex_data_stream_setup(sync_client):
         },
     )
     sync_client.indices.create_data_stream(name="py-test-stream")
-    sync_client.indices.refresh()
 
 
 @pytest.mark.usefixtures("reindex_data_stream_setup")
@@ -985,7 +979,6 @@ def test_reindex_index_datastream(op_type, sync_client):
         query={"query": {"bool": {"filter": {"term": {"type": "answers"}}}}},
         op_type=op_type,
     )
-    sync_client.indices.refresh()
     assert sync_client.indices.exists(index="py-test-stream")
     assert 50 == sync_client.count(index="py-test-stream", q="type:answers")["count"]
 

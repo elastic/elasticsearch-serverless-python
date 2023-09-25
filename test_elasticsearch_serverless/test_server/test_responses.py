@@ -17,7 +17,7 @@
 
 
 def test_text_response(sync_client):
-    resp = sync_client.cat.tasks()
+    resp = sync_client.cat.aliases()
     assert resp.meta.status == 200
     assert isinstance(resp.body, str)
     assert str(resp.body) == str(resp)

@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+
+# Default environment variables
+export TEST_SUITE="${TEST_SUITE:=platinum}"
+export PYTHON_VERSION="${PYTHON_VERSION:=3.9}"
+export PYTHON_CONNECTION_CLASS="${PYTHON_CONNECTION_CLASS:=urllib3}"
+
+set -euo pipefail
+
+# fetch cloud creds used by qaf
+CLOUD_ACCESS_KEY=$(vault read -field="$EC_ENV" secret/ci/elastic-elasticsearch-serverless-python/cloud-access)
+echo "{\"api_key\":{\"$EC_ENV\":\"$CLOUD_ACCESS_KEY\"}}" > "$(pwd)/cloud.json"
+
+run_qaf() {
+  cmd=$1
+  docker run --rm \
+    -e EC_REGISTER_BACKEND \
+    -e EC_ENV \
+    -e EC_REGION \
+    -e EC_PROJECT_NAME \
+    -e VAULT_TOKEN \
+    -v "$(pwd)/cloud.json:/root/.elastic/cloud.json" \
+    docker.elastic.co/employees/dolaru/qaf:latest \
+    bash -c "$cmd"
+}
+
+# ensure serverless instance is deleted even if script errors
+cleanup() {
+  echo -e "--- :elasticsearch: Tear down serverless instance EC_PROJECT_NAME"
+  run_qaf 'qaf elastic-cloud projects delete'
+  rm -rf "$(pwd)/cloud.json"
+}
+trap cleanup EXIT
+
+echo -e "--- :elasticsearch: Start serverless instance"
+
+run_qaf "qaf elastic-cloud projects create --project-type elasticsearch"
+deployment=$(run_qaf "qaf elastic-cloud projects describe --as-json --show-credentials")
+
+ES_API_SECRET_KEY=$(echo "$deployment" | jq -r '.credentials.api_key')
+ELASTICSEARCH_URL=$(echo "$deployment" | jq -r '.elasticsearch.url')
+export ELASTICSEARCH_URL
+
+echo -e "--- :computer: Environment variables"
+echo -e "ELASTICSEARCH_URL $ELASTICSEARCH_URL"
+echo -e "TEST_SUITE $TEST_SUITE"
+echo -e "PYTHON_VERSION $PYTHON_VERSION"
+echo -e "PYTHON_CONNECTION_CLASS $PYTHON_CONNECTION_CLASS"
+
+echo -e "--- :docker: Build elasticsearch-serverless-python container"
+
+docker build \
+  --file .ci/Dockerfile \
+  --tag elasticsearch-serverless-python \
+  --build-arg "PYTHON_VERSION=$PYTHON_VERSION" \
+  .
+
+echo -e "--- :docker: :python: Run integration tests for Python $PYTHON_VERSION"
+
+GITHUB_TOKEN=$(vault read -field=token secret/ci/elastic-elasticsearch-serverless-python/github-token)
+export GITHUB_TOKEN
+
+docker run \
+  -e ELASTICSEARCH_URL \
+  -e "ES_API_KEY=$ES_API_SECRET_KEY" \
+  -e PYTHON_CONNECTION_CLASS \
+  -e TEST_SUITE \
+  -e GITHUB_TOKEN \
+  -e AIOHTTP_NO_EXTENSIONS \
+  -e FROZENLIST_NO_EXTENSIONS \
+  -e YARL_NO_EXTENSIONS \
+  --name elasticsearch-serverless-python-tests \
+  --volume "$(pwd)/junit:/code/elasticsearch-serverless-python/junit" \
+  --rm \
+  elasticsearch-serverless-python \
+  nox -s "test-$PYTHON_VERSION"

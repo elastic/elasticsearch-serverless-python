@@ -16,17 +16,18 @@
 #  under the License.
 
 import pytest
+import pytest_asyncio
 
 import elasticsearch_serverless
 
-from ...utils import CA_CERTS, wipe_cluster
+from ...utils import wipe_cluster
 
 pytestmark = pytest.mark.asyncio
 
 
-@pytest.fixture(scope="function")
+@pytest_asyncio.fixture(scope="function")
 @pytest.mark.usefixtures("sync_client")
-async def async_client(elasticsearch_url):
+async def async_client(elasticsearch_url, elasticsearch_api_key):
     # 'sync_client' fixture is used for the guaranteed wipe_cluster() call.
 
     if not hasattr(elasticsearch_serverless, "AsyncElasticsearch"):
@@ -38,7 +39,7 @@ async def async_client(elasticsearch_url):
     client = None
     try:
         client = elasticsearch_serverless.AsyncElasticsearch(
-            elasticsearch_url, request_timeout=3, ca_certs=CA_CERTS
+            elasticsearch_url, api_key=elasticsearch_api_key, request_timeout=3
         )
         yield client
     finally:

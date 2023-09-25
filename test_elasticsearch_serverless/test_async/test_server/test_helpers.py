@@ -125,7 +125,6 @@ class TestStreamingBulk(object):
         await async_client.indices.create(
             index="i",
             mappings={"properties": {"a": {"type": "integer"}}},
-            settings={"number_of_shards": 1, "number_of_replicas": 0},
         )
         await async_client.cluster.health(wait_for_status="yellow")
 
@@ -214,11 +213,11 @@ class TestStreamingBulk(object):
                 chunk_size=1,
                 max_retries=1,
                 initial_backoff=0,
+                refresh=True,
             )
         ]
         assert 3 == len(results)
         assert [True, True, True] == [r[0] for r in results]
-        await async_client.indices.refresh(index="i")
         res = await async_client.search(index="i")
         assert {"value": 3, "relation": "eq"} == res["hits"]["total"]
         assert 4 == failing_client._called
@@ -253,11 +252,11 @@ class TestStreamingBulk(object):
                 chunk_size=1,
                 max_retries=1,
                 initial_backoff=0,
+                refresh=True,
             )
         ]
         assert 3 == len(results)
         assert [False, True, True] == [r[0] for r in results]
-        await async_client.indices.refresh(index="i")
         res = await async_client.search(index="i")
         assert {"value": 2, "relation": "eq"} == res["hits"]["total"]
         assert 4 == failing_client._called
@@ -334,7 +333,6 @@ class TestBulk(object):
         await async_client.indices.create(
             index="i",
             mappings={"properties": {"a": {"type": "integer"}}},
-            settings={"number_of_shards": 1, "number_of_replicas": 0},
         )
         await async_client.cluster.health(wait_for_status="yellow")
 
@@ -358,7 +356,6 @@ class TestBulk(object):
         await async_client.indices.create(
             index="i",
             mappings={"properties": {"a": {"type": "integer"}}},
-            settings={"number_of_shards": 1, "number_of_replicas": 0},
         )
         await async_client.cluster.health(wait_for_status="yellow")
 
@@ -402,7 +399,6 @@ class TestBulk(object):
         await async_client.indices.create(
             index="i",
             mappings={"properties": {"a": {"type": "integer"}}},
-            settings={"number_of_shards": 1, "number_of_replicas": 0},
         )
         await async_client.cluster.health(wait_for_status="yellow")
 
@@ -911,8 +907,8 @@ class TestReindex(object):
             "test_index",
             "prod_index",
             query={"query": {"bool": {"filter": {"term": {"type": "answers"}}}}},
+            bulk_kwargs={"refresh": True},
         )
-        await async_client.indices.refresh()
 
         assert await async_client.indices.exists(index="prod_index")
         assert (
@@ -925,8 +921,12 @@ class TestReindex(object):
         )["_source"]
 
     async def test_all_documents_get_moved(self, async_client, reindex_setup):
-        await helpers.async_reindex(async_client, "test_index", "prod_index")
-        await async_client.indices.refresh()
+        await helpers.async_reindex(
+            async_client,
+            "test_index",
+            "prod_index",
+            bulk_kwargs={"refresh": "wait_for"},
+        )
 
         assert await async_client.indices.exists(index="prod_index")
         assert (
@@ -948,7 +948,6 @@ class TestReindex(object):
 @pytest.fixture(scope="function")
 async def parent_reindex_setup(async_client):
     body = {
-        "settings": {"number_of_shards": 1, "number_of_replicas": 0},
         "mappings": {
             "properties": {
                 "question_answer": {
@@ -969,8 +968,8 @@ async def parent_reindex_setup(async_client):
         id=47,
         routing=42,
         body={"some": "data", "question_answer": {"name": "answer", "parent": 42}},
+        refresh=True,
     )
-    await async_client.indices.refresh(index="test-index")
 
 
 class TestParentChildReindex:
@@ -1028,8 +1027,7 @@ async def reindex_data_stream_setup(async_client):
             "data_stream": {},
         },
     )
-    await async_client.indices.create_data_stream(name="py-test-stream")
-    await async_client.indices.refresh()
+    await async_client.indices.create_data_stream(name="py-test-stream", refresh=True)
     yield
 
 
@@ -1046,7 +1044,6 @@ class TestAsyncDataStreamReindex(object):
             bulk_kwargs={"refresh": True},
             op_type=op_type,
         )
-        # await async_client.indices.refresh()
         assert await async_client.indices.exists(index="py-test-stream")
         assert (
             50

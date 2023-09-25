@@ -42,7 +42,7 @@ from elasticsearch_serverless import (
 from elasticsearch_serverless._sync.client.utils import _base64_auth_header
 from elasticsearch_serverless.compat import string_types
 
-from ..utils import CA_CERTS, es_url, parse_version
+from ..utils import es_api_key, es_url
 
 # some params had to be changed in python, keep track of them so we can rename
 # those in the tests accordingly
@@ -135,7 +135,6 @@ SKIP_TESTS = {
 
 
 XPACK_FEATURES = None
-ES_VERSION = None
 RUN_ASYNC_REST_API_TESTS = (
     sys.version_info >= (3, 8)
     and os.environ.get("PYTHON_CONNECTION_CLASS") == "requests"
@@ -181,16 +180,6 @@ class YamlRunner:
         if self._teardown_code:
             self.section("teardown")
             self.run_code(self._teardown_code)
-
-    def es_version(self):
-        global ES_VERSION
-        if ES_VERSION is None:
-            version_string = (self.client.info())["version"]["number"]
-            if "." not in version_string:
-                return ()
-            version = version_string.strip().split(".")
-            ES_VERSION = tuple(int(v) if v.isdigit() else 999 for v in version)
-        return ES_VERSION
 
     def section(self, name):
         print(("=" * 10) + " " + name + " " + ("=" * 10))
@@ -339,16 +328,6 @@ class YamlRunner:
                 if feature in IMPLEMENTED_FEATURES:
                     continue
                 pytest.skip(f"feature '{feature}' is not supported")
-
-        if "version" in skip:
-            version, reason = skip["version"], skip["reason"]
-            if version == "all":
-                pytest.skip(reason)
-            min_version, _, max_version = version.partition("-")
-            min_version = parse_version(min_version.strip()) or (0,)
-            max_version = parse_version(max_version.strip()) or (999,)
-            if min_version <= (self.es_version()) <= max_version:
-                pytest.skip(reason)
 
     def run_gt(self, action):
         for key, value in action.items():
@@ -553,49 +532,34 @@ YAML_TEST_SPECS = []
 
 # Try loading the REST API test specs from the Elastic Artifacts API
 try:
+    github_token = os.environ.get("GITHUB_TOKEN")
+    if github_token is None:
+        raise RuntimeError("GITHUB_TOKEN environment variable is not set")
+
     # Construct the HTTP and Elasticsearch client
     http = urllib3.PoolManager(retries=10)
-    client = Elasticsearch(es_url(), request_timeout=3, ca_certs=CA_CERTS)
+    client = Elasticsearch(es_url(), api_key=es_api_key(), request_timeout=3)
 
-    # Make a request to Elasticsearch for the build hash, we'll be looking for
-    # an artifact with this same hash to download test specs for.
-    client_info = client.info()
-    version_number = client_info["version"]["number"]
-    build_hash = client_info["version"]["build_hash"]
-
-    # Now talk to the artifacts API with the 'STACK_VERSION' environment variable
-    resp = http.request(
-        "GET",
-        f"https://artifacts-api.elastic.co/v1/versions/{version_number}",
+    yaml_tests_url = (
+        "https://api.github.com/repos/elastic/serverless-clients-tests/zipball/main"
     )
-    resp = json.loads(resp.data.decode("utf-8"))
-
-    # Look through every build and see if one matches the commit hash
-    # we're looking for. If not it's okay, we'll just use the latest and
-    # hope for the best!
-    builds = resp["version"]["builds"]
-    for build in builds:
-        if build["projects"]["elasticsearch"]["commit_hash"] == build_hash:
-            break
-    else:
-        build = builds[0]  # Use the latest
-
-    # Now we're looking for the 'rest-api-spec-<VERSION>-sources.jar' file
-    # to download and extract in-memory.
-    packages = build["projects"]["elasticsearch"]["packages"]
-    for package in packages:
-        if re.match(r"rest-resources-zip-.*\.zip", package):
-            package_url = packages[package]["url"]
-            break
-    else:
-        raise RuntimeError(
-            f"Could not find the package 'rest-resources-zip-*.zip' in build {build!r}"
-        )
 
     # Download the zip and start reading YAML from the files in memory
-    package_zip = zipfile.ZipFile(io.BytesIO(http.request("GET", package_url).data))
+    package_zip = zipfile.ZipFile(
+        io.BytesIO(
+            http.request(
+                "GET",
+                yaml_tests_url,
+                headers={
+                    "Authorization": f"Bearer {github_token}",
+                    "Accept": "application/vnd.github+json",
+                },
+            ).data
+        )
+    )
+
     for yaml_file in package_zip.namelist():
-        if not re.match(r"^rest-api-spec/test/.*\.ya?ml$", yaml_file):
+        if not re.match(r"^.*\/tests\/.*\.ya?ml$", yaml_file):
             continue
         yaml_tests = list(
             yaml.load_all(package_zip.read(yaml_file), Loader=NoDatesSafeLoader)
@@ -653,7 +617,6 @@ def _pytest_param_sort_key(param: pytest.param) -> Tuple[Union[str, int], ...]:
 
 # Sort the tests by ID so they're grouped together nicely.
 YAML_TEST_SPECS = sorted(YAML_TEST_SPECS, key=_pytest_param_sort_key)
-
 
 if not RUN_ASYNC_REST_API_TESTS:
 

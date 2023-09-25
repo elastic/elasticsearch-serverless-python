@@ -73,8 +73,8 @@ async def mvt_setup(async_client):
     )
 
 
-async def test_mapbox_vector_tile_error(elasticsearch_url, mvt_setup, ca_certs):
-    client = AsyncElasticsearch(elasticsearch_url, ca_certs=ca_certs)
+async def test_mapbox_vector_tile_error(elasticsearch_url, mvt_setup):
+    client = AsyncElasticsearch(elasticsearch_url)
     await client.search_mvt(
         index="museums",
         zoom=13,
@@ -113,13 +113,13 @@ async def test_mapbox_vector_tile_error(elasticsearch_url, mvt_setup, ca_certs):
     }
 
 
-async def test_mapbox_vector_tile_response(elasticsearch_url, mvt_setup, ca_certs):
+async def test_mapbox_vector_tile_response(elasticsearch_url, mvt_setup):
     try:
         import mapbox_vector_tile
     except ImportError:
         return pytest.skip("Requires the 'mapbox-vector-tile' package")
 
-    client = AsyncElasticsearch(elasticsearch_url, ca_certs=ca_certs)
+    client = AsyncElasticsearch(elasticsearch_url)
 
     resp = await client.search_mvt(
         index="museums",

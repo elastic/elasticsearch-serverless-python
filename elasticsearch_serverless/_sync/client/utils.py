@@ -123,7 +123,7 @@ def host_to_node_config(host: _TYPE_HOST) -> NodeConfig:
     if isinstance(host, NodeConfig):
         return host
     elif isinstance(host, str):
-        return url_to_node_config(host)
+        return url_to_node_config(host, use_default_ports_for_scheme=True)
     elif isinstance(host, Mapping):
         return host_mapping_to_node_config(host)
     else:

@@ -65,8 +65,8 @@ from ._utils import fixup_module_metadata
 
 # This file exists for backwards compatibility.
 warnings.warn(
-    "Importing from the 'elasticsearch.client' module is deprecated. "
-    "Instead use 'elasticsearch' module for importing the client.",
+    "Importing from the 'elasticsearch_serverless.client' module is deprecated. "
+    "Instead use 'elasticsearch_serverless' module for importing the client.",
     category=DeprecationWarning,
     stacklevel=2,
 )

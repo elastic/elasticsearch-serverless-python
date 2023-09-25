@@ -1,0 +1,48 @@
+---
+steps:
+  - label: ":elasticsearch: :python: ES Serverless ({{ matrix.python }}/{{ matrix.connection_class }}) Python Test Suite: {{ matrix.suite }}"
+    agents:
+      provider: gcp
+    env:
+      PYTHON_VERSION: "{{ matrix.python }}"
+      TEST_SUITE: "{{ matrix.suite }}"
+      PYTHON_CONNECTION_CLASS: "{{ matrix.connection_class }}"
+      # TEMPORARY for 3.11
+      # https://github.com/aio-libs/aiohttp/issues/6600
+      AIOHTTP_NO_EXTENSIONS: 1
+      # https://github.com/aio-libs/frozenlist/issues/285
+      FROZENLIST_NO_EXTENSIONS: 1
+      # https://github.com/aio-libs/yarl/issues/680
+      YARL_NO_EXTENSIONS: 1
+      EC_REGISTER_BACKEND: "appex-qa-team-cluster"
+      EC_ENV: "qa"
+      EC_REGION: "aws-eu-west-1"
+      EC_PROJECT_NAME: "esv-client-python-test-{{ matrix.python }}-{{ matrix.suite }}-{{ matrix.connection_class }}-{{ key }}"
+    matrix:
+      setup:
+        suite:
+          - free
+          - platinum
+        python:
+          - "3.7"
+          - "3.8"
+          - "3.9"
+          - "3.10"
+          - "3.11"
+        connection_class:
+          - urllib3
+          - requests
+    command: ./.buildkite/run-tests
+    artifact_paths: "junit/*-junit.xml"
+  - wait: ~
+    continue_on_failure: true
+  - label: ":junit: Test results"
+    agents:
+      provider: gcp
+      image: family/core-ubuntu-2204
+    plugins:
+      - junit-annotate#v2.4.1:
+        artifacts: "junit/*-junit.xml"
+        job-uuid-file-pattern: "(.*)-junit.xml"
+        fail-build-on-error: true
+        failure-format: file
