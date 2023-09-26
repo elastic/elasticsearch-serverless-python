@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/buildkite/pipeline-schema/main/schema.json
 steps:
   - label: ":elasticsearch: :python: ES Serverless ({{ matrix.python }}/{{ matrix.connection_class }}) Python Test Suite: {{ matrix.suite }}"
     agents:
@@ -42,7 +43,7 @@ steps:
       image: family/core-ubuntu-2204
     plugins:
       - junit-annotate#v2.4.1:
-        artifacts: "junit/*-junit.xml"
-        job-uuid-file-pattern: "(.*)-junit.xml"
-        fail-build-on-error: true
-        failure-format: file
+          artifacts: "junit/*-junit.xml"
+          job-uuid-file-pattern: "(.*)-junit.xml"
+          fail-build-on-error: true
+          failure-format: file
