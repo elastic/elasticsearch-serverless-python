@@ -4,6 +4,7 @@
 export TEST_SUITE="${TEST_SUITE:=platinum}"
 export PYTHON_VERSION="${PYTHON_VERSION:=3.9}"
 export PYTHON_CONNECTION_CLASS="${PYTHON_CONNECTION_CLASS:=urllib3}"
+export EC_PROJECT_NAME="$EC_PROJECT_PREFIX-$BUILDKITE_JOB_ID"
 
 set -euo pipefail
 
@@ -19,6 +20,7 @@ run_qaf() {
     -e EC_REGION \
     -e EC_PROJECT_NAME \
     -e VAULT_TOKEN \
+    -e BUILDKITE \
     -v "$(pwd)/cloud.json:/root/.elastic/cloud.json" \
     docker.elastic.co/employees/dolaru/qaf:latest \
     bash -c "$cmd"

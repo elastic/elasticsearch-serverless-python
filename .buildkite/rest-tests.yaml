@@ -18,7 +18,7 @@ steps:
       EC_REGISTER_BACKEND: "appex-qa-team-cluster"
       EC_ENV: "qa"
       EC_REGION: "aws-eu-west-1"
-      EC_PROJECT_NAME: "esv-client-python-test-{{ matrix.python }}-{{ matrix.suite }}-{{ matrix.connection_class }}-{{ key }}"
+      EC_PROJECT_PREFIX: "esv-client-python-test-{{ matrix.python }}-{{ matrix.suite }}-{{ matrix.connection_class }}"
     matrix:
       setup:
         suite:
