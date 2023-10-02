@@ -28,13 +28,13 @@ run_qaf() {
 
 # ensure serverless instance is deleted even if script errors
 cleanup() {
-  echo -e "--- :elasticsearch: Tear down serverless instance EC_PROJECT_NAME"
+  echo -e "--- :elasticsearch: Tear down serverless instance $EC_PROJECT_NAME"
   run_qaf 'qaf elastic-cloud projects delete'
   rm -rf "$(pwd)/cloud.json"
 }
 trap cleanup EXIT
 
-echo -e "--- :elasticsearch: Start serverless instance"
+echo -e "--- :elasticsearch: Start serverless instance $EC_PROJECT_NAME"
 
 run_qaf "qaf elastic-cloud projects create --project-type elasticsearch"
 deployment=$(run_qaf "qaf elastic-cloud projects describe --as-json --show-credentials")
