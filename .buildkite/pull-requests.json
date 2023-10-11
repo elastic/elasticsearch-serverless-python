@@ -1,0 +1,9 @@
+{
+  "jobs": [
+    {
+      "enabled": true,
+      "pipeline_slug": "elasticsearch-serverless-python-rest-tests",
+      "allow_org_users": true
+    }
+  ]
+}
