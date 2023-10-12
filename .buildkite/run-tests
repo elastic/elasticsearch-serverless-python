@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # Default environment variables
-export TEST_SUITE="${TEST_SUITE:=platinum}"
 export PYTHON_VERSION="${PYTHON_VERSION:=3.9}"
 export PYTHON_CONNECTION_CLASS="${PYTHON_CONNECTION_CLASS:=urllib3}"
 export EC_PROJECT_NAME="$EC_PROJECT_PREFIX-$BUILDKITE_JOB_ID"
@@ -45,7 +44,6 @@ export ELASTICSEARCH_URL
 
 echo -e "--- :computer: Environment variables"
 echo -e "ELASTICSEARCH_URL $ELASTICSEARCH_URL"
-echo -e "TEST_SUITE $TEST_SUITE"
 echo -e "PYTHON_VERSION $PYTHON_VERSION"
 echo -e "PYTHON_CONNECTION_CLASS $PYTHON_CONNECTION_CLASS"
 
@@ -66,7 +64,6 @@ docker run \
   -e ELASTICSEARCH_URL \
   -e "ES_API_KEY=$ES_API_SECRET_KEY" \
   -e PYTHON_CONNECTION_CLASS \
-  -e TEST_SUITE \
   -e GITHUB_TOKEN \
   -e AIOHTTP_NO_EXTENSIONS \
   -e FROZENLIST_NO_EXTENSIONS \

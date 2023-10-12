@@ -6,7 +6,6 @@ steps:
       provider: gcp
     env:
       PYTHON_VERSION: "{{ matrix.python }}"
-      TEST_SUITE: "{{ matrix.suite }}"
       PYTHON_CONNECTION_CLASS: "{{ matrix.connection_class }}"
       # TEMPORARY for 3.11
       # https://github.com/aio-libs/aiohttp/issues/6600
@@ -18,12 +17,9 @@ steps:
       EC_REGISTER_BACKEND: "appex-qa-team-cluster"
       EC_ENV: "qa"
       EC_REGION: "aws-eu-west-1"
-      EC_PROJECT_PREFIX: "esv-client-python-test-{{ matrix.python }}-{{ matrix.suite }}-{{ matrix.connection_class }}"
+      EC_PROJECT_PREFIX: "esv-client-python-test-{{ matrix.python }}-{{ matrix.connection_class }}"
     matrix:
       setup:
-        suite:
-          - free
-          - platinum
         python:
           - "3.7"
           - "3.8"
