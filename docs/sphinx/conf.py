@@ -17,7 +17,6 @@
 #  under the License.
 
 import datetime
-import os
 
 import elasticsearch_serverless
 
