@@ -29,7 +29,7 @@ steps:
         connection_class:
           - urllib3
           - requests
-    command: echo "Skipping ./.buildkite/run-tests for now"
+    command: ./.buildkite/run-tests
     artifact_paths: "junit/*-junit.xml"
   - wait: ~
     continue_on_failure: true
