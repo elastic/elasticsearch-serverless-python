@@ -44,5 +44,5 @@ async def async_client(elasticsearch_url, elasticsearch_api_key):
         yield client
     finally:
         if client:
-            wipe_cluster(client)
+            wipe_cluster(client, elasticsearch_api_key)
             await client.close()
