@@ -20,7 +20,7 @@ import pytest
 from elastic_transport.client_utils import DEFAULT
 
 from elasticsearch_serverless import AsyncElasticsearch, Elasticsearch
-from elasticsearch_serverless._sync.client.utils import USER_AGENT
+from elasticsearch_serverless._sync.client.utils import ELASTIC_API_VERSION, USER_AGENT
 from test_elasticsearch_serverless.test_cases import (
     DummyAsyncTransport,
     DummyTransport,
@@ -279,7 +279,10 @@ class TestOptions(DummyTransportTestCase):
         assert node_config.host == "localhost"
         assert node_config.port == 9200
         assert node_config.path_prefix == ""
-        assert node_config.headers == {"user-agent": USER_AGENT}
+        assert node_config.headers == {
+            "user-agent": USER_AGENT,
+            "elastic-api-version": ELASTIC_API_VERSION,
+        }
 
     def test_http_headers_overrides(self):
         client = Elasticsearch(
@@ -324,6 +327,7 @@ class TestOptions(DummyTransportTestCase):
         assert node_config.headers == {
             "authorization": "Basic dXNlcm5hbWU6cGFzc3dvcmQ=",
             "user-agent": USER_AGENT,
+            "elastic-api-version": ELASTIC_API_VERSION,
         }
         assert client._headers == {"key": "val"}
 
