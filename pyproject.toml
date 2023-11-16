@@ -41,7 +41,7 @@ keywords = [
     "index",
 ]
 dependencies = [
-    "elastic-transport>=8,<9",
+    "elastic-transport>=8.4.1,<9",
 ]
 
 [project.optional-dependencies]
