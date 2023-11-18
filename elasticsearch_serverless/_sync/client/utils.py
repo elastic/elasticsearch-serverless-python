@@ -62,7 +62,7 @@ CLIENT_META_SERVICE = ("esv", client_meta_version(__versionstr__))
 USER_AGENT = create_user_agent("elasticsearch-py", __versionstr__)
 ELASTIC_API_VERSION = "2023-10-31"
 
-_TYPE_HOST = Union[str, Mapping, NodeConfig]
+_TYPE_HOST = Union[str, Mapping[str, Union[str, int]], NodeConfig]
 
 _TRANSPORT_OPTIONS = {
     "api_key",

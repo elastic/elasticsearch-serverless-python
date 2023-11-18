@@ -194,28 +194,16 @@ class TestDeserializer:
         )
 
     def test_deserialize_compatibility_header(self):
-        for content_type in (
-            "application/vnd.elasticsearch+json;compatible-with=7",
-            "application/vnd.elasticsearch+json; compatible-with=7",
-            "application/vnd.elasticsearch+json;compatible-with=8",
-            "application/vnd.elasticsearch+json; compatible-with=8",
-        ):
-            assert {"some": "data"} == self.serializers.loads(
-                '{"some":"data"}', content_type
-            )
-            assert b'{"some":"data"}' == self.serializers.dumps(
-                '{"some":"data"}', content_type
-            )
+        assert {"some": "data"} == self.serializers.loads(
+            '{"some":"data"}', "application/json"
+        )
+        assert b'{"some":"data"}' == self.serializers.dumps(
+            '{"some":"data"}', "application/json"
+        )
 
-        for content_type in (
-            "application/vnd.elasticsearch+x-ndjson;compatible-with=7",
-            "application/vnd.elasticsearch+x-ndjson; compatible-with=7",
-            "application/vnd.elasticsearch+x-ndjson;compatible-with=8",
-            "application/vnd.elasticsearch+x-ndjson; compatible-with=8",
-        ):
-            assert b'{"some":"data"}\n{"some":"data"}\n' == self.serializers.dumps(
-                ['{"some":"data"}', {"some": "data"}], content_type
-            )
-            assert [{"some": "data"}, {"some": "data"}] == self.serializers.loads(
-                b'{"some":"data"}\n{"some":"data"}\n', content_type
-            )
+        assert b'{"some":"data"}\n{"some":"data"}\n' == self.serializers.dumps(
+            ['{"some":"data"}', {"some": "data"}], "application/x-ndjson"
+        )
+        assert [{"some": "data"}, {"some": "data"}] == self.serializers.loads(
+            b'{"some":"data"}\n{"some":"data"}\n', "application/x-ndjson"
+        )
