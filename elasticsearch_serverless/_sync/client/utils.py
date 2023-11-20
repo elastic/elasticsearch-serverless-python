@@ -60,6 +60,7 @@ CLIENT_META_SERVICE = ("esv", client_meta_version(__versionstr__))
 
 # Default User-Agent used by the client
 USER_AGENT = create_user_agent("elasticsearch-py", __versionstr__)
+ELASTIC_API_VERSION = "2023-10-31"
 
 _TYPE_HOST = Union[str, Mapping[str, Union[str, int]], NodeConfig]
 
@@ -97,6 +98,8 @@ def client_node_config(
     # Set the 'User-Agent' default header.
     headers = HttpHeaders(node_options.pop("headers", ()))
     headers.setdefault("user-agent", USER_AGENT)
+    headers.setdefault("elastic-api-version", ELASTIC_API_VERSION)
+
     node_options["headers"] = headers
 
     # If a custom Requests AuthBase is passed we set that via '_extras'.
@@ -112,6 +115,8 @@ def client_node_config(
         headers.update(headers_to_add)
 
     headers.setdefault("user-agent", USER_AGENT)
+    headers.setdefault("elastic-api-version", ELASTIC_API_VERSION)
+
     headers.freeze()
     node_options["headers"] = headers
 
