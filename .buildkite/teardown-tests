@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Default environment variables
+export PYTHON_VERSION="${PYTHON_VERSION:=3.9}"
+export PYTHON_CONNECTION_CLASS="${PYTHON_CONNECTION_CLASS:=urllib3}"
+export EC_PROJECT_NAME=$(buildkite-agent meta-data get $EC_PROJECT_PREFIX)
+
+# fetch cloud creds used by qaf
+CLOUD_ACCESS_KEY=$(vault read -field="$EC_ENV" secret/ci/elastic-elasticsearch-serverless-python/cloud-access)
+echo "{\"api_key\":{\"$EC_ENV\":\"$CLOUD_ACCESS_KEY\"}}" > "$(pwd)/cloud.json"
+
+run_qaf() {
+  cmd=$1
+  docker run --rm \
+    -e EC_REGISTER_BACKEND \
+    -e EC_ENV \
+    -e EC_REGION \
+    -e EC_PROJECT_NAME \
+    -e VAULT_TOKEN \
+    -e BUILDKITE \
+    -v "$(pwd)/cloud.json:/root/.elastic/cloud.json" \
+    docker.elastic.co/employees/dolaru/qaf:latest \
+    bash -c "$cmd"
+}
+
+echo -e "--- :elasticsearch: Tear down serverless instance $EC_PROJECT_NAME"
+run_qaf 'qaf elastic-cloud projects delete'
+rm -rf "$(pwd)/cloud.json"
