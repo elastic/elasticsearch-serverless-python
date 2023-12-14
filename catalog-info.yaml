@@ -36,8 +36,7 @@ spec:
       provider_settings:
         build_pull_requests: true
         build_branches: true
-      cancel_intermediate_builds: true
-      cancel_intermediate_builds_branch_filter: '!main'
+      cancel_intermediate_builds: false
       schedules:
         main_semi_daily:
           branch: 'main'
