@@ -26,7 +26,7 @@ def benchmark_to_steps(python, connection_class):
             "command": "./.buildkite/run-tests",
             "artifact_paths": "junit/*-junit.xml",
             "retry": {"manual": False},
-            "key": f"run_{python}_{connection_class}",
+            "key": f"run_{python.replace('.', '_')}_{connection_class}",
         },
         {
             "label": f":elasticsearch: :python: Teardown ES Serverless ({python}/{connection_class})",
@@ -42,7 +42,7 @@ def benchmark_to_steps(python, connection_class):
                 "EC_PROJECT_PREFIX": f"esv-client-python-test-{python}-{connection_class}",
             },
             "command": ".buildkite/teardown-tests",
-            "depends_on": f"run_{python}_{connection_class}",
+            "depends_on": f"run_{python.replace('.', '_')}_{connection_class}",
             "allow_dependency_failure": True,
         },
     ]
