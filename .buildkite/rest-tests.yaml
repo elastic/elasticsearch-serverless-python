@@ -6,7 +6,7 @@ steps:
       set -eo pipefail
 
       python3 -m pip install pyyaml
-      python3 .buildkite/nightly/generatesteps.py | buildkite-agent pipeline upload
+      python3 .buildkite/generatesteps.py | buildkite-agent pipeline upload
   - wait: ~
     continue_on_failure: true
   - label: ":junit: Test results"
