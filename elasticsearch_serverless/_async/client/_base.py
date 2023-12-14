@@ -41,9 +41,6 @@ from ...exceptions import (
 from .utils import _base64_auth_header, _quote_query
 
 _WARNING_RE = re.compile(r"\"([^\"]*)\"")
-_COMPAT_MIMETYPE_TEMPLATE = "application/vnd.elasticsearch+%s; compatible-with=8"
-_COMPAT_MIMETYPE_RE = re.compile(r"application/(json|x-ndjson|vnd\.mapbox-vector-tile)")
-_COMPAT_MIMETYPE_SUB = _COMPAT_MIMETYPE_TEMPLATE % (r"\g<1>",)
 
 
 def resolve_auth_headers(
@@ -147,19 +144,6 @@ class BaseClient:
             request_headers.update(headers)
         else:
             request_headers = self._headers
-
-        def mimetype_header_to_compat(header: str) -> None:
-            # Converts all parts of a Accept/Content-Type headers
-            # from application/X -> application/vnd.elasticsearch+X
-            nonlocal request_headers
-            mimetype = request_headers.get(header, None)
-            if mimetype:
-                request_headers[header] = _COMPAT_MIMETYPE_RE.sub(
-                    _COMPAT_MIMETYPE_SUB, mimetype
-                )
-
-        mimetype_header_to_compat("Accept")
-        mimetype_header_to_compat("Content-Type")
 
         if params:
             target = f"{path}?{_quote_query(params)}"

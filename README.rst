@@ -1,10 +1,5 @@
-.. raw:: html
-
-   <img align="right" width="auto" height="auto" src="https://www.elastic.co/static-res/images/elastic-logo-200.png">
-
-
 Elasticsearch Serverless Python Client
-===========================
+======================================
 
 .. image:: https://img.shields.io/pypi/v/elasticsearch-serverless
    :target: https://pypi.org/project/elasticsearch-serverless
@@ -76,10 +71,10 @@ Quick Start
 
     # Import the client from the 'elasticsearch' module
     >>> from elasticsearch_serverless import Elasticsearch
-    
+
     # Instantiate a client instance
     >>> client = Elasticsearch("http://localhost:9200")
-    
+
     # Call an API, in this example `info()`
     >>> resp = client.info()
 

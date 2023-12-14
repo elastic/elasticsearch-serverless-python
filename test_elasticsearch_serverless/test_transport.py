@@ -25,6 +25,7 @@ from elastic_transport._node import NodeApiResponse
 from elastic_transport.client_utils import DEFAULT
 
 from elasticsearch_serverless import Elasticsearch, __versionstr__
+from elasticsearch_serverless._sync.client import utils
 from elasticsearch_serverless.exceptions import (
     ApiError,
     ConnectionError,
@@ -189,8 +190,9 @@ class TestTransport:
             "http://localhost:9200", headers={"user-agent": "custom/1.2.3"}
         )
         headers = [node.config for node in client.transport.node_pool.all()][0].headers
-        assert list(headers.keys()) == ["user-agent"]
+        assert list(headers.keys()) == ["user-agent", "elastic-api-version"]
         assert headers["user-agent"].startswith(f"elasticsearch-py/{__versionstr__} (")
+        assert headers["elastic-api-version"] == utils.ELASTIC_API_VERSION
 
     def test_request_with_custom_user_agent_header(self):
         client = Elasticsearch(
@@ -253,7 +255,7 @@ class TestTransport:
         calls = client.transport.node_pool.get().calls
         assert 1 == len(calls)
         assert calls[0][1]["headers"] == {
-            "accept": "application/vnd.elasticsearch+json; compatible-with=8",
+            "accept": "application/json",
         }
 
     def test_meta_header_type_error(self):
@@ -363,7 +365,7 @@ def test_unsupported_product_error(headers):
         {
             "body": None,
             "headers": {
-                "accept": "application/vnd.elasticsearch+json; compatible-with=8",
+                "accept": "application/json",
             },
             "request_timeout": DEFAULT,
         },

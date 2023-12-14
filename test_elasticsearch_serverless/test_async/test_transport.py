@@ -243,7 +243,7 @@ class TestTransport:
         calls = client.transport.node_pool.get().calls
         assert 1 == len(calls)
         assert calls[0][1]["headers"] == {
-            "accept": "application/vnd.elasticsearch+json; compatible-with=8",
+            "accept": "application/json",
         }
 
     async def test_body_surrogates_replaced_encoded_into_bytes(self):
@@ -350,7 +350,7 @@ async def test_unsupported_product_error(headers):
         {
             "body": None,
             "headers": {
-                "accept": "application/vnd.elasticsearch+json; compatible-with=8",
+                "accept": "application/json",
             },
             "request_timeout": DEFAULT,
         },

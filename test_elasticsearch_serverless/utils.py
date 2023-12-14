@@ -53,7 +53,7 @@ def parse_version(version: Optional[str]) -> Optional[Tuple[int, ...]]:
     return version_number
 
 
-def wipe_cluster(client):
+def wipe_cluster(client, elasticsearch_api_key):
     """Wipes a cluster clean between test cases"""
     close_after_wipe = False
     try:
@@ -63,7 +63,7 @@ def wipe_cluster(client):
 
         if isinstance(client, AsyncElasticsearch):
             node_config = client.transport.node_pool.get().config
-            client = Elasticsearch([node_config])
+            client = Elasticsearch(node_config, api_key=elasticsearch_api_key)
             close_after_wipe = True
     except ImportError:
         pass

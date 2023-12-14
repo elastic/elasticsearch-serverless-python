@@ -46,7 +46,7 @@ def sync_client_factory(elasticsearch_url, elasticsearch_api_key):
 
         # Wipe the cluster before we start testing just in case it wasn't wiped
         # cleanly from the previous run of pytest?
-        wipe_cluster(client)
+        wipe_cluster(client, elasticsearch_api_key)
 
         yield client
     finally:
@@ -55,9 +55,9 @@ def sync_client_factory(elasticsearch_url, elasticsearch_api_key):
 
 
 @pytest.fixture(scope="function")
-def sync_client(sync_client_factory):
+def sync_client(sync_client_factory, elasticsearch_api_key):
     try:
         yield sync_client_factory
     finally:
         # Wipe the cluster clean after every test execution.
-        wipe_cluster(sync_client_factory)
+        wipe_cluster(sync_client_factory, elasticsearch_api_key)
