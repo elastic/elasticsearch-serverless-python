@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # Default environment variables
 export PYTHON_VERSION="${PYTHON_VERSION:=3.9}"
 export PYTHON_CONNECTION_CLASS="${PYTHON_CONNECTION_CLASS:=urllib3}"
 export EC_PROJECT_NAME="$EC_PROJECT_PREFIX-$BUILDKITE_JOB_ID"
-
-set -euo pipefail
+buildkite-agent meta-data set $EC_PROJECT_PREFIX $EC_PROJECT_NAME
 
 # fetch cloud creds used by qaf
 CLOUD_ACCESS_KEY=$(vault read -field="$EC_ENV" secret/ci/elastic-elasticsearch-serverless-python/cloud-access)
@@ -27,9 +27,13 @@ run_qaf() {
 
 # ensure serverless instance is deleted even if script errors
 cleanup() {
-  echo -e "--- :elasticsearch: Tear down serverless instance $EC_PROJECT_NAME"
-  run_qaf 'qaf elastic-cloud projects delete'
-  rm -rf "$(pwd)/cloud.json"
+  if [ -z "$BUILDKITE" ]; then
+     echo -e "--- :elasticsearch: Tear down serverless instance $EC_PROJECT_NAME"
+     run_qaf 'qaf elastic-cloud projects delete'
+     rm -rf "$(pwd)/cloud.json"
+   else
+     echo -e "--- In Buildkite, another job will cleanup"
+   fi
 }
 trap cleanup EXIT
 

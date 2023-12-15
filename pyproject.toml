@@ -95,6 +95,9 @@ include = [
     "/docs/sphinx",
 ]
 
+[tool.hatch.build.targets.wheel]
+packages = ["elasticsearch_serverless"]
+
 [tool.pytest]
 junit_family = "legacy"
 addopts = "-vvv -p no:logging --cov-report=term-missing --cov=elasticsearch_serverless --cov-config=.pyproject.toml"
