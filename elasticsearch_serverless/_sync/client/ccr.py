@@ -134,9 +134,9 @@ class CcrClient(NamespacedClient):
         if max_outstanding_write_requests is not None:
             __body["max_outstanding_write_requests"] = max_outstanding_write_requests
         if max_read_request_operation_count is not None:
-            __body[
-                "max_read_request_operation_count"
-            ] = max_read_request_operation_count
+            __body["max_read_request_operation_count"] = (
+                max_read_request_operation_count
+            )
         if max_read_request_size is not None:
             __body["max_read_request_size"] = max_read_request_size
         if max_retry_delay is not None:
@@ -146,9 +146,9 @@ class CcrClient(NamespacedClient):
         if max_write_buffer_size is not None:
             __body["max_write_buffer_size"] = max_write_buffer_size
         if max_write_request_operation_count is not None:
-            __body[
-                "max_write_request_operation_count"
-            ] = max_write_request_operation_count
+            __body["max_write_request_operation_count"] = (
+                max_write_request_operation_count
+            )
         if max_write_request_size is not None:
             __body["max_write_request_size"] = max_write_request_size
         if pretty is not None:
@@ -523,9 +523,9 @@ class CcrClient(NamespacedClient):
         if max_outstanding_write_requests is not None:
             __body["max_outstanding_write_requests"] = max_outstanding_write_requests
         if max_read_request_operation_count is not None:
-            __body[
-                "max_read_request_operation_count"
-            ] = max_read_request_operation_count
+            __body["max_read_request_operation_count"] = (
+                max_read_request_operation_count
+            )
         if max_read_request_size is not None:
             __body["max_read_request_size"] = max_read_request_size
         if max_retry_delay is not None:
@@ -535,9 +535,9 @@ class CcrClient(NamespacedClient):
         if max_write_buffer_size is not None:
             __body["max_write_buffer_size"] = max_write_buffer_size
         if max_write_request_operation_count is not None:
-            __body[
-                "max_write_request_operation_count"
-            ] = max_write_request_operation_count
+            __body["max_write_request_operation_count"] = (
+                max_write_request_operation_count
+            )
         if max_write_request_size is not None:
             __body["max_write_request_size"] = max_write_request_size
         if pretty is not None:
@@ -649,9 +649,9 @@ class CcrClient(NamespacedClient):
         if max_outstanding_write_requests is not None:
             __body["max_outstanding_write_requests"] = max_outstanding_write_requests
         if max_read_request_operation_count is not None:
-            __body[
-                "max_read_request_operation_count"
-            ] = max_read_request_operation_count
+            __body["max_read_request_operation_count"] = (
+                max_read_request_operation_count
+            )
         if max_read_request_size is not None:
             __body["max_read_request_size"] = max_read_request_size
         if max_retry_delay is not None:
@@ -661,9 +661,9 @@ class CcrClient(NamespacedClient):
         if max_write_buffer_size is not None:
             __body["max_write_buffer_size"] = max_write_buffer_size
         if max_write_request_operation_count is not None:
-            __body[
-                "max_write_request_operation_count"
-            ] = max_write_request_operation_count
+            __body["max_write_request_operation_count"] = (
+                max_write_request_operation_count
+            )
         if max_write_request_size is not None:
             __body["max_write_request_size"] = max_write_request_size
         if pretty is not None:
