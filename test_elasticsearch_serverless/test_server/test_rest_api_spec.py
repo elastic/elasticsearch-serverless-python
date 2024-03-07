@@ -541,7 +541,7 @@ try:
     client = Elasticsearch(es_url(), api_key=es_api_key(), request_timeout=3)
 
     yaml_tests_url = (
-        "https://api.github.com/repos/elastic/serverless-clients-tests/zipball/main"
+        "https://api.github.com/repos/elastic/elasticsearch-clients-tests/zipball/main"
     )
 
     # Download the zip and start reading YAML from the files in memory
