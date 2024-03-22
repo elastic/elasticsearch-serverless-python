@@ -54,7 +54,7 @@ echo -e "PYTHON_CONNECTION_CLASS $PYTHON_CONNECTION_CLASS"
 echo -e "--- :docker: Build elasticsearch-serverless-python container"
 
 docker build \
-  --file .ci/Dockerfile \
+  --file .github/Dockerfile \
   --tag elasticsearch-serverless-python \
   --build-arg "PYTHON_VERSION=$PYTHON_VERSION" \
   .
