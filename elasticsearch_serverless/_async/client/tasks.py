@@ -24,15 +24,14 @@ from .utils import SKIP_IN_PATH, _quote, _rewrite_parameters
 
 
 class TasksClient(NamespacedClient):
+
     @_rewrite_parameters()
     async def get(
         self,
         *,
         task_id: str,
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
         timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,

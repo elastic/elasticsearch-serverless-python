@@ -24,15 +24,14 @@ from .utils import SKIP_IN_PATH, _quote, _rewrite_parameters
 
 
 class EqlClient(NamespacedClient):
+
     @_rewrite_parameters()
     def delete(
         self,
         *,
         id: str,
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
@@ -69,9 +68,7 @@ class EqlClient(NamespacedClient):
         *,
         id: str,
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         keep_alive: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
         pretty: t.Optional[bool] = None,
@@ -82,7 +79,7 @@ class EqlClient(NamespacedClient):
         """
         Returns async results from previously executed Event Query Language (EQL) search
 
-        `< https://www.elastic.co/guide/en/elasticsearch/reference/master/get-async-eql-search-api.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-async-eql-search-api.html>`_
 
         :param id: Identifier for the search.
         :param keep_alive: Period for which the search and its results are stored on
@@ -119,9 +116,7 @@ class EqlClient(NamespacedClient):
         *,
         id: str,
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
@@ -129,7 +124,7 @@ class EqlClient(NamespacedClient):
         Returns the status of a previously submitted async or stored Event Query Language
         (EQL) search
 
-        `< https://www.elastic.co/guide/en/elasticsearch/reference/master/get-async-eql-status-api.html>`_
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-async-eql-status-api.html>`_
 
         :param id: Identifier for the search.
         """
@@ -156,7 +151,7 @@ class EqlClient(NamespacedClient):
     def search(
         self,
         *,
-        index: t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]],
+        index: t.Union[str, t.Sequence[str]],
         query: str,
         allow_no_indices: t.Optional[bool] = None,
         case_sensitive: t.Optional[bool] = None,
@@ -164,42 +159,20 @@ class EqlClient(NamespacedClient):
         event_category_field: t.Optional[str] = None,
         expand_wildcards: t.Optional[
             t.Union[
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
-                t.Union[
-                    t.List[
-                        t.Union[
-                            "t.Literal['all', 'closed', 'hidden', 'none', 'open']", str
-                        ]
-                    ],
-                    t.Tuple[
-                        t.Union[
-                            "t.Literal['all', 'closed', 'hidden', 'none', 'open']", str
-                        ],
-                        ...,
-                    ],
+                t.Sequence[
+                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
                 ],
+                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
             ]
         ] = None,
         fetch_size: t.Optional[int] = None,
         fields: t.Optional[
-            t.Union[
-                t.Mapping[str, t.Any],
-                t.Union[
-                    t.List[t.Mapping[str, t.Any]], t.Tuple[t.Mapping[str, t.Any], ...]
-                ],
-            ]
+            t.Union[t.Mapping[str, t.Any], t.Sequence[t.Mapping[str, t.Any]]]
         ] = None,
         filter: t.Optional[
-            t.Union[
-                t.Mapping[str, t.Any],
-                t.Union[
-                    t.List[t.Mapping[str, t.Any]], t.Tuple[t.Mapping[str, t.Any], ...]
-                ],
-            ]
+            t.Union[t.Mapping[str, t.Any], t.Sequence[t.Mapping[str, t.Any]]]
         ] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         ignore_unavailable: t.Optional[bool] = None,
         keep_alive: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
