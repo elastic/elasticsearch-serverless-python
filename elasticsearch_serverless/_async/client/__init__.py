@@ -35,38 +35,22 @@ from ...exceptions import ApiError, TransportError
 from ...serializer import DEFAULT_SERIALIZERS
 from ._base import BaseClient, resolve_auth_headers
 from .async_search import AsyncSearchClient
-from .autoscaling import AutoscalingClient
 from .cat import CatClient
-from .ccr import CcrClient
 from .cluster import ClusterClient
-from .dangling_indices import DanglingIndicesClient
 from .enrich import EnrichClient
 from .eql import EqlClient
-from .features import FeaturesClient
-from .fleet import FleetClient
 from .graph import GraphClient
-from .ilm import IlmClient
 from .indices import IndicesClient
 from .ingest import IngestClient
 from .license import LicenseClient
 from .logstash import LogstashClient
-from .migration import MigrationClient
 from .ml import MlClient
-from .monitoring import MonitoringClient
-from .nodes import NodesClient
 from .query_ruleset import QueryRulesetClient
-from .rollup import RollupClient
 from .search_application import SearchApplicationClient
-from .searchable_snapshots import SearchableSnapshotsClient
 from .security import SecurityClient
-from .shutdown import ShutdownClient
-from .slm import SlmClient
-from .snapshot import SnapshotClient
 from .sql import SqlClient
-from .ssl import SslClient
 from .synonyms import SynonymsClient
 from .tasks import TasksClient
-from .text_structure import TextStructureClient
 from .transform import TransformClient
 from .utils import (
     _TYPE_HOST,
@@ -78,8 +62,6 @@ from .utils import (
     is_requests_http_auth,
     is_requests_node_class,
 )
-from .watcher import WatcherClient
-from .xpack import XPackClient
 
 logger = logging.getLogger("elasticsearch")
 
@@ -294,42 +276,24 @@ class AsyncElasticsearch(BaseClient):
 
         # namespaced clients for compatibility with API names
         self.async_search = AsyncSearchClient(self)
-        self.autoscaling = AutoscalingClient(self)
         self.cat = CatClient(self)
         self.cluster = ClusterClient(self)
-        self.fleet = FleetClient(self)
-        self.features = FeaturesClient(self)
         self.indices = IndicesClient(self)
         self.ingest = IngestClient(self)
-        self.nodes = NodesClient(self)
-        self.snapshot = SnapshotClient(self)
         self.tasks = TasksClient(self)
 
-        self.xpack = XPackClient(self)
-        self.ccr = CcrClient(self)
-        self.dangling_indices = DanglingIndicesClient(self)
         self.enrich = EnrichClient(self)
         self.eql = EqlClient(self)
         self.graph = GraphClient(self)
-        self.ilm = IlmClient(self)
         self.license = LicenseClient(self)
         self.logstash = LogstashClient(self)
-        self.migration = MigrationClient(self)
         self.ml = MlClient(self)
-        self.monitoring = MonitoringClient(self)
         self.query_ruleset = QueryRulesetClient(self)
-        self.rollup = RollupClient(self)
         self.search_application = SearchApplicationClient(self)
-        self.searchable_snapshots = SearchableSnapshotsClient(self)
         self.security = SecurityClient(self)
-        self.slm = SlmClient(self)
-        self.shutdown = ShutdownClient(self)
         self.sql = SqlClient(self)
-        self.ssl = SslClient(self)
         self.synonyms = SynonymsClient(self)
-        self.text_structure = TextStructureClient(self)
         self.transform = TransformClient(self)
-        self.watcher = WatcherClient(self)
 
     def __repr__(self) -> str:
         try:
