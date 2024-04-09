@@ -125,7 +125,7 @@ class TestStreamingBulk(object):
         await async_client.indices.create(
             index="i",
             mappings={"properties": {"a": {"type": "integer"}}},
-            wait_for_active_shards="all"
+            wait_for_active_shards="all",
         )
 
         try:
