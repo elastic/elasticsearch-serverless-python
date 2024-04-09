@@ -30,34 +30,16 @@ Async Search
 .. autoclass:: AsyncSearchClient
    :members:
 
-Autoscaling
------------
-
-.. autoclass:: AutoscalingClient
-   :members:
-
 Cat
 ---
 
 .. autoclass:: CatClient
    :members:
 
-Cross-Cluster Replication (CCR)
--------------------------------
-
-.. autoclass:: CcrClient
-   :members:
-
 Cluster
 -------
 
 .. autoclass:: ClusterClient
-   :members:
-
-Dangling Indices
-----------------
-
-.. autoclass:: DanglingIndicesClient
    :members:
 
 Enrich Policies
@@ -72,28 +54,10 @@ Event Query Language (EQL)
 .. autoclass:: EqlClient
    :members:
 
-Snapshottable Features
-----------------------
-
-.. autoclass:: FeaturesClient
-   :members:
-
-Fleet
------
-
-.. autoclass:: FleetClient
-   :members:
-
 Graph Explore
 -------------
 
 .. autoclass:: GraphClient
-   :members:
-
-Index Lifecycle Management (ILM)
---------------------------------
-
-.. autoclass:: IlmClient
    :members:
 
 Indices
@@ -120,12 +84,6 @@ Logstash
 .. autoclass:: LogstashClient
    :members:
 
-Migration
----------
-
-.. autoclass:: MigrationClient
-   :members:
-
 Machine Learning (ML)
 ---------------------
 
@@ -138,46 +96,10 @@ Monitoring
 .. autoclass:: MonitoringClient
    :members:
 
-Nodes
------
-
-.. autoclass:: NodesClient
-   :members:
-
-Rollup Indices
---------------
-
-.. autoclass:: RollupClient
-   :members:
-
-Searchable Snapshots
---------------------
-
-.. autoclass:: SearchableSnapshotsClient
-   :members:
-
 Security
 --------
 
 .. autoclass:: SecurityClient
-   :members:
-
-Shutdown
---------
-
-.. autoclass:: ShutdownClient
-   :members:
-
-Snapshot Lifecycle Management (SLM)
------------------------------------
-
-.. autoclass:: SlmClient
-   :members:
-
-Snapshots
----------
-
-.. autoclass:: SnapshotClient
    :members:
 
 SQL
@@ -186,38 +108,14 @@ SQL
 .. autoclass:: SqlClient
    :members:
 
-TLS/SSL
--------
-
-.. autoclass:: SslClient
-   :members:
-
 Tasks
 -----
 
 .. autoclass:: TasksClient
    :members:
 
-Text Structure
---------------
-
-.. autoclass:: TextStructureClient
-   :members:
-
 Transforms
 ----------
 
 .. autoclass:: TransformClient
-   :members:
-
-Watcher
--------
-
-.. autoclass:: WatcherClient
-   :members:
-
-X-Pack
-------
-
-.. autoclass:: XPackClient
    :members:
