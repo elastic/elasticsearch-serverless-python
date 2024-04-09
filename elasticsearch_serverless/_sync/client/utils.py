@@ -64,6 +64,8 @@ ELASTIC_API_VERSION = "2023-10-31"
 
 _TYPE_HOST = Union[str, Mapping[str, Union[str, int]], NodeConfig]
 
+_TYPE_BODY = Union[bytes, str, Dict[str, Any]]
+
 _TRANSPORT_OPTIONS = {
     "api_key",
     "http_auth",
@@ -259,14 +261,43 @@ def _merge_kwargs_no_duplicates(kwargs: Dict[str, Any], values: Dict[str, Any]) 
         if key in kwargs:
             raise ValueError(
                 f"Received multiple values for '{key}', specify parameters "
-                "directly instead of using 'body' or 'params'"
+                "directly instead of using 'params'"
             )
         kwargs[key] = val
 
 
+def _merge_body_fields_no_duplicates(
+    body: _TYPE_BODY, kwargs: Dict[str, Any], body_fields: Tuple[str, ...]
+) -> bool:
+    mixed_body_and_params = False
+    for key in list(kwargs.keys()):
+        if key in body_fields:
+            if isinstance(body, (str, bytes)):
+                raise ValueError(
+                    "Couldn't merge 'body' with other parameters as it wasn't a mapping."
+                )
+
+            if key in body:
+                raise ValueError(
+                    f"Received multiple values for '{key}', specify parameters "
+                    "using either body or parameters, not both."
+                )
+
+            warnings.warn(
+                f"Received '{key}' via a specific parameter in the presence of a "
+                "'body' parameter, which is deprecated and will be removed in a future "
+                "version. Instead, use only 'body' or only specific parameters.",
+                category=DeprecationWarning,
+                stacklevel=warn_stacklevel(),
+            )
+            body[key] = kwargs.pop(key)
+            mixed_body_and_params = True
+    return mixed_body_and_params
+
+
 def _rewrite_parameters(
     body_name: Optional[str] = None,
-    body_fields: bool = False,
+    body_fields: Optional[Tuple[str, ...]] = None,
     parameter_aliases: Optional[Dict[str, str]] = None,
     ignore_deprecated_options: Optional[Set[str]] = None,
 ) -> Callable[[F], F]:
@@ -342,7 +373,8 @@ def _rewrite_parameters(
             if "body" in kwargs and (
                 not ignore_deprecated_options or "body" not in ignore_deprecated_options
             ):
-                body = kwargs.pop("body")
+                body: Optional[_TYPE_BODY] = kwargs.pop("body")
+                mixed_body_and_params = False
                 if body is not None:
                     if body_name:
                         if body_name in kwargs:
@@ -352,30 +384,27 @@ def _rewrite_parameters(
                                 f"'{body_name}' parameter. See https://github.com/elastic/elasticsearch-py/"
                                 "issues/1698 for more information"
                             )
-
-                        warnings.warn(
-                            "The 'body' parameter is deprecated and will be removed "
-                            f"in a future version. Instead use the '{body_name}' parameter. "
-                            "See https://github.com/elastic/elasticsearch-py/issues/1698 "
-                            "for more information",
-                            category=DeprecationWarning,
-                            stacklevel=warn_stacklevel(),
-                        )
                         kwargs[body_name] = body
-
-                    elif body_fields:
-                        if not hasattr(body, "items"):
-                            raise ValueError(
-                                "Couldn't merge 'body' with other parameters as it wasn't a mapping. "
-                                "Instead of using 'body' use individual API parameters"
-                            )
-                        warnings.warn(
-                            "The 'body' parameter is deprecated and will be removed "
-                            "in a future version. Instead use individual parameters.",
-                            category=DeprecationWarning,
-                            stacklevel=warn_stacklevel(),
+                    elif body_fields is not None:
+                        mixed_body_and_params = _merge_body_fields_no_duplicates(
+                            body, kwargs, body_fields
                         )
-                        _merge_kwargs_no_duplicates(kwargs, body)
+                        kwargs["body"] = body
+
+                    if parameter_aliases and not isinstance(body, (str, bytes)):
+                        for alias, rename_to in parameter_aliases.items():
+                            if rename_to in body:
+                                body[alias] = body.pop(rename_to)
+                                # If body and params are mixed, the alias may come from a param,
+                                # in which case the warning below will not make sense.
+                                if not mixed_body_and_params:
+                                    warnings.warn(
+                                        f"Using '{rename_to}' alias in 'body' is deprecated and will be removed "
+                                        f"in a future version of elasticsearch-py. Use '{alias}' directly instead. "
+                                        "See https://github.com/elastic/elasticsearch-py/issues/1698 for more information",
+                                        category=DeprecationWarning,
+                                        stacklevel=2,
+                                    )
 
             if parameter_aliases:
                 for alias, rename_to in parameter_aliases.items():
