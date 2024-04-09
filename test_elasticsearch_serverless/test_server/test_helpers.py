@@ -338,9 +338,7 @@ def test_errors_are_reported_correctly(sync_client):
     assert "42" == error["index"]["_id"]
     assert "i" == error["index"]["_index"]
     print(error["index"]["error"])
-    assert "MapperParsingException" in repr(
-        error["index"]["error"]
-    ) or "mapper_parsing_exception" in repr(error["index"]["error"])
+    assert "document_parsing_exception" in repr(error["index"]["error"])
 
 
 def test_error_is_raised(sync_client):
