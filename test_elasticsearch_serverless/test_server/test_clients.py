@@ -59,7 +59,7 @@ def test_bulk_works_with_bytestring_body(sync_client):
         "index": {
             "_index": "bulk_test_index",
             "result": "created",
-            "_shards": {"total": 2, "successful": 1, "failed": 0},
+            "_shards": {"total": 1, "successful": 1, "failed": 0},
             "_seq_no": 0,
             "_primary_term": 1,
             "status": 201,
