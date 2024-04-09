@@ -1,6 +1,15 @@
 [[release-notes]]
 == Release notes
 
+=== 0.2.0.20231031
+
+* Allowed unrestricted ``body`` parameter (https://github.com/elastic/elasticsearch-serverless-python/pull/34[#34], see https://github.com/elastic/elasticsearch-py/pull/2383[elasticsearch-py#2383])
+* Added the Inference APIs (https://github.com/elastic/elasticsearch-serverless-python/pull/33[#33])
+* Remove APIs that do not exist on serverless (https://github.com/elastic/elasticsearch-serverless-python/pull/31[#31])
+* Set ``Elastic-Api-Version`` header (https://github.com/elastic/elasticsearch-serverless-python/pull/26[#26])
+* Switched  to``Accept: application/json`` (https://github.com/elastic/elasticsearch-serverless-python/pull/27[#27])
+* Fixed elastic-transport-python dependency version (https://github.com/elastic/elasticsearch-serverless-python/pull/24[#24], contributed by https://github.com/crispybacon[@crispybacon])
+
 === 0.1.0.20231031
 
 Initial release
