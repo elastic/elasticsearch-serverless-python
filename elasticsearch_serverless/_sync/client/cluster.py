@@ -24,15 +24,14 @@ from .utils import SKIP_IN_PATH, _quote, _rewrite_parameters
 
 
 class ClusterClient(NamespacedClient):
+
     @_rewrite_parameters()
     def delete_component_template(
         self,
         *,
-        name: t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]],
+        name: t.Union[str, t.Sequence[str]],
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         master_timeout: t.Optional[
             t.Union["t.Literal[-1]", "t.Literal[0]", str]
@@ -78,11 +77,9 @@ class ClusterClient(NamespacedClient):
     def exists_component_template(
         self,
         *,
-        name: t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]],
+        name: t.Union[str, t.Sequence[str]],
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
         master_timeout: t.Optional[
@@ -131,9 +128,7 @@ class ClusterClient(NamespacedClient):
         *,
         name: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         flat_settings: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
         include_defaults: t.Optional[bool] = None,
@@ -190,29 +185,17 @@ class ClusterClient(NamespacedClient):
         self,
         *,
         target: t.Union[
+            t.Sequence[
+                t.Union[
+                    "t.Literal['_all', 'http', 'ingest', 'script', 'thread_pool']", str
+                ]
+            ],
             t.Union[
                 "t.Literal['_all', 'http', 'ingest', 'script', 'thread_pool']", str
             ],
-            t.Union[
-                t.List[
-                    t.Union[
-                        "t.Literal['_all', 'http', 'ingest', 'script', 'thread_pool']",
-                        str,
-                    ]
-                ],
-                t.Tuple[
-                    t.Union[
-                        "t.Literal['_all', 'http', 'ingest', 'script', 'thread_pool']",
-                        str,
-                    ],
-                    ...,
-                ],
-            ],
         ],
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
@@ -253,9 +236,7 @@ class ClusterClient(NamespacedClient):
         allow_auto_create: t.Optional[bool] = None,
         create: t.Optional[bool] = None,
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         master_timeout: t.Optional[
             t.Union["t.Literal[-1]", "t.Literal[0]", str]

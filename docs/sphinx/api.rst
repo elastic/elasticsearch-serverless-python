@@ -66,6 +66,12 @@ Indices
 .. autoclass:: IndicesClient
    :members:
 
+Inference
+---------
+
+.. autoclass:: InferenceClient
+   :members:
+
 Ingest Pipelines
 ----------------
 

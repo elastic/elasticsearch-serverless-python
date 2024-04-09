@@ -24,15 +24,14 @@ from .utils import _rewrite_parameters
 
 
 class LicenseClient(NamespacedClient):
+
     @_rewrite_parameters()
     def get(
         self,
         *,
         accept_enterprise: t.Optional[bool] = None,
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,

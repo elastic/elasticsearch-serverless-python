@@ -24,14 +24,13 @@ from .utils import SKIP_IN_PATH, _quote, _rewrite_parameters
 
 
 class SecurityClient(NamespacedClient):
+
     @_rewrite_parameters()
     async def authenticate(
         self,
         *,
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
@@ -64,9 +63,7 @@ class SecurityClient(NamespacedClient):
         *,
         error_trace: t.Optional[bool] = None,
         expiration: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         metadata: t.Optional[t.Mapping[str, t.Any]] = None,
         name: t.Optional[str] = None,
@@ -129,10 +126,9 @@ class SecurityClient(NamespacedClient):
     async def get_api_key(
         self,
         *,
+        active_only: t.Optional[bool] = None,
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         id: t.Optional[str] = None,
         name: t.Optional[str] = None,
@@ -141,12 +137,18 @@ class SecurityClient(NamespacedClient):
         realm_name: t.Optional[str] = None,
         username: t.Optional[str] = None,
         with_limited_by: t.Optional[bool] = None,
+        with_profile_uid: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Retrieves information for one or more API keys.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-get-api-key.html>`_
 
+        :param active_only: A boolean flag that can be used to query API keys that are
+            currently active. An API key is considered active if it is neither invalidated,
+            nor expired at query time. You can specify this together with other parameters
+            such as `owner` or `name`. If `active_only` is false, the response will include
+            both active and inactive (expired or invalidated) keys.
         :param id: An API key id. This parameter cannot be used with any of `name`, `realm_name`
             or `username`.
         :param name: An API key name. This parameter cannot be used with any of `id`,
@@ -162,9 +164,13 @@ class SecurityClient(NamespacedClient):
         :param with_limited_by: Return the snapshot of the owner user's role descriptors
             associated with the API key. An API key's actual permission is the intersection
             of its assigned role descriptors and the owner user's role descriptors.
+        :param with_profile_uid: Determines whether to also retrieve the profile uid,
+            for the API key owner principal, if it exists.
         """
         __path = "/_security/api_key"
         __query: t.Dict[str, t.Any] = {}
+        if active_only is not None:
+            __query["active_only"] = active_only
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
@@ -185,6 +191,8 @@ class SecurityClient(NamespacedClient):
             __query["username"] = username
         if with_limited_by is not None:
             __query["with_limited_by"] = with_limited_by
+        if with_profile_uid is not None:
+            __query["with_profile_uid"] = with_profile_uid
         __headers = {"accept": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "GET", __path, params=__query, headers=__headers
@@ -197,34 +205,19 @@ class SecurityClient(NamespacedClient):
         self,
         *,
         user: t.Optional[str] = None,
-        application: t.Optional[
-            t.Union[t.List[t.Mapping[str, t.Any]], t.Tuple[t.Mapping[str, t.Any], ...]]
-        ] = None,
+        application: t.Optional[t.Sequence[t.Mapping[str, t.Any]]] = None,
         cluster: t.Optional[
-            t.Union[
-                t.List[
-                    t.Union[
-                        "t.Literal['all', 'cancel_task', 'create_snapshot', 'grant_api_key', 'manage', 'manage_api_key', 'manage_ccr', 'manage_enrich', 'manage_ilm', 'manage_index_templates', 'manage_ingest_pipelines', 'manage_logstash_pipelines', 'manage_ml', 'manage_oidc', 'manage_own_api_key', 'manage_pipeline', 'manage_rollup', 'manage_saml', 'manage_security', 'manage_service_account', 'manage_slm', 'manage_token', 'manage_transform', 'manage_user_profile', 'manage_watcher', 'monitor', 'monitor_ml', 'monitor_rollup', 'monitor_snapshot', 'monitor_text_structure', 'monitor_transform', 'monitor_watcher', 'read_ccr', 'read_ilm', 'read_pipeline', 'read_slm', 'transport_client']",
-                        str,
-                    ]
-                ],
-                t.Tuple[
-                    t.Union[
-                        "t.Literal['all', 'cancel_task', 'create_snapshot', 'grant_api_key', 'manage', 'manage_api_key', 'manage_ccr', 'manage_enrich', 'manage_ilm', 'manage_index_templates', 'manage_ingest_pipelines', 'manage_logstash_pipelines', 'manage_ml', 'manage_oidc', 'manage_own_api_key', 'manage_pipeline', 'manage_rollup', 'manage_saml', 'manage_security', 'manage_service_account', 'manage_slm', 'manage_token', 'manage_transform', 'manage_user_profile', 'manage_watcher', 'monitor', 'monitor_ml', 'monitor_rollup', 'monitor_snapshot', 'monitor_text_structure', 'monitor_transform', 'monitor_watcher', 'read_ccr', 'read_ilm', 'read_pipeline', 'read_slm', 'transport_client']",
-                        str,
-                    ],
-                    ...,
-                ],
+            t.Sequence[
+                t.Union[
+                    "t.Literal['all', 'cancel_task', 'create_snapshot', 'grant_api_key', 'manage', 'manage_api_key', 'manage_ccr', 'manage_enrich', 'manage_ilm', 'manage_index_templates', 'manage_ingest_pipelines', 'manage_logstash_pipelines', 'manage_ml', 'manage_oidc', 'manage_own_api_key', 'manage_pipeline', 'manage_rollup', 'manage_saml', 'manage_security', 'manage_service_account', 'manage_slm', 'manage_token', 'manage_transform', 'manage_user_profile', 'manage_watcher', 'monitor', 'monitor_ml', 'monitor_rollup', 'monitor_snapshot', 'monitor_text_structure', 'monitor_transform', 'monitor_watcher', 'read_ccr', 'read_ilm', 'read_pipeline', 'read_slm', 'transport_client']",
+                    str,
+                ]
             ]
         ] = None,
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
-        index: t.Optional[
-            t.Union[t.List[t.Mapping[str, t.Any]], t.Tuple[t.Mapping[str, t.Any], ...]]
-        ] = None,
+        index: t.Optional[t.Sequence[t.Mapping[str, t.Any]]] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
@@ -269,12 +262,10 @@ class SecurityClient(NamespacedClient):
         self,
         *,
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         id: t.Optional[str] = None,
-        ids: t.Optional[t.Union[t.List[str], t.Tuple[str, ...]]] = None,
+        ids: t.Optional[t.Sequence[str]] = None,
         name: t.Optional[str] = None,
         owner: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
@@ -335,44 +326,55 @@ class SecurityClient(NamespacedClient):
     async def query_api_keys(
         self,
         *,
+        aggregations: t.Optional[t.Mapping[str, t.Mapping[str, t.Any]]] = None,
+        aggs: t.Optional[t.Mapping[str, t.Mapping[str, t.Any]]] = None,
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         from_: t.Optional[int] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
         query: t.Optional[t.Mapping[str, t.Any]] = None,
         search_after: t.Optional[
-            t.Union[
-                t.List[t.Union[None, bool, float, int, str, t.Any]],
-                t.Tuple[t.Union[None, bool, float, int, str, t.Any], ...],
-            ]
+            t.Sequence[t.Union[None, bool, float, int, str, t.Any]]
         ] = None,
         size: t.Optional[int] = None,
         sort: t.Optional[
             t.Union[
+                t.Sequence[t.Union[str, t.Mapping[str, t.Any]]],
                 t.Union[str, t.Mapping[str, t.Any]],
-                t.Union[
-                    t.List[t.Union[str, t.Mapping[str, t.Any]]],
-                    t.Tuple[t.Union[str, t.Mapping[str, t.Any]], ...],
-                ],
             ]
         ] = None,
+        typed_keys: t.Optional[bool] = None,
         with_limited_by: t.Optional[bool] = None,
+        with_profile_uid: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Retrieves information for API keys using a subset of query DSL
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-query-api-key.html>`_
 
+        :param aggregations: Any aggregations to run over the corpus of returned API
+            keys. Aggregations and queries work together. Aggregations are computed only
+            on the API keys that match the query. This supports only a subset of aggregation
+            types, namely: `terms`, `range`, `date_range`, `missing`, `cardinality`,
+            `value_count`, `composite`, `filter`, and `filters`. Additionally, aggregations
+            only run over the same subset of fields that query works with.
+        :param aggs: Any aggregations to run over the corpus of returned API keys. Aggregations
+            and queries work together. Aggregations are computed only on the API keys
+            that match the query. This supports only a subset of aggregation types, namely:
+            `terms`, `range`, `date_range`, `missing`, `cardinality`, `value_count`,
+            `composite`, `filter`, and `filters`. Additionally, aggregations only run
+            over the same subset of fields that query works with.
         :param from_: Starting document offset. By default, you cannot page through more
             than 10,000 hits using the from and size parameters. To page through more
             hits, use the `search_after` parameter.
-        :param query: A query to filter which API keys to return. The query supports
-            a subset of query types, including `match_all`, `bool`, `term`, `terms`,
-            `ids`, `prefix`, `wildcard`, and `range`. You can query all public information
-            associated with an API key.
+        :param query: A query to filter which API keys to return. If the query parameter
+            is missing, it is equivalent to a `match_all` query. The query supports a
+            subset of query types, including `match_all`, `bool`, `term`, `terms`, `match`,
+            `ids`, `prefix`, `wildcard`, `exists`, `range`, and `simple_query_string`.
+            You can query the following public information associated with an API key:
+            `id`, `type`, `name`, `creation`, `expiration`, `invalidated`, `invalidation`,
+            `username`, `realm`, and `metadata`.
         :param search_after: Search after definition
         :param size: The number of hits to return. By default, you cannot page through
             more than 10,000 hits using the `from` and `size` parameters. To page through
@@ -380,13 +382,17 @@ class SecurityClient(NamespacedClient):
         :param sort: Other than `id`, all public fields of an API key are eligible for
             sorting. In addition, sort can also be applied to the `_doc` field to sort
             by index order.
+        :param typed_keys: Determines whether aggregation names are prefixed by their
+            respective types in the response.
         :param with_limited_by: Return the snapshot of the owner user's role descriptors
             associated with the API key. An API key's actual permission is the intersection
             of its assigned role descriptors and the owner user's role descriptors.
+        :param with_profile_uid: Determines whether to also retrieve the profile uid,
+            for the API key owner principal, if it exists.
         """
         __path = "/_security/_query/api_key"
-        __query: t.Dict[str, t.Any] = {}
         __body: t.Dict[str, t.Any] = {}
+        __query: t.Dict[str, t.Any] = {}
         # The 'sort' parameter with a colon can't be encoded to the body.
         if sort is not None and (
             (isinstance(sort, str) and ":" in sort)
@@ -398,6 +404,10 @@ class SecurityClient(NamespacedClient):
         ):
             __query["sort"] = sort
             sort = None
+        if aggregations is not None:
+            __body["aggregations"] = aggregations
+        if aggs is not None:
+            __body["aggs"] = aggs
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
@@ -416,8 +426,12 @@ class SecurityClient(NamespacedClient):
             __body["size"] = size
         if sort is not None:
             __body["sort"] = sort
+        if typed_keys is not None:
+            __query["typed_keys"] = typed_keys
         if with_limited_by is not None:
             __query["with_limited_by"] = with_limited_by
+        if with_profile_uid is not None:
+            __query["with_profile_uid"] = with_profile_uid
         if not __body:
             __body = None  # type: ignore[assignment]
         __headers = {"accept": "application/json"}
@@ -435,9 +449,8 @@ class SecurityClient(NamespacedClient):
         *,
         id: str,
         error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[
-            t.Union[str, t.Union[t.List[str], t.Tuple[str, ...]]]
-        ] = None,
+        expiration: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         metadata: t.Optional[t.Mapping[str, t.Any]] = None,
         pretty: t.Optional[bool] = None,
@@ -449,6 +462,7 @@ class SecurityClient(NamespacedClient):
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-update-api-key.html>`_
 
         :param id: The ID of the API key to update.
+        :param expiration: Expiration time for the API key.
         :param metadata: Arbitrary metadata that you want to associate with the API key.
             It supports nested data structure. Within the metadata object, keys beginning
             with _ are reserved for system usage.
@@ -468,6 +482,8 @@ class SecurityClient(NamespacedClient):
         __body: t.Dict[str, t.Any] = {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
+        if expiration is not None:
+            __body["expiration"] = expiration
         if filter_path is not None:
             __query["filter_path"] = filter_path
         if human is not None:
