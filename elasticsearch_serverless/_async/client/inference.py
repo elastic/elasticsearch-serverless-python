@@ -118,13 +118,13 @@ class InferenceClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("input", "query", "task_settings"),
     )
     async def inference(
         self,
         *,
         inference_id: str,
-        input: t.Union[str, t.Sequence[str]],
+        input: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         task_type: t.Optional[
             t.Union[
                 "t.Literal['completion', 'rerank', 'sparse_embedding', 'text_embedding']",
@@ -137,6 +137,7 @@ class InferenceClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         query: t.Optional[str] = None,
         task_settings: t.Optional[t.Any] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Perform inference on a model
@@ -151,7 +152,7 @@ class InferenceClient(NamespacedClient):
         """
         if inference_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'inference_id'")
-        if input is None:
+        if input is None and body is None:
             raise ValueError("Empty value passed for parameter 'input'")
         if task_type not in SKIP_IN_PATH and inference_id not in SKIP_IN_PATH:
             __path = f"/_inference/{_quote(task_type)}/{_quote(inference_id)}"
@@ -159,10 +160,8 @@ class InferenceClient(NamespacedClient):
             __path = f"/_inference/{_quote(inference_id)}"
         else:
             raise ValueError("Couldn't find a path for the given parameters")
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if input is not None:
-            __body["input"] = input
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
@@ -171,10 +170,13 @@ class InferenceClient(NamespacedClient):
             __query["human"] = human
         if pretty is not None:
             __query["pretty"] = pretty
-        if query is not None:
-            __body["query"] = query
-        if task_settings is not None:
-            __body["task_settings"] = task_settings
+        if not __body:
+            if input is not None:
+                __body["input"] = input
+            if query is not None:
+                __body["query"] = query
+            if task_settings is not None:
+                __body["task_settings"] = task_settings
         if not __body:
             __body = None  # type: ignore[assignment]
         __headers = {"accept": "application/json"}
@@ -191,7 +193,8 @@ class InferenceClient(NamespacedClient):
         self,
         *,
         inference_id: str,
-        model_config: t.Mapping[str, t.Any],
+        model_config: t.Optional[t.Mapping[str, t.Any]] = None,
+        body: t.Optional[t.Mapping[str, t.Any]] = None,
         task_type: t.Optional[
             t.Union[
                 "t.Literal['completion', 'rerank', 'sparse_embedding', 'text_embedding']",
@@ -214,8 +217,12 @@ class InferenceClient(NamespacedClient):
         """
         if inference_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'inference_id'")
-        if model_config is None:
-            raise ValueError("Empty value passed for parameter 'model_config'")
+        if model_config is None and body is None:
+            raise ValueError(
+                "Empty value passed for parameters 'model_config' and 'body', one of them should be set."
+            )
+        elif model_config is not None and body is not None:
+            raise ValueError("Cannot set both 'model_config' and 'body'")
         if task_type not in SKIP_IN_PATH and inference_id not in SKIP_IN_PATH:
             __path = f"/_inference/{_quote(task_type)}/{_quote(inference_id)}"
         elif inference_id not in SKIP_IN_PATH:
@@ -231,7 +238,7 @@ class InferenceClient(NamespacedClient):
             __query["human"] = human
         if pretty is not None:
             __query["pretty"] = pretty
-        __body = model_config
+        __body = model_config if model_config is not None else body
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "PUT", __path, params=__query, headers=__headers, body=__body

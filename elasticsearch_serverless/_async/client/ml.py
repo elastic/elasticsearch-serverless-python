@@ -26,7 +26,7 @@ from .utils import SKIP_IN_PATH, _quote, _rewrite_parameters
 class MlClient(NamespacedClient):
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("allow_no_match", "force", "timeout"),
     )
     async def close_job(
         self,
@@ -39,6 +39,7 @@ class MlClient(NamespacedClient):
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
         timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Closes one or more anomaly detection jobs. A job can be opened and closed multiple
@@ -59,22 +60,23 @@ class MlClient(NamespacedClient):
         if job_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'job_id'")
         __path = f"/_ml/anomaly_detectors/{_quote(job_id)}/_close"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if allow_no_match is not None:
-            __body["allow_no_match"] = allow_no_match
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
             __query["filter_path"] = filter_path
-        if force is not None:
-            __body["force"] = force
         if human is not None:
             __query["human"] = human
         if pretty is not None:
             __query["pretty"] = pretty
-        if timeout is not None:
-            __body["timeout"] = timeout
+        if not __body:
+            if allow_no_match is not None:
+                __body["allow_no_match"] = allow_no_match
+            if force is not None:
+                __body["force"] = force
+            if timeout is not None:
+                __body["timeout"] = timeout
         if not __body:
             __body = None  # type: ignore[assignment]
         __headers = {"accept": "application/json"}
@@ -444,7 +446,11 @@ class MlClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=(
+            "analysis_config",
+            "max_bucket_cardinality",
+            "overall_cardinality",
+        ),
     )
     async def estimate_model_memory(
         self,
@@ -456,6 +462,7 @@ class MlClient(NamespacedClient):
         max_bucket_cardinality: t.Optional[t.Mapping[str, int]] = None,
         overall_cardinality: t.Optional[t.Mapping[str, int]] = None,
         pretty: t.Optional[bool] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Estimates the model memory
@@ -478,40 +485,42 @@ class MlClient(NamespacedClient):
             or `partition_field_name`.
         """
         __path = "/_ml/anomaly_detectors/_estimate_model_memory"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if analysis_config is not None:
-            __body["analysis_config"] = analysis_config
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
             __query["filter_path"] = filter_path
         if human is not None:
             __query["human"] = human
-        if max_bucket_cardinality is not None:
-            __body["max_bucket_cardinality"] = max_bucket_cardinality
-        if overall_cardinality is not None:
-            __body["overall_cardinality"] = overall_cardinality
         if pretty is not None:
             __query["pretty"] = pretty
+        if not __body:
+            if analysis_config is not None:
+                __body["analysis_config"] = analysis_config
+            if max_bucket_cardinality is not None:
+                __body["max_bucket_cardinality"] = max_bucket_cardinality
+            if overall_cardinality is not None:
+                __body["overall_cardinality"] = overall_cardinality
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "POST", __path, params=__query, headers=__headers, body=__body
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("evaluation", "index", "query"),
     )
     async def evaluate_data_frame(
         self,
         *,
-        evaluation: t.Mapping[str, t.Any],
-        index: str,
+        evaluation: t.Optional[t.Mapping[str, t.Any]] = None,
+        index: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
         query: t.Optional[t.Mapping[str, t.Any]] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Evaluates the data frame analytics for an annotated index.
@@ -523,17 +532,13 @@ class MlClient(NamespacedClient):
         :param query: A query clause that retrieves a subset of data from the source
             index.
         """
-        if evaluation is None:
+        if evaluation is None and body is None:
             raise ValueError("Empty value passed for parameter 'evaluation'")
-        if index is None:
+        if index is None and body is None:
             raise ValueError("Empty value passed for parameter 'index'")
         __path = "/_ml/data_frame/_evaluate"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if evaluation is not None:
-            __body["evaluation"] = evaluation
-        if index is not None:
-            __body["index"] = index
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
@@ -542,15 +547,20 @@ class MlClient(NamespacedClient):
             __query["human"] = human
         if pretty is not None:
             __query["pretty"] = pretty
-        if query is not None:
-            __body["query"] = query
+        if not __body:
+            if evaluation is not None:
+                __body["evaluation"] = evaluation
+            if index is not None:
+                __body["index"] = index
+            if query is not None:
+                __body["query"] = query
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "POST", __path, params=__query, headers=__headers, body=__body
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("advance_time", "calc_interim", "end", "skip_time", "start"),
     )
     async def flush_job(
         self,
@@ -565,6 +575,7 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         skip_time: t.Optional[t.Union[str, t.Any]] = None,
         start: t.Optional[t.Union[str, t.Any]] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Forces any buffered data to be processed by the job.
@@ -581,14 +592,8 @@ class MlClient(NamespacedClient):
         if job_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'job_id'")
         __path = f"/_ml/anomaly_detectors/{_quote(job_id)}/_flush"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if advance_time is not None:
-            __body["advance_time"] = advance_time
-        if calc_interim is not None:
-            __body["calc_interim"] = calc_interim
-        if end is not None:
-            __body["end"] = end
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
@@ -597,10 +602,17 @@ class MlClient(NamespacedClient):
             __query["human"] = human
         if pretty is not None:
             __query["pretty"] = pretty
-        if skip_time is not None:
-            __body["skip_time"] = skip_time
-        if start is not None:
-            __body["start"] = start
+        if not __body:
+            if advance_time is not None:
+                __body["advance_time"] = advance_time
+            if calc_interim is not None:
+                __body["calc_interim"] = calc_interim
+            if end is not None:
+                __body["end"] = end
+            if skip_time is not None:
+                __body["skip_time"] = skip_time
+            if start is not None:
+                __body["start"] = start
         if not __body:
             __body = None  # type: ignore[assignment]
         __headers = {"accept": "application/json"}
@@ -671,7 +683,7 @@ class MlClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("page",),
         parameter_aliases={"from": "from_"},
     )
     async def get_calendars(
@@ -685,6 +697,7 @@ class MlClient(NamespacedClient):
         page: t.Optional[t.Mapping[str, t.Any]] = None,
         pretty: t.Optional[bool] = None,
         size: t.Optional[int] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Retrieves configuration information for calendars.
@@ -706,7 +719,7 @@ class MlClient(NamespacedClient):
         else:
             __path = "/_ml/calendars"
         __query: t.Dict[str, t.Any] = {}
-        __body: t.Dict[str, t.Any] = {}
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
@@ -715,12 +728,13 @@ class MlClient(NamespacedClient):
             __query["from"] = from_
         if human is not None:
             __query["human"] = human
-        if page is not None:
-            __body["page"] = page
         if pretty is not None:
             __query["pretty"] = pretty
         if size is not None:
             __query["size"] = size
+        if not __body:
+            if page is not None:
+                __body["page"] = page
         if not __body:
             __body = None  # type: ignore[assignment]
         __headers = {"accept": "application/json"}
@@ -1103,7 +1117,15 @@ class MlClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=(
+            "allow_no_match",
+            "bucket_span",
+            "end",
+            "exclude_interim",
+            "overall_score",
+            "start",
+            "top_n",
+        ),
     )
     async def get_overall_buckets(
         self,
@@ -1120,6 +1142,7 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         start: t.Optional[t.Union[str, t.Any]] = None,
         top_n: t.Optional[int] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Retrieves overall bucket results that summarize the bucket results of multiple
@@ -1145,30 +1168,31 @@ class MlClient(NamespacedClient):
         if job_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'job_id'")
         __path = f"/_ml/anomaly_detectors/{_quote(job_id)}/results/overall_buckets"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if allow_no_match is not None:
-            __body["allow_no_match"] = allow_no_match
-        if bucket_span is not None:
-            __body["bucket_span"] = bucket_span
-        if end is not None:
-            __body["end"] = end
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
-        if exclude_interim is not None:
-            __body["exclude_interim"] = exclude_interim
         if filter_path is not None:
             __query["filter_path"] = filter_path
         if human is not None:
             __query["human"] = human
-        if overall_score is not None:
-            __body["overall_score"] = overall_score
         if pretty is not None:
             __query["pretty"] = pretty
-        if start is not None:
-            __body["start"] = start
-        if top_n is not None:
-            __body["top_n"] = top_n
+        if not __body:
+            if allow_no_match is not None:
+                __body["allow_no_match"] = allow_no_match
+            if bucket_span is not None:
+                __body["bucket_span"] = bucket_span
+            if end is not None:
+                __body["end"] = end
+            if exclude_interim is not None:
+                __body["exclude_interim"] = exclude_interim
+            if overall_score is not None:
+                __body["overall_score"] = overall_score
+            if start is not None:
+                __body["start"] = start
+            if top_n is not None:
+                __body["top_n"] = top_n
         if not __body:
             __body = None  # type: ignore[assignment]
         __headers = {"accept": "application/json"}
@@ -1314,19 +1338,20 @@ class MlClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("docs", "inference_config"),
     )
     async def infer_trained_model(
         self,
         *,
         model_id: str,
-        docs: t.Sequence[t.Mapping[str, t.Any]],
+        docs: t.Optional[t.Sequence[t.Mapping[str, t.Any]]] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         inference_config: t.Optional[t.Mapping[str, t.Any]] = None,
         pretty: t.Optional[bool] = None,
         timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Evaluate a trained model.
@@ -1344,32 +1369,33 @@ class MlClient(NamespacedClient):
         """
         if model_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'model_id'")
-        if docs is None:
+        if docs is None and body is None:
             raise ValueError("Empty value passed for parameter 'docs'")
         __path = f"/_ml/trained_models/{_quote(model_id)}/_infer"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if docs is not None:
-            __body["docs"] = docs
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
             __query["filter_path"] = filter_path
         if human is not None:
             __query["human"] = human
-        if inference_config is not None:
-            __body["inference_config"] = inference_config
         if pretty is not None:
             __query["pretty"] = pretty
         if timeout is not None:
             __query["timeout"] = timeout
+        if not __body:
+            if docs is not None:
+                __body["docs"] = docs
+            if inference_config is not None:
+                __body["inference_config"] = inference_config
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "POST", __path, params=__query, headers=__headers, body=__body
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("timeout",),
     )
     async def open_job(
         self,
@@ -1380,6 +1406,7 @@ class MlClient(NamespacedClient):
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
         timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Opens one or more anomaly detection jobs.
@@ -1393,7 +1420,7 @@ class MlClient(NamespacedClient):
             raise ValueError("Empty value passed for parameter 'job_id'")
         __path = f"/_ml/anomaly_detectors/{_quote(job_id)}/_open"
         __query: t.Dict[str, t.Any] = {}
-        __body: t.Dict[str, t.Any] = {}
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
@@ -1402,8 +1429,9 @@ class MlClient(NamespacedClient):
             __query["human"] = human
         if pretty is not None:
             __query["pretty"] = pretty
-        if timeout is not None:
-            __body["timeout"] = timeout
+        if not __body:
+            if timeout is not None:
+                __body["timeout"] = timeout
         if not __body:
             __body = None  # type: ignore[assignment]
         __headers = {"accept": "application/json"}
@@ -1414,17 +1442,18 @@ class MlClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("events",),
     )
     async def post_calendar_events(
         self,
         *,
         calendar_id: str,
-        events: t.Sequence[t.Mapping[str, t.Any]],
+        events: t.Optional[t.Sequence[t.Mapping[str, t.Any]]] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Posts scheduled events in a calendar.
@@ -1438,13 +1467,11 @@ class MlClient(NamespacedClient):
         """
         if calendar_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'calendar_id'")
-        if events is None:
+        if events is None and body is None:
             raise ValueError("Empty value passed for parameter 'events'")
         __path = f"/_ml/calendars/{_quote(calendar_id)}/events"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if events is not None:
-            __body["events"] = events
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
@@ -1453,13 +1480,16 @@ class MlClient(NamespacedClient):
             __query["human"] = human
         if pretty is not None:
             __query["pretty"] = pretty
+        if not __body:
+            if events is not None:
+                __body["events"] = events
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "POST", __path, params=__query, headers=__headers, body=__body
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("config",),
     )
     async def preview_data_frame_analytics(
         self,
@@ -1470,6 +1500,7 @@ class MlClient(NamespacedClient):
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Previews that will be analyzed given a data frame analytics config.
@@ -1485,10 +1516,8 @@ class MlClient(NamespacedClient):
             __path = f"/_ml/data_frame/analytics/{_quote(id)}/_preview"
         else:
             __path = "/_ml/data_frame/analytics/_preview"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if config is not None:
-            __body["config"] = config
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
@@ -1497,6 +1526,9 @@ class MlClient(NamespacedClient):
             __query["human"] = human
         if pretty is not None:
             __query["pretty"] = pretty
+        if not __body:
+            if config is not None:
+                __body["config"] = config
         if not __body:
             __body = None  # type: ignore[assignment]
         __headers = {"accept": "application/json"}
@@ -1507,7 +1539,7 @@ class MlClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("datafeed_config", "job_config"),
     )
     async def preview_datafeed(
         self,
@@ -1521,6 +1553,7 @@ class MlClient(NamespacedClient):
         job_config: t.Optional[t.Mapping[str, t.Any]] = None,
         pretty: t.Optional[bool] = None,
         start: t.Optional[t.Union[str, t.Any]] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Previews a datafeed.
@@ -1546,10 +1579,8 @@ class MlClient(NamespacedClient):
             __path = f"/_ml/datafeeds/{_quote(datafeed_id)}/_preview"
         else:
             __path = "/_ml/datafeeds/_preview"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if datafeed_config is not None:
-            __body["datafeed_config"] = datafeed_config
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if end is not None:
             __query["end"] = end
         if error_trace is not None:
@@ -1558,12 +1589,15 @@ class MlClient(NamespacedClient):
             __query["filter_path"] = filter_path
         if human is not None:
             __query["human"] = human
-        if job_config is not None:
-            __body["job_config"] = job_config
         if pretty is not None:
             __query["pretty"] = pretty
         if start is not None:
             __query["start"] = start
+        if not __body:
+            if datafeed_config is not None:
+                __body["datafeed_config"] = datafeed_config
+            if job_config is not None:
+                __body["job_config"] = job_config
         if not __body:
             __body = None  # type: ignore[assignment]
         __headers = {"accept": "application/json"}
@@ -1574,7 +1608,7 @@ class MlClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("description", "job_ids"),
     )
     async def put_calendar(
         self,
@@ -1586,6 +1620,7 @@ class MlClient(NamespacedClient):
         human: t.Optional[bool] = None,
         job_ids: t.Optional[t.Sequence[str]] = None,
         pretty: t.Optional[bool] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Instantiates a calendar.
@@ -1599,20 +1634,21 @@ class MlClient(NamespacedClient):
         if calendar_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'calendar_id'")
         __path = f"/_ml/calendars/{_quote(calendar_id)}"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if description is not None:
-            __body["description"] = description
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
             __query["filter_path"] = filter_path
         if human is not None:
             __query["human"] = human
-        if job_ids is not None:
-            __body["job_ids"] = job_ids
         if pretty is not None:
             __query["pretty"] = pretty
+        if not __body:
+            if description is not None:
+                __body["description"] = description
+            if job_ids is not None:
+                __body["job_ids"] = job_ids
         if not __body:
             __body = None  # type: ignore[assignment]
         __headers = {"accept": "application/json"}
@@ -1662,16 +1698,27 @@ class MlClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=(
+            "analysis",
+            "dest",
+            "source",
+            "allow_lazy_start",
+            "analyzed_fields",
+            "description",
+            "headers",
+            "max_num_threads",
+            "model_memory_limit",
+            "version",
+        ),
         ignore_deprecated_options={"headers"},
     )
     async def put_data_frame_analytics(
         self,
         *,
         id: str,
-        analysis: t.Mapping[str, t.Any],
-        dest: t.Mapping[str, t.Any],
-        source: t.Mapping[str, t.Any],
+        analysis: t.Optional[t.Mapping[str, t.Any]] = None,
+        dest: t.Optional[t.Mapping[str, t.Any]] = None,
+        source: t.Optional[t.Mapping[str, t.Any]] = None,
         allow_lazy_start: t.Optional[bool] = None,
         analyzed_fields: t.Optional[t.Mapping[str, t.Any]] = None,
         description: t.Optional[str] = None,
@@ -1683,6 +1730,7 @@ class MlClient(NamespacedClient):
         model_memory_limit: t.Optional[str] = None,
         pretty: t.Optional[bool] = None,
         version: t.Optional[str] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Instantiates a data frame analytics job.
@@ -1746,50 +1794,67 @@ class MlClient(NamespacedClient):
         """
         if id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'id'")
-        if analysis is None:
+        if analysis is None and body is None:
             raise ValueError("Empty value passed for parameter 'analysis'")
-        if dest is None:
+        if dest is None and body is None:
             raise ValueError("Empty value passed for parameter 'dest'")
-        if source is None:
+        if source is None and body is None:
             raise ValueError("Empty value passed for parameter 'source'")
         __path = f"/_ml/data_frame/analytics/{_quote(id)}"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if analysis is not None:
-            __body["analysis"] = analysis
-        if dest is not None:
-            __body["dest"] = dest
-        if source is not None:
-            __body["source"] = source
-        if allow_lazy_start is not None:
-            __body["allow_lazy_start"] = allow_lazy_start
-        if analyzed_fields is not None:
-            __body["analyzed_fields"] = analyzed_fields
-        if description is not None:
-            __body["description"] = description
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
             __query["filter_path"] = filter_path
-        if headers is not None:
-            __body["headers"] = headers
         if human is not None:
             __query["human"] = human
-        if max_num_threads is not None:
-            __body["max_num_threads"] = max_num_threads
-        if model_memory_limit is not None:
-            __body["model_memory_limit"] = model_memory_limit
         if pretty is not None:
             __query["pretty"] = pretty
-        if version is not None:
-            __body["version"] = version
+        if not __body:
+            if analysis is not None:
+                __body["analysis"] = analysis
+            if dest is not None:
+                __body["dest"] = dest
+            if source is not None:
+                __body["source"] = source
+            if allow_lazy_start is not None:
+                __body["allow_lazy_start"] = allow_lazy_start
+            if analyzed_fields is not None:
+                __body["analyzed_fields"] = analyzed_fields
+            if description is not None:
+                __body["description"] = description
+            if headers is not None:
+                __body["headers"] = headers
+            if max_num_threads is not None:
+                __body["max_num_threads"] = max_num_threads
+            if model_memory_limit is not None:
+                __body["model_memory_limit"] = model_memory_limit
+            if version is not None:
+                __body["version"] = version
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "PUT", __path, params=__query, headers=__headers, body=__body
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=(
+            "aggregations",
+            "chunking_config",
+            "delayed_data_check_config",
+            "frequency",
+            "headers",
+            "indexes",
+            "indices",
+            "indices_options",
+            "job_id",
+            "max_empty_searches",
+            "query",
+            "query_delay",
+            "runtime_mappings",
+            "script_fields",
+            "scroll_size",
+        ),
         ignore_deprecated_options={"headers"},
     )
     async def put_datafeed(
@@ -1826,6 +1891,7 @@ class MlClient(NamespacedClient):
         runtime_mappings: t.Optional[t.Mapping[str, t.Mapping[str, t.Any]]] = None,
         script_fields: t.Optional[t.Mapping[str, t.Mapping[str, t.Any]]] = None,
         scroll_size: t.Optional[int] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Instantiates a datafeed.
@@ -1904,61 +1970,62 @@ class MlClient(NamespacedClient):
         if datafeed_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'datafeed_id'")
         __path = f"/_ml/datafeeds/{_quote(datafeed_id)}"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if aggregations is not None:
-            __body["aggregations"] = aggregations
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if allow_no_indices is not None:
             __query["allow_no_indices"] = allow_no_indices
-        if chunking_config is not None:
-            __body["chunking_config"] = chunking_config
-        if delayed_data_check_config is not None:
-            __body["delayed_data_check_config"] = delayed_data_check_config
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if expand_wildcards is not None:
             __query["expand_wildcards"] = expand_wildcards
         if filter_path is not None:
             __query["filter_path"] = filter_path
-        if frequency is not None:
-            __body["frequency"] = frequency
-        if headers is not None:
-            __body["headers"] = headers
         if human is not None:
             __query["human"] = human
         if ignore_throttled is not None:
             __query["ignore_throttled"] = ignore_throttled
         if ignore_unavailable is not None:
             __query["ignore_unavailable"] = ignore_unavailable
-        if indexes is not None:
-            __body["indexes"] = indexes
-        if indices is not None:
-            __body["indices"] = indices
-        if indices_options is not None:
-            __body["indices_options"] = indices_options
-        if job_id is not None:
-            __body["job_id"] = job_id
-        if max_empty_searches is not None:
-            __body["max_empty_searches"] = max_empty_searches
         if pretty is not None:
             __query["pretty"] = pretty
-        if query is not None:
-            __body["query"] = query
-        if query_delay is not None:
-            __body["query_delay"] = query_delay
-        if runtime_mappings is not None:
-            __body["runtime_mappings"] = runtime_mappings
-        if script_fields is not None:
-            __body["script_fields"] = script_fields
-        if scroll_size is not None:
-            __body["scroll_size"] = scroll_size
+        if not __body:
+            if aggregations is not None:
+                __body["aggregations"] = aggregations
+            if chunking_config is not None:
+                __body["chunking_config"] = chunking_config
+            if delayed_data_check_config is not None:
+                __body["delayed_data_check_config"] = delayed_data_check_config
+            if frequency is not None:
+                __body["frequency"] = frequency
+            if headers is not None:
+                __body["headers"] = headers
+            if indexes is not None:
+                __body["indexes"] = indexes
+            if indices is not None:
+                __body["indices"] = indices
+            if indices_options is not None:
+                __body["indices_options"] = indices_options
+            if job_id is not None:
+                __body["job_id"] = job_id
+            if max_empty_searches is not None:
+                __body["max_empty_searches"] = max_empty_searches
+            if query is not None:
+                __body["query"] = query
+            if query_delay is not None:
+                __body["query_delay"] = query_delay
+            if runtime_mappings is not None:
+                __body["runtime_mappings"] = runtime_mappings
+            if script_fields is not None:
+                __body["script_fields"] = script_fields
+            if scroll_size is not None:
+                __body["scroll_size"] = scroll_size
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "PUT", __path, params=__query, headers=__headers, body=__body
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("description", "items"),
     )
     async def put_filter(
         self,
@@ -1970,6 +2037,7 @@ class MlClient(NamespacedClient):
         human: t.Optional[bool] = None,
         items: t.Optional[t.Sequence[str]] = None,
         pretty: t.Optional[bool] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Instantiates a filter.
@@ -1984,34 +2052,51 @@ class MlClient(NamespacedClient):
         if filter_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'filter_id'")
         __path = f"/_ml/filters/{_quote(filter_id)}"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if description is not None:
-            __body["description"] = description
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
             __query["filter_path"] = filter_path
         if human is not None:
             __query["human"] = human
-        if items is not None:
-            __body["items"] = items
         if pretty is not None:
             __query["pretty"] = pretty
+        if not __body:
+            if description is not None:
+                __body["description"] = description
+            if items is not None:
+                __body["items"] = items
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "PUT", __path, params=__query, headers=__headers, body=__body
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=(
+            "analysis_config",
+            "data_description",
+            "allow_lazy_open",
+            "analysis_limits",
+            "background_persist_interval",
+            "custom_settings",
+            "daily_model_snapshot_retention_after_days",
+            "datafeed_config",
+            "description",
+            "groups",
+            "model_plot_config",
+            "model_snapshot_retention_days",
+            "renormalization_window_days",
+            "results_index_name",
+            "results_retention_days",
+        ),
     )
     async def put_job(
         self,
         *,
         job_id: str,
-        analysis_config: t.Mapping[str, t.Any],
-        data_description: t.Mapping[str, t.Any],
+        analysis_config: t.Optional[t.Mapping[str, t.Any]] = None,
+        data_description: t.Optional[t.Mapping[str, t.Any]] = None,
         allow_lazy_open: t.Optional[bool] = None,
         analysis_limits: t.Optional[t.Mapping[str, t.Any]] = None,
         background_persist_interval: t.Optional[
@@ -2031,6 +2116,7 @@ class MlClient(NamespacedClient):
         renormalization_window_days: t.Optional[int] = None,
         results_index_name: t.Optional[str] = None,
         results_retention_days: t.Optional[int] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Instantiates an anomaly detection job.
@@ -2112,60 +2198,73 @@ class MlClient(NamespacedClient):
         """
         if job_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'job_id'")
-        if analysis_config is None:
+        if analysis_config is None and body is None:
             raise ValueError("Empty value passed for parameter 'analysis_config'")
-        if data_description is None:
+        if data_description is None and body is None:
             raise ValueError("Empty value passed for parameter 'data_description'")
         __path = f"/_ml/anomaly_detectors/{_quote(job_id)}"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if analysis_config is not None:
-            __body["analysis_config"] = analysis_config
-        if data_description is not None:
-            __body["data_description"] = data_description
-        if allow_lazy_open is not None:
-            __body["allow_lazy_open"] = allow_lazy_open
-        if analysis_limits is not None:
-            __body["analysis_limits"] = analysis_limits
-        if background_persist_interval is not None:
-            __body["background_persist_interval"] = background_persist_interval
-        if custom_settings is not None:
-            __body["custom_settings"] = custom_settings
-        if daily_model_snapshot_retention_after_days is not None:
-            __body["daily_model_snapshot_retention_after_days"] = (
-                daily_model_snapshot_retention_after_days
-            )
-        if datafeed_config is not None:
-            __body["datafeed_config"] = datafeed_config
-        if description is not None:
-            __body["description"] = description
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
             __query["filter_path"] = filter_path
-        if groups is not None:
-            __body["groups"] = groups
         if human is not None:
             __query["human"] = human
-        if model_plot_config is not None:
-            __body["model_plot_config"] = model_plot_config
-        if model_snapshot_retention_days is not None:
-            __body["model_snapshot_retention_days"] = model_snapshot_retention_days
         if pretty is not None:
             __query["pretty"] = pretty
-        if renormalization_window_days is not None:
-            __body["renormalization_window_days"] = renormalization_window_days
-        if results_index_name is not None:
-            __body["results_index_name"] = results_index_name
-        if results_retention_days is not None:
-            __body["results_retention_days"] = results_retention_days
+        if not __body:
+            if analysis_config is not None:
+                __body["analysis_config"] = analysis_config
+            if data_description is not None:
+                __body["data_description"] = data_description
+            if allow_lazy_open is not None:
+                __body["allow_lazy_open"] = allow_lazy_open
+            if analysis_limits is not None:
+                __body["analysis_limits"] = analysis_limits
+            if background_persist_interval is not None:
+                __body["background_persist_interval"] = background_persist_interval
+            if custom_settings is not None:
+                __body["custom_settings"] = custom_settings
+            if daily_model_snapshot_retention_after_days is not None:
+                __body["daily_model_snapshot_retention_after_days"] = (
+                    daily_model_snapshot_retention_after_days
+                )
+            if datafeed_config is not None:
+                __body["datafeed_config"] = datafeed_config
+            if description is not None:
+                __body["description"] = description
+            if groups is not None:
+                __body["groups"] = groups
+            if model_plot_config is not None:
+                __body["model_plot_config"] = model_plot_config
+            if model_snapshot_retention_days is not None:
+                __body["model_snapshot_retention_days"] = model_snapshot_retention_days
+            if renormalization_window_days is not None:
+                __body["renormalization_window_days"] = renormalization_window_days
+            if results_index_name is not None:
+                __body["results_index_name"] = results_index_name
+            if results_retention_days is not None:
+                __body["results_retention_days"] = results_retention_days
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "PUT", __path, params=__query, headers=__headers, body=__body
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=(
+            "compressed_definition",
+            "definition",
+            "description",
+            "inference_config",
+            "input",
+            "metadata",
+            "model_size_bytes",
+            "model_type",
+            "platform_architecture",
+            "prefix_strings",
+            "tags",
+        ),
     )
     async def put_trained_model(
         self,
@@ -2190,6 +2289,7 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         tags: t.Optional[t.Sequence[str]] = None,
         wait_for_completion: t.Optional[bool] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Creates an inference trained model.
@@ -2232,42 +2332,43 @@ class MlClient(NamespacedClient):
         if model_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'model_id'")
         __path = f"/_ml/trained_models/{_quote(model_id)}"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if compressed_definition is not None:
-            __body["compressed_definition"] = compressed_definition
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if defer_definition_decompression is not None:
             __query["defer_definition_decompression"] = defer_definition_decompression
-        if definition is not None:
-            __body["definition"] = definition
-        if description is not None:
-            __body["description"] = description
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
             __query["filter_path"] = filter_path
         if human is not None:
             __query["human"] = human
-        if inference_config is not None:
-            __body["inference_config"] = inference_config
-        if input is not None:
-            __body["input"] = input
-        if metadata is not None:
-            __body["metadata"] = metadata
-        if model_size_bytes is not None:
-            __body["model_size_bytes"] = model_size_bytes
-        if model_type is not None:
-            __body["model_type"] = model_type
-        if platform_architecture is not None:
-            __body["platform_architecture"] = platform_architecture
-        if prefix_strings is not None:
-            __body["prefix_strings"] = prefix_strings
         if pretty is not None:
             __query["pretty"] = pretty
-        if tags is not None:
-            __body["tags"] = tags
         if wait_for_completion is not None:
             __query["wait_for_completion"] = wait_for_completion
+        if not __body:
+            if compressed_definition is not None:
+                __body["compressed_definition"] = compressed_definition
+            if definition is not None:
+                __body["definition"] = definition
+            if description is not None:
+                __body["description"] = description
+            if inference_config is not None:
+                __body["inference_config"] = inference_config
+            if input is not None:
+                __body["input"] = input
+            if metadata is not None:
+                __body["metadata"] = metadata
+            if model_size_bytes is not None:
+                __body["model_size_bytes"] = model_size_bytes
+            if model_type is not None:
+                __body["model_type"] = model_type
+            if platform_architecture is not None:
+                __body["platform_architecture"] = platform_architecture
+            if prefix_strings is not None:
+                __body["prefix_strings"] = prefix_strings
+            if tags is not None:
+                __body["tags"] = tags
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "PUT", __path, params=__query, headers=__headers, body=__body
@@ -2319,20 +2420,21 @@ class MlClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("definition", "total_definition_length", "total_parts"),
     )
     async def put_trained_model_definition_part(
         self,
         *,
         model_id: str,
         part: int,
-        definition: str,
-        total_definition_length: int,
-        total_parts: int,
+        definition: t.Optional[str] = None,
+        total_definition_length: t.Optional[int] = None,
+        total_parts: t.Optional[int] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Creates part of a trained model definition
@@ -2354,23 +2456,17 @@ class MlClient(NamespacedClient):
             raise ValueError("Empty value passed for parameter 'model_id'")
         if part in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'part'")
-        if definition is None:
+        if definition is None and body is None:
             raise ValueError("Empty value passed for parameter 'definition'")
-        if total_definition_length is None:
+        if total_definition_length is None and body is None:
             raise ValueError(
                 "Empty value passed for parameter 'total_definition_length'"
             )
-        if total_parts is None:
+        if total_parts is None and body is None:
             raise ValueError("Empty value passed for parameter 'total_parts'")
         __path = f"/_ml/trained_models/{_quote(model_id)}/definition/{_quote(part)}"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if definition is not None:
-            __body["definition"] = definition
-        if total_definition_length is not None:
-            __body["total_definition_length"] = total_definition_length
-        if total_parts is not None:
-            __body["total_parts"] = total_parts
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
@@ -2379,25 +2475,33 @@ class MlClient(NamespacedClient):
             __query["human"] = human
         if pretty is not None:
             __query["pretty"] = pretty
+        if not __body:
+            if definition is not None:
+                __body["definition"] = definition
+            if total_definition_length is not None:
+                __body["total_definition_length"] = total_definition_length
+            if total_parts is not None:
+                __body["total_parts"] = total_parts
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "PUT", __path, params=__query, headers=__headers, body=__body
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("vocabulary", "merges", "scores"),
     )
     async def put_trained_model_vocabulary(
         self,
         *,
         model_id: str,
-        vocabulary: t.Sequence[str],
+        vocabulary: t.Optional[t.Sequence[str]] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         merges: t.Optional[t.Sequence[str]] = None,
         pretty: t.Optional[bool] = None,
         scores: t.Optional[t.Sequence[float]] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Creates a trained model vocabulary
@@ -2411,25 +2515,26 @@ class MlClient(NamespacedClient):
         """
         if model_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'model_id'")
-        if vocabulary is None:
+        if vocabulary is None and body is None:
             raise ValueError("Empty value passed for parameter 'vocabulary'")
         __path = f"/_ml/trained_models/{_quote(model_id)}/vocabulary"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if vocabulary is not None:
-            __body["vocabulary"] = vocabulary
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
             __query["filter_path"] = filter_path
         if human is not None:
             __query["human"] = human
-        if merges is not None:
-            __body["merges"] = merges
         if pretty is not None:
             __query["pretty"] = pretty
-        if scores is not None:
-            __body["scores"] = scores
+        if not __body:
+            if vocabulary is not None:
+                __body["vocabulary"] = vocabulary
+            if merges is not None:
+                __body["merges"] = merges
+            if scores is not None:
+                __body["scores"] = scores
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "PUT", __path, params=__query, headers=__headers, body=__body
@@ -2522,7 +2627,7 @@ class MlClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("end", "start", "timeout"),
     )
     async def start_datafeed(
         self,
@@ -2535,6 +2640,7 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         start: t.Optional[t.Union[str, t.Any]] = None,
         timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Starts one or more datafeeds.
@@ -2552,10 +2658,8 @@ class MlClient(NamespacedClient):
         if datafeed_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'datafeed_id'")
         __path = f"/_ml/datafeeds/{_quote(datafeed_id)}/_start"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if end is not None:
-            __body["end"] = end
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
@@ -2564,10 +2668,13 @@ class MlClient(NamespacedClient):
             __query["human"] = human
         if pretty is not None:
             __query["pretty"] = pretty
-        if start is not None:
-            __body["start"] = start
-        if timeout is not None:
-            __body["timeout"] = timeout
+        if not __body:
+            if end is not None:
+                __body["end"] = end
+            if start is not None:
+                __body["start"] = start
+            if timeout is not None:
+                __body["timeout"] = timeout
         if not __body:
             __body = None  # type: ignore[assignment]
         __headers = {"accept": "application/json"}
@@ -2718,7 +2825,7 @@ class MlClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("allow_no_match", "force", "timeout"),
     )
     async def stop_datafeed(
         self,
@@ -2731,6 +2838,7 @@ class MlClient(NamespacedClient):
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
         timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Stops one or more datafeeds.
@@ -2749,22 +2857,23 @@ class MlClient(NamespacedClient):
         if datafeed_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'datafeed_id'")
         __path = f"/_ml/datafeeds/{_quote(datafeed_id)}/_stop"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if allow_no_match is not None:
-            __body["allow_no_match"] = allow_no_match
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
             __query["filter_path"] = filter_path
-        if force is not None:
-            __body["force"] = force
         if human is not None:
             __query["human"] = human
         if pretty is not None:
             __query["pretty"] = pretty
-        if timeout is not None:
-            __body["timeout"] = timeout
+        if not __body:
+            if allow_no_match is not None:
+                __body["allow_no_match"] = allow_no_match
+            if force is not None:
+                __body["force"] = force
+            if timeout is not None:
+                __body["timeout"] = timeout
         if not __body:
             __body = None  # type: ignore[assignment]
         __headers = {"accept": "application/json"}
@@ -2824,7 +2933,12 @@ class MlClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=(
+            "allow_lazy_start",
+            "description",
+            "max_num_threads",
+            "model_memory_limit",
+        ),
     )
     async def update_data_frame_analytics(
         self,
@@ -2838,6 +2952,7 @@ class MlClient(NamespacedClient):
         max_num_threads: t.Optional[int] = None,
         model_memory_limit: t.Optional[str] = None,
         pretty: t.Optional[bool] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Updates certain properties of a data frame analytics job.
@@ -2863,31 +2978,47 @@ class MlClient(NamespacedClient):
         if id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'id'")
         __path = f"/_ml/data_frame/analytics/{_quote(id)}/_update"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if allow_lazy_start is not None:
-            __body["allow_lazy_start"] = allow_lazy_start
-        if description is not None:
-            __body["description"] = description
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
             __query["filter_path"] = filter_path
         if human is not None:
             __query["human"] = human
-        if max_num_threads is not None:
-            __body["max_num_threads"] = max_num_threads
-        if model_memory_limit is not None:
-            __body["model_memory_limit"] = model_memory_limit
         if pretty is not None:
             __query["pretty"] = pretty
+        if not __body:
+            if allow_lazy_start is not None:
+                __body["allow_lazy_start"] = allow_lazy_start
+            if description is not None:
+                __body["description"] = description
+            if max_num_threads is not None:
+                __body["max_num_threads"] = max_num_threads
+            if model_memory_limit is not None:
+                __body["model_memory_limit"] = model_memory_limit
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "POST", __path, params=__query, headers=__headers, body=__body
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=(
+            "aggregations",
+            "chunking_config",
+            "delayed_data_check_config",
+            "frequency",
+            "indexes",
+            "indices",
+            "indices_options",
+            "job_id",
+            "max_empty_searches",
+            "query",
+            "query_delay",
+            "runtime_mappings",
+            "script_fields",
+            "scroll_size",
+        ),
     )
     async def update_datafeed(
         self,
@@ -2922,6 +3053,7 @@ class MlClient(NamespacedClient):
         runtime_mappings: t.Optional[t.Mapping[str, t.Mapping[str, t.Any]]] = None,
         script_fields: t.Optional[t.Mapping[str, t.Mapping[str, t.Any]]] = None,
         scroll_size: t.Optional[int] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Updates certain properties of a datafeed.
@@ -3011,59 +3143,60 @@ class MlClient(NamespacedClient):
         if datafeed_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'datafeed_id'")
         __path = f"/_ml/datafeeds/{_quote(datafeed_id)}/_update"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if aggregations is not None:
-            __body["aggregations"] = aggregations
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if allow_no_indices is not None:
             __query["allow_no_indices"] = allow_no_indices
-        if chunking_config is not None:
-            __body["chunking_config"] = chunking_config
-        if delayed_data_check_config is not None:
-            __body["delayed_data_check_config"] = delayed_data_check_config
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if expand_wildcards is not None:
             __query["expand_wildcards"] = expand_wildcards
         if filter_path is not None:
             __query["filter_path"] = filter_path
-        if frequency is not None:
-            __body["frequency"] = frequency
         if human is not None:
             __query["human"] = human
         if ignore_throttled is not None:
             __query["ignore_throttled"] = ignore_throttled
         if ignore_unavailable is not None:
             __query["ignore_unavailable"] = ignore_unavailable
-        if indexes is not None:
-            __body["indexes"] = indexes
-        if indices is not None:
-            __body["indices"] = indices
-        if indices_options is not None:
-            __body["indices_options"] = indices_options
-        if job_id is not None:
-            __body["job_id"] = job_id
-        if max_empty_searches is not None:
-            __body["max_empty_searches"] = max_empty_searches
         if pretty is not None:
             __query["pretty"] = pretty
-        if query is not None:
-            __body["query"] = query
-        if query_delay is not None:
-            __body["query_delay"] = query_delay
-        if runtime_mappings is not None:
-            __body["runtime_mappings"] = runtime_mappings
-        if script_fields is not None:
-            __body["script_fields"] = script_fields
-        if scroll_size is not None:
-            __body["scroll_size"] = scroll_size
+        if not __body:
+            if aggregations is not None:
+                __body["aggregations"] = aggregations
+            if chunking_config is not None:
+                __body["chunking_config"] = chunking_config
+            if delayed_data_check_config is not None:
+                __body["delayed_data_check_config"] = delayed_data_check_config
+            if frequency is not None:
+                __body["frequency"] = frequency
+            if indexes is not None:
+                __body["indexes"] = indexes
+            if indices is not None:
+                __body["indices"] = indices
+            if indices_options is not None:
+                __body["indices_options"] = indices_options
+            if job_id is not None:
+                __body["job_id"] = job_id
+            if max_empty_searches is not None:
+                __body["max_empty_searches"] = max_empty_searches
+            if query is not None:
+                __body["query"] = query
+            if query_delay is not None:
+                __body["query_delay"] = query_delay
+            if runtime_mappings is not None:
+                __body["runtime_mappings"] = runtime_mappings
+            if script_fields is not None:
+                __body["script_fields"] = script_fields
+            if scroll_size is not None:
+                __body["scroll_size"] = scroll_size
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "POST", __path, params=__query, headers=__headers, body=__body
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=("add_items", "description", "remove_items"),
     )
     async def update_filter(
         self,
@@ -3076,6 +3209,7 @@ class MlClient(NamespacedClient):
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
         remove_items: t.Optional[t.Sequence[str]] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Updates the description of a filter, adds items, or removes items.
@@ -3090,12 +3224,8 @@ class MlClient(NamespacedClient):
         if filter_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'filter_id'")
         __path = f"/_ml/filters/{_quote(filter_id)}/_update"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if add_items is not None:
-            __body["add_items"] = add_items
-        if description is not None:
-            __body["description"] = description
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
@@ -3104,15 +3234,36 @@ class MlClient(NamespacedClient):
             __query["human"] = human
         if pretty is not None:
             __query["pretty"] = pretty
-        if remove_items is not None:
-            __body["remove_items"] = remove_items
+        if not __body:
+            if add_items is not None:
+                __body["add_items"] = add_items
+            if description is not None:
+                __body["description"] = description
+            if remove_items is not None:
+                __body["remove_items"] = remove_items
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "POST", __path, params=__query, headers=__headers, body=__body
         )
 
     @_rewrite_parameters(
-        body_fields=True,
+        body_fields=(
+            "allow_lazy_open",
+            "analysis_limits",
+            "background_persist_interval",
+            "categorization_filters",
+            "custom_settings",
+            "daily_model_snapshot_retention_after_days",
+            "description",
+            "detectors",
+            "groups",
+            "model_plot_config",
+            "model_prune_window",
+            "model_snapshot_retention_days",
+            "per_partition_categorization",
+            "renormalization_window_days",
+            "results_retention_days",
+        ),
     )
     async def update_job(
         self,
@@ -3141,6 +3292,7 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         renormalization_window_days: t.Optional[int] = None,
         results_retention_days: t.Optional[int] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Updates certain properties of an anomaly detection job.
@@ -3199,48 +3351,49 @@ class MlClient(NamespacedClient):
         if job_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'job_id'")
         __path = f"/_ml/anomaly_detectors/{_quote(job_id)}/_update"
-        __body: t.Dict[str, t.Any] = {}
         __query: t.Dict[str, t.Any] = {}
-        if allow_lazy_open is not None:
-            __body["allow_lazy_open"] = allow_lazy_open
-        if analysis_limits is not None:
-            __body["analysis_limits"] = analysis_limits
-        if background_persist_interval is not None:
-            __body["background_persist_interval"] = background_persist_interval
-        if categorization_filters is not None:
-            __body["categorization_filters"] = categorization_filters
-        if custom_settings is not None:
-            __body["custom_settings"] = custom_settings
-        if daily_model_snapshot_retention_after_days is not None:
-            __body["daily_model_snapshot_retention_after_days"] = (
-                daily_model_snapshot_retention_after_days
-            )
-        if description is not None:
-            __body["description"] = description
-        if detectors is not None:
-            __body["detectors"] = detectors
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if filter_path is not None:
             __query["filter_path"] = filter_path
-        if groups is not None:
-            __body["groups"] = groups
         if human is not None:
             __query["human"] = human
-        if model_plot_config is not None:
-            __body["model_plot_config"] = model_plot_config
-        if model_prune_window is not None:
-            __body["model_prune_window"] = model_prune_window
-        if model_snapshot_retention_days is not None:
-            __body["model_snapshot_retention_days"] = model_snapshot_retention_days
-        if per_partition_categorization is not None:
-            __body["per_partition_categorization"] = per_partition_categorization
         if pretty is not None:
             __query["pretty"] = pretty
-        if renormalization_window_days is not None:
-            __body["renormalization_window_days"] = renormalization_window_days
-        if results_retention_days is not None:
-            __body["results_retention_days"] = results_retention_days
+        if not __body:
+            if allow_lazy_open is not None:
+                __body["allow_lazy_open"] = allow_lazy_open
+            if analysis_limits is not None:
+                __body["analysis_limits"] = analysis_limits
+            if background_persist_interval is not None:
+                __body["background_persist_interval"] = background_persist_interval
+            if categorization_filters is not None:
+                __body["categorization_filters"] = categorization_filters
+            if custom_settings is not None:
+                __body["custom_settings"] = custom_settings
+            if daily_model_snapshot_retention_after_days is not None:
+                __body["daily_model_snapshot_retention_after_days"] = (
+                    daily_model_snapshot_retention_after_days
+                )
+            if description is not None:
+                __body["description"] = description
+            if detectors is not None:
+                __body["detectors"] = detectors
+            if groups is not None:
+                __body["groups"] = groups
+            if model_plot_config is not None:
+                __body["model_plot_config"] = model_plot_config
+            if model_prune_window is not None:
+                __body["model_prune_window"] = model_prune_window
+            if model_snapshot_retention_days is not None:
+                __body["model_snapshot_retention_days"] = model_snapshot_retention_days
+            if per_partition_categorization is not None:
+                __body["per_partition_categorization"] = per_partition_categorization
+            if renormalization_window_days is not None:
+                __body["renormalization_window_days"] = renormalization_window_days
+            if results_retention_days is not None:
+                __body["results_retention_days"] = results_retention_days
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "POST", __path, params=__query, headers=__headers, body=__body
