@@ -26,7 +26,7 @@ from .utils import SKIP_IN_PATH, _quote, _rewrite_parameters
 class InferenceClient(NamespacedClient):
 
     @_rewrite_parameters()
-    def delete_model(
+    def delete(
         self,
         *,
         inference_id: str,
@@ -42,7 +42,7 @@ class InferenceClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete model in the Inference API
+        Delete an inference endpoint
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-inference-api.html>`_
 
@@ -72,37 +72,35 @@ class InferenceClient(NamespacedClient):
         )
 
     @_rewrite_parameters()
-    def get_model(
+    def get(
         self,
         *,
-        inference_id: str,
         task_type: t.Optional[
             t.Union[
                 "t.Literal['completion', 'rerank', 'sparse_embedding', 'text_embedding']",
                 str,
             ]
         ] = None,
+        inference_id: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get a model in the Inference API
+        Get an inference endpoint
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-inference-api.html>`_
 
-        :param inference_id: The inference Id
         :param task_type: The task type
+        :param inference_id: The inference Id
         """
-        if inference_id in SKIP_IN_PATH:
-            raise ValueError("Empty value passed for parameter 'inference_id'")
         if task_type not in SKIP_IN_PATH and inference_id not in SKIP_IN_PATH:
             __path = f"/_inference/{_quote(task_type)}/{_quote(inference_id)}"
         elif inference_id not in SKIP_IN_PATH:
             __path = f"/_inference/{_quote(inference_id)}"
         else:
-            raise ValueError("Couldn't find a path for the given parameters")
+            __path = "/_inference"
         __query: t.Dict[str, t.Any] = {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
@@ -137,18 +135,21 @@ class InferenceClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         query: t.Optional[str] = None,
         task_settings: t.Optional[t.Any] = None,
+        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Perform inference on a model
+        Perform inference
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/post-inference-api.html>`_
 
         :param inference_id: The inference Id
-        :param input: Text input to the model. Either a string or an array of strings.
+        :param input: Inference input. Either a string or an array of strings.
         :param task_type: The task type
         :param query: Query input, required for rerank task. Not required for other tasks.
         :param task_settings: Optional task settings
+        :param timeout: Specifies the amount of time to wait for the inference request
+            to complete.
         """
         if inference_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'inference_id'")
@@ -170,6 +171,8 @@ class InferenceClient(NamespacedClient):
             __query["human"] = human
         if pretty is not None:
             __query["pretty"] = pretty
+        if timeout is not None:
+            __query["timeout"] = timeout
         if not __body:
             if input is not None:
                 __body["input"] = input
@@ -187,13 +190,13 @@ class InferenceClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_name="model_config",
+        body_name="inference_config",
     )
-    def put_model(
+    def put(
         self,
         *,
         inference_id: str,
-        model_config: t.Optional[t.Mapping[str, t.Any]] = None,
+        inference_config: t.Optional[t.Mapping[str, t.Any]] = None,
         body: t.Optional[t.Mapping[str, t.Any]] = None,
         task_type: t.Optional[
             t.Union[
@@ -207,22 +210,22 @@ class InferenceClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Configure a model for use in the Inference API
+        Configure an inference endpoint for use in the Inference API
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/put-inference-api.html>`_
 
         :param inference_id: The inference Id
-        :param model_config:
+        :param inference_config:
         :param task_type: The task type
         """
         if inference_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'inference_id'")
-        if model_config is None and body is None:
+        if inference_config is None and body is None:
             raise ValueError(
-                "Empty value passed for parameters 'model_config' and 'body', one of them should be set."
+                "Empty value passed for parameters 'inference_config' and 'body', one of them should be set."
             )
-        elif model_config is not None and body is not None:
-            raise ValueError("Cannot set both 'model_config' and 'body'")
+        elif inference_config is not None and body is not None:
+            raise ValueError("Cannot set both 'inference_config' and 'body'")
         if task_type not in SKIP_IN_PATH and inference_id not in SKIP_IN_PATH:
             __path = f"/_inference/{_quote(task_type)}/{_quote(inference_id)}"
         elif inference_id not in SKIP_IN_PATH:
@@ -238,7 +241,7 @@ class InferenceClient(NamespacedClient):
             __query["human"] = human
         if pretty is not None:
             __query["pretty"] = pretty
-        __body = model_config if model_config is not None else body
+        __body = inference_config if inference_config is not None else body
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return self.perform_request(  # type: ignore[return-value]
             "PUT", __path, params=__query, headers=__headers, body=__body
