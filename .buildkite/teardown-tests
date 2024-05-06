@@ -20,7 +20,7 @@ run_qaf() {
     -e VAULT_TOKEN \
     -e BUILDKITE \
     -v "$(pwd)/cloud.json:/root/.elastic/cloud.json" \
-    docker.elastic.co/appex-qa/qaf:latest \
+    docker.elastic.co/appex-qa/qaf:24.1.1 \
     bash -c "$cmd"
 }
 
