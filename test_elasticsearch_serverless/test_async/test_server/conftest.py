@@ -26,9 +26,7 @@ pytestmark = pytest.mark.asyncio
 
 
 @pytest_asyncio.fixture(scope="function")
-@pytest.mark.usefixtures("sync_client")
 async def async_client(elasticsearch_url, elasticsearch_api_key):
-    # 'sync_client' fixture is used for the guaranteed wipe_cluster() call.
 
     if not hasattr(elasticsearch_serverless, "AsyncElasticsearch"):
         pytest.skip("test requires 'AsyncElasticsearch' and aiohttp to be installed")
