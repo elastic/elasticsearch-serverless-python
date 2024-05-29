@@ -17,7 +17,7 @@
 
 import pytest
 
-from elasticsearch_serverless import Elasticsearch, RequestError
+from elasticsearch_serverless import RequestError
 
 
 @pytest.fixture(scope="function")

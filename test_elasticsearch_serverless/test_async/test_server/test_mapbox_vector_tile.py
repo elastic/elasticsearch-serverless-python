@@ -17,7 +17,7 @@
 
 import pytest
 
-from elasticsearch_serverless import AsyncElasticsearch, RequestError
+from elasticsearch_serverless import RequestError
 
 pytestmark = pytest.mark.asyncio
 
