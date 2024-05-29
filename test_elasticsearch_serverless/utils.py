@@ -21,7 +21,7 @@ import time
 from pathlib import Path
 from typing import Optional, Tuple
 
-from elasticsearch_serverless import Elasticsearch, RequestError
+from elasticsearch_serverless import Elasticsearch
 
 SOURCE_DIR = Path(__file__).absolute().parent.parent
 
@@ -74,13 +74,6 @@ def wipe_cluster(client, elasticsearch_api_key):
     wipe_indices(client)
 
     if is_xpack:
-        wipe_xpack_templates(client)
-    else:
-        client.indices.delete_template(name="*")
-        client.indices.delete_index_template(name="*")
-        client.cluster.delete_component_template(name="*")
-
-    if is_xpack:
         wipe_transforms(client)
 
     if close_after_wipe:
@@ -104,29 +97,6 @@ def wipe_indices(client):
         )
 
 
-def wipe_xpack_templates(client):
-    # Delete component templates, need to retry because sometimes
-    # indices aren't cleaned up in time before we issue the delete.
-    templates = client.cluster.get_component_template()["component_templates"]
-    templates_to_delete = [
-        template for template in templates if not is_xpack_template(template["name"])
-    ]
-    for _ in range(3):
-        for template in list(templates_to_delete):
-            try:
-                client.cluster.delete_component_template(
-                    name=template["name"],
-                )
-            except RequestError:
-                pass
-            else:
-                templates_to_delete.remove(template)
-
-        if not templates_to_delete:
-            break
-        time.sleep(0.01)
-
-
 def wipe_transforms(client: Elasticsearch, timeout=30):
     end_time = time.time() + timeout
     while time.time() < end_time:
@@ -140,44 +110,6 @@ def wipe_transforms(client: Elasticsearch, timeout=30):
             client.options(ignore_status=404).transform.delete_transform(
                 transform_id=trasnform["id"]
             )
-
-
-def is_xpack_template(name):
-    if name.startswith(".monitoring-"):
-        return True
-    elif name.startswith(".watch") or name.startswith(".triggered_watches"):
-        return True
-    elif name.startswith(".data-frame-"):
-        return True
-    elif name.startswith(".ml-"):
-        return True
-    elif name.startswith(".transform-"):
-        return True
-    elif name.startswith(".deprecation-"):
-        return True
-    if name in {
-        ".watches",
-        "security_audit_log",
-        ".slm-history",
-        ".async-search",
-        "saml-service-provider",
-        "logs",
-        "logs-settings",
-        "logs-mappings",
-        "metrics",
-        "metrics-settings",
-        "metrics-mappings",
-        "synthetics",
-        "synthetics-settings",
-        "synthetics-mappings",
-        ".snapshot-blob-cache",
-        "ilm-history",
-        "logstash-index-template",
-        "security-index-template",
-        "data-streams-mappings",
-    }:
-        return True
-    return False
 
 
 def es_api_key() -> str:
