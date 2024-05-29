@@ -67,13 +67,12 @@ def mvt_setup(sync_client):
                 "included": True,
             },
         ],
+        refresh=True,
     )
 
 
-@pytest.mark.parametrize("node_class", ["urllib3", "requests"])
-def test_mapbox_vector_tile_error(elasticsearch_url, mvt_setup, node_class):
-    client = Elasticsearch(elasticsearch_url, node_class=node_class)
-    client.search_mvt(
+def test_mapbox_vector_tile_error(sync_client, mvt_setup):
+    sync_client.search_mvt(
         index="museums",
         zoom=13,
         x=4207,
@@ -82,7 +81,7 @@ def test_mapbox_vector_tile_error(elasticsearch_url, mvt_setup, node_class):
     )
 
     with pytest.raises(RequestError) as e:
-        client.search_mvt(
+        sync_client.search_mvt(
             index="museums",
             zoom=-100,
             x=4207,
@@ -111,16 +110,13 @@ def test_mapbox_vector_tile_error(elasticsearch_url, mvt_setup, node_class):
     }
 
 
-@pytest.mark.parametrize("node_class", ["urllib3", "requests"])
-def test_mapbox_vector_tile_response(elasticsearch_url, mvt_setup, node_class):
+def test_mapbox_vector_tile_response(sync_client, mvt_setup):
     try:
         import mapbox_vector_tile
     except ImportError:
         return pytest.skip("Requires the 'mapbox-vector-tile' package")
 
-    client = Elasticsearch(elasticsearch_url, node_class=node_class)
-
-    resp = client.search_mvt(
+    resp = sync_client.search_mvt(
         index="museums",
         zoom=13,
         x=4207,
