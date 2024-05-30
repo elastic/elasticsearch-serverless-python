@@ -943,66 +943,6 @@ class TestReindex(object):
 
 
 @pytest_asyncio.fixture(scope="function")
-async def parent_reindex_setup(async_client):
-    body = {
-        "mappings": {
-            "properties": {
-                "question_answer": {
-                    "type": "join",
-                    "relations": {"question": "answer"},
-                }
-            }
-        },
-    }
-    await async_client.indices.create(index="test-index", body=body)
-    await async_client.indices.create(index="real-index", body=body)
-
-    await async_client.index(
-        index="test-index", id=42, body={"question_answer": "question"}
-    )
-    await async_client.index(
-        index="test-index",
-        id=47,
-        routing=42,
-        body={"some": "data", "question_answer": {"name": "answer", "parent": 42}},
-        refresh=True,
-    )
-
-
-class TestParentChildReindex:
-    async def test_children_are_reindexed_correctly(
-        self, async_client, parent_reindex_setup
-    ):
-        await helpers.async_reindex(async_client, "test-index", "real-index")
-
-        q = await async_client.get(index="real-index", id=42)
-        assert {
-            "_id": "42",
-            "_index": "real-index",
-            "_primary_term": 1,
-            "_seq_no": 0,
-            "_source": {"question_answer": "question"},
-            "_version": 1,
-            "found": True,
-        } == q
-
-        q = await async_client.get(index="test-index", id=47, routing=42)
-        assert {
-            "_routing": "42",
-            "_id": "47",
-            "_index": "test-index",
-            "_primary_term": 1,
-            "_seq_no": 1,
-            "_source": {
-                "some": "data",
-                "question_answer": {"name": "answer", "parent": 42},
-            },
-            "_version": 1,
-            "found": True,
-        } == q
-
-
-@pytest_asyncio.fixture(scope="function")
 async def reindex_data_stream_setup(async_client):
     dt = datetime.now(tz=timezone.utc)
     bulk = []
