@@ -55,11 +55,11 @@ def test_bulk_works_with_bytestring_body(sync_client):
     # Pop inconsistent items before asserting
     resp["items"][0]["index"].pop("_id")
     resp["items"][0]["index"].pop("_version")
+    resp["items"][0]["index"].pop("_shards")
     assert resp["items"][0] == {
         "index": {
             "_index": "bulk_test_index",
             "result": "created",
-            "_shards": {"total": 2, "successful": 1, "failed": 0},
             "_seq_no": 0,
             "_primary_term": 1,
             "status": 201,

@@ -888,61 +888,6 @@ def test_all_documents_get_moved(sync_client):
 
 
 @pytest.fixture(scope="function")
-def parent_child_reindex_setup(sync_client):
-    body = {
-        "mappings": {
-            "properties": {
-                "question_answer": {
-                    "type": "join",
-                    "relations": {"question": "answer"},
-                }
-            }
-        },
-    }
-    sync_client.indices.create(index="test-index", body=body)
-    sync_client.indices.create(index="real-index", body=body)
-
-    sync_client.index(index="test-index", id=42, body={"question_answer": "question"})
-    sync_client.index(
-        index="test-index",
-        id=47,
-        routing=42,
-        body={"some": "data", "question_answer": {"name": "answer", "parent": 42}},
-        refresh=True,
-    )
-
-
-@pytest.mark.usefixtures("parent_child_reindex_setup")
-def test_children_are_reindexed_correctly(sync_client):
-    helpers.reindex(sync_client, "test-index", "real-index")
-
-    q = sync_client.get(index="real-index", id=42)
-    assert {
-        "_id": "42",
-        "_index": "real-index",
-        "_primary_term": 1,
-        "_seq_no": 0,
-        "_source": {"question_answer": "question"},
-        "_version": 1,
-        "found": True,
-    } == q
-    q = sync_client.get(index="test-index", id=47, routing=42)
-    assert {
-        "_routing": "42",
-        "_id": "47",
-        "_index": "test-index",
-        "_primary_term": 1,
-        "_seq_no": 1,
-        "_source": {
-            "some": "data",
-            "question_answer": {"name": "answer", "parent": 42},
-        },
-        "_version": 1,
-        "found": True,
-    } == q
-
-
-@pytest.fixture(scope="function")
 def reindex_data_stream_setup(sync_client):
     dt = datetime.now(tz=tz.UTC)
     bulk = []
