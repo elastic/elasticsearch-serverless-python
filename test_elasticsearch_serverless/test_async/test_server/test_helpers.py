@@ -1022,7 +1022,7 @@ async def reindex_data_stream_setup(async_client):
             "data_stream": {},
         },
     )
-    await async_client.indices.create_data_stream(name="py-test-stream", refresh=True)
+    await async_client.indices.create_data_stream(name="py-test-stream")
     yield
 
 
