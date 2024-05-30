@@ -568,19 +568,24 @@ try:
         # Each file may have a "test" named 'setup' or 'teardown',
         # these sets of steps should be run at the beginning and end
         # of every other test within the file so we do one pass to capture those.
-        setup_steps = teardown_steps = None
+        requires = setup_steps = teardown_steps = None
         test_numbers_and_steps = []
         test_number = 0
 
         for yaml_test in yaml_tests:
             test_name, test_step = yaml_test.popitem()
-            if test_name == "setup":
+            if test_name == "requires":
+                requires = test_step
+            elif test_name == "setup":
                 setup_steps = test_step
             elif test_name == "teardown":
                 teardown_steps = test_step
             else:
                 test_numbers_and_steps.append((test_number, test_step))
                 test_number += 1
+
+        if not requires["serverless"]:
+            continue
 
         # Now we combine setup, teardown, and test_steps into
         # a set of pytest.param() instances
