@@ -565,9 +565,12 @@ try:
             yaml.load_all(package_zip.read(yaml_file), Loader=NoDatesSafeLoader)
         )
 
-        # Each file may have a "test" named 'setup' or 'teardown',
-        # these sets of steps should be run at the beginning and end
-        # of every other test within the file so we do one pass to capture those.
+        # Each file has a `requires` section with `serverless` and `stack`
+        # boolean entries indicating whether the test should run with
+        # serverless, stack or both. Additionally, each file may have a section
+        # named 'setup' or 'teardown', these sets of steps should be run at the
+        # beginning and end of every other test within the file so we do one
+        # pass to capture those.
         requires = setup_steps = teardown_steps = None
         test_numbers_and_steps = []
         test_number = 0
