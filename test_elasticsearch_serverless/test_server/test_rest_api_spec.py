@@ -532,10 +532,6 @@ YAML_TEST_SPECS = []
 
 # Try loading the REST API test specs from the Elastic Artifacts API
 try:
-    github_token = os.environ.get("GITHUB_TOKEN")
-    if github_token is None:
-        raise RuntimeError("GITHUB_TOKEN environment variable is not set")
-
     # Construct the HTTP and Elasticsearch client
     http = urllib3.PoolManager(retries=10)
     client = Elasticsearch(es_url(), api_key=es_api_key(), request_timeout=3)
@@ -545,18 +541,7 @@ try:
     )
 
     # Download the zip and start reading YAML from the files in memory
-    package_zip = zipfile.ZipFile(
-        io.BytesIO(
-            http.request(
-                "GET",
-                yaml_tests_url,
-                headers={
-                    "Authorization": f"Bearer {github_token}",
-                    "Accept": "application/vnd.github+json",
-                },
-            ).data
-        )
-    )
+    package_zip = zipfile.ZipFile(io.BytesIO(http.request("GET", yaml_tests_url).data))
 
     for yaml_file in package_zip.namelist():
         if not re.match(r"^.*\/tests\/.*\.ya?ml$", yaml_file):
