@@ -541,9 +541,7 @@ try:
     )
 
     # Download the zip and start reading YAML from the files in memory
-    package_zip = zipfile.ZipFile(
-        io.BytesIO(http.request("GET", yaml_tests_url).data)
-    )
+    package_zip = zipfile.ZipFile(io.BytesIO(http.request("GET", yaml_tests_url).data))
 
     for yaml_file in package_zip.namelist():
         if not re.match(r"^.*\/tests\/.*\.ya?ml$", yaml_file):
