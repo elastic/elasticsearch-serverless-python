@@ -45,7 +45,6 @@ def test(session):
         "--cov-config=setup.cfg",
         f"--junitxml={junit_xml}",
         "--cache-clear",
-        "-vv",
         *(session.posargs),
     ]
     session.run(*pytest_argv)
