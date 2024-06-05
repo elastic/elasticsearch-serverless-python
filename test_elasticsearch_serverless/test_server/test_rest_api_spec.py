@@ -504,8 +504,8 @@ class YamlRunner:
 
 
 @pytest.fixture(scope="function")
-def sync_runner(sync_client):
-    return YamlRunner(sync_client)
+def sync_runner(sync_client_factory):
+    return YamlRunner(sync_client_factory)
 
 
 # Source: https://stackoverflow.com/a/37958106/5763213
