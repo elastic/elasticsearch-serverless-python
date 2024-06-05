@@ -33,7 +33,7 @@ INSTALL_ENV = {"AIOHTTP_NO_EXTENSIONS": "1"}
 
 @nox.session(python=["3.7", "3.8", "3.9", "3.10", "3.11"])
 def test(session):
-    session.install(".[dev]", env=INSTALL_ENV, silent=False)
+    session.install(".[dev]", env=INSTALL_ENV)
 
     junit_xml = os.path.join(
         SOURCE_DIR, "junit", "elasticsearch-serverless-python-junit.xml"
@@ -44,9 +44,9 @@ def test(session):
         "--cov=elasticsearch_serverless",
         "--cov-config=setup.cfg",
         f"--junitxml={junit_xml}",
-        "--log-level=DEBUG",
         "--cache-clear",
         "-vv",
+        *(session.posargs),
     ]
     session.run(*pytest_argv)
 
