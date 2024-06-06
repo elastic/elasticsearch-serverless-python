@@ -68,20 +68,10 @@ def wipe_cluster(client, elasticsearch_api_key):
     except ImportError:
         pass
 
-    is_xpack = True
-    if is_xpack:
-        wipe_data_streams(client)
+    wipe_data_streams(client)
     wipe_indices(client)
-
-    if is_xpack:
-        wipe_xpack_templates(client)
-    else:
-        client.indices.delete_template(name="*")
-        client.indices.delete_index_template(name="*")
-        client.cluster.delete_component_template(name="*")
-
-    if is_xpack:
-        wipe_transforms(client)
+    wipe_xpack_templates(client)
+    wipe_transforms(client)
 
     if close_after_wipe:
         client.close()
