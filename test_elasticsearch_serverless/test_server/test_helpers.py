@@ -920,6 +920,7 @@ def test_reindex_index_datastream(op_type, sync_client):
         source_index="test_index_stream",
         target_index="py-test-stream",
         query={"query": {"bool": {"filter": {"term": {"type": "answers"}}}}},
+        bulk_kwargs={"refresh": True},
         op_type=op_type,
     )
     assert sync_client.indices.exists(index="py-test-stream")

@@ -76,61 +76,37 @@ IMPLEMENTED_FEATURES = {
 }
 
 # broken YAML tests on some releases
-SKIP_TESTS = {
-    # Warning about date_histogram.interval deprecation is raised randomly
-    "search/aggregation/250_moving_fn[1]",
-    # body: null
-    "indices/simulate_index_template/10_basic[2]",
-    # No ML node with sufficient capacity / random ML failing
-    "ml/start_stop_datafeed",
-    "ml/post_data",
-    "ml/jobs_crud",
-    "ml/datafeeds_crud",
-    "ml/set_upgrade_mode",
-    "ml/reset_job[2]",
-    "ml/jobs_get_stats",
-    "ml/get_datafeed_stats",
-    "ml/get_trained_model_stats",
-    "ml/delete_job_force",
-    "ml/jobs_get_result_overall_buckets",
-    "ml/bucket_correlation_agg[0]",
-    "ml/job_groups",
-    "transform/transforms_stats_continuous[0]",
-    # Fails bad request instead of 404?
-    "ml/inference_crud",
-    # rollup/security_tests time out?
-    "rollup/security_tests",
-    # Our TLS certs are custom
-    "ssl/10_basic[0]",
-    # Our user is custom
-    "users/10_basic[3]",
-    # License warning not sent?
-    "license/30_enterprise_license[0]",
-    # Shards/snapshots aren't right?
-    "searchable_snapshots/10_usage[1]",
-    # flaky data streams?
-    "data_stream/10_basic[1]",
-    "data_stream/80_resolve_index_data_streams[1]",
-    # bad formatting?
-    "cat/allocation/10_basic",
-    "runtime_fields/10_keyword[8]",
-    # service account number not right?
-    "service_accounts/10_basic[1]",
-    # doesn't use 'contains' properly?
-    "xpack/10_basic[0]",
-    "privileges/40_get_user_privs[0]",
-    "privileges/40_get_user_privs[1]",
-    "features/get_features/10_basic[0]",
-    "features/reset_features/10_basic[0]",
-    # bad use of 'is_false'?
-    "indices/get_alias/10_basic[22]",
-    # unique usage of 'set'
-    "indices/stats/50_disk_usage[0]",
-    "indices/stats/60_field_usage[0]",
-    # actual Elasticsearch failure?
-    "transform/transforms_stats",
-    "transform/transforms_cat_apis",
-    "transform/transforms_update",
+FAILING_TESTS = {
+    # ping has a custom implementation in Python and returns a boolean
+    "ping/ping",
+    # TODO: bulk call in setup fails due to "malformed action/metadata line"
+    # bulk body is being sent as a Buffer, unsure if related.
+    "transform/10_basic",
+    # TODO: wait_for_active_shards and rollover with conditions are not supported on serverless
+    # see https://github.com/elastic/elasticsearch-clients-tests/issues/55
+    "indices/rollover",
+    # TODO: test runner needs to support ignoring 410 errors
+    "indices/data_lifecycle",
+    # TODO: test runner needs to support ignoring 410 errors
+    "enrich/10_basic",
+    # TODO: parameter `enabled` is not allowed in source
+    # Same underlying problem as https://github.com/elastic/elasticsearch-clients-tests/issues/55
+    "cluster/component_templates",
+    # TODO: expecting `ct_field` field mapping to be returned, but instead only finds `field`
+    "indices/simulate_template",
+    # Fixed by https://github.com/elastic/elasticsearch-clients-tests/pull/56
+    "cat/aliases",
+    "cat/component_templates",
+    "cat/count",
+    "cat/help",
+    "cat/indices",
+    "cat/ml",
+    "cat/transform",
+    # TODO: Not investigated yet
+    "indices/settings",
+    "logstash/10_basic",
+    "scroll/10_basic",
+    "security/10_api_key_basic",
 }
 
 
@@ -578,11 +554,11 @@ try:
         # Now we combine setup, teardown, and test_steps into
         # a set of pytest.param() instances
         for test_number, test_step in test_numbers_and_steps:
-            # Build the id from the name of the YAML file and
-            # the number within that file. Most important step
-            # is to remove most of the file path prefixes and
-            # the .yml suffix.
-            pytest_test_name = yaml_file.rpartition(".")[0].replace(".", "/")
+            # Build the id from the name of the YAML file and the number within
+            # that file. Most important step is to remove most of the file path
+            # prefixes and the .yml suffix.
+            test_path = "/".join(yaml_file.split("/")[2:])
+            pytest_test_name = test_path.rpartition(".")[0].replace(".", "/")
             for prefix in ("rest-api-spec/", "test/", "free/", "platinum/"):
                 if pytest_test_name.startswith(prefix):
                     pytest_test_name = pytest_test_name[len(prefix) :]
@@ -594,8 +570,8 @@ try:
                 "teardown": teardown_steps,
             }
             # Skip either 'test_name' or 'test_name[x]'
-            if pytest_test_name in SKIP_TESTS or pytest_param_id in SKIP_TESTS:
-                pytest_param["skip"] = True
+            if pytest_test_name in FAILING_TESTS or pytest_param_id in FAILING_TESTS:
+                pytest_param["fail"] = True
 
             YAML_TEST_SPECS.append(pytest.param(pytest_param, id=pytest_param_id))
 
@@ -615,7 +591,7 @@ if not RUN_ASYNC_REST_API_TESTS:
 
     @pytest.mark.parametrize("test_spec", YAML_TEST_SPECS)
     def test_rest_api_spec(test_spec, sync_runner):
-        if test_spec.get("skip", False):
-            pytest.skip("Manually skipped in 'SKIP_TESTS'")
+        if test_spec.get("fail", False):
+            pytest.xfail("Manually marked as failing in 'FAILING_TESTS'")
         sync_runner.use_spec(test_spec)
         sync_runner.run()
