@@ -21,7 +21,7 @@ import time
 from pathlib import Path
 from typing import Optional, Tuple
 
-from elasticsearch_serverless import Elasticsearch, RequestError
+from elasticsearch_serverless import Elasticsearch
 
 SOURCE_DIR = Path(__file__).absolute().parent.parent
 
@@ -99,22 +99,12 @@ def wipe_xpack_templates(client):
     # indices aren't cleaned up in time before we issue the delete.
     templates = client.cluster.get_component_template()["component_templates"]
     templates_to_delete = [
-        template for template in templates if not is_xpack_template(template["name"])
+        template["name"]
+        for template in templates
+        if not is_xpack_template(template["name"])
     ]
-    for _ in range(3):
-        for template in list(templates_to_delete):
-            try:
-                client.cluster.delete_component_template(
-                    name=template["name"],
-                )
-            except RequestError:
-                pass
-            else:
-                templates_to_delete.remove(template)
-
-        if not templates_to_delete:
-            break
-        time.sleep(0.01)
+    if templates_to_delete:
+        client.cluster.delete_component_template(name=",".join(templates_to_delete))
 
 
 def wipe_transforms(client: Elasticsearch, timeout=30):
