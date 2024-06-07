@@ -44,6 +44,8 @@ def test(session):
         "--cov=elasticsearch_serverless",
         "--cov-config=setup.cfg",
         f"--junitxml={junit_xml}",
+        "--log-level=debug",
+        "--vv",
         "--cache-clear",
         *(session.posargs),
     ]

@@ -100,7 +100,6 @@ packages = ["elasticsearch_serverless"]
 
 [tool.pytest]
 junit_family = "legacy"
-addopts = "-vvv"
 
 [tool.isort]
 profile = "black"
