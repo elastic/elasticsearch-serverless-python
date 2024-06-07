@@ -241,8 +241,8 @@ class AsyncYamlRunner(YamlRunner):
 
 
 @pytest_asyncio.fixture(scope="function")
-def async_runner(async_client):
-    return AsyncYamlRunner(async_client)
+def async_runner(async_client_factory):
+    return AsyncYamlRunner(async_client_factory)
 
 
 if RUN_ASYNC_REST_API_TESTS:
