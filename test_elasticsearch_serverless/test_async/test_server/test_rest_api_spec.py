@@ -249,7 +249,7 @@ if RUN_ASYNC_REST_API_TESTS:
 
     @pytest.mark.parametrize("test_spec", YAML_TEST_SPECS)
     async def test_rest_api_spec(test_spec, async_runner):
-        if test_spec.get("skip", False):
-            pytest.skip("Manually skipped in 'SKIP_TESTS'")
+        if test_spec.get("fail", False):
+            pytest.xfail("Manually marked as failing in 'FAILING_TESTS'")
         async_runner.use_spec(test_spec)
         await async_runner.run()

@@ -101,6 +101,7 @@ packages = ["elasticsearch_serverless"]
 [tool.pytest]
 junit_family = "legacy"
 addopts = "-vvv -p no:logging --cov-report=term-missing --cov=elasticsearch_serverless --cov-config=.pyproject.toml"
+xfail_strict=true
 
 [tool.isort]
 profile = "black"
