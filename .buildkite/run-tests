@@ -2,6 +2,7 @@
 set -euo pipefail
 
 # Default environment variables
+export FORCE_COLOR=1
 export PYTHON_VERSION="${PYTHON_VERSION:=3.9}"
 export PYTHON_CONNECTION_CLASS="${PYTHON_CONNECTION_CLASS:=urllib3}"
 export EC_PROJECT_NAME="$EC_PROJECT_PREFIX-$BUILDKITE_JOB_ID"
@@ -68,6 +69,7 @@ docker run \
   -e AIOHTTP_NO_EXTENSIONS \
   -e FROZENLIST_NO_EXTENSIONS \
   -e YARL_NO_EXTENSIONS \
+  -e FORCE_COLOR \
   --name elasticsearch-serverless-python-tests \
   --volume "$(pwd)/junit:/code/elasticsearch-serverless-python/junit" \
   --rm \
