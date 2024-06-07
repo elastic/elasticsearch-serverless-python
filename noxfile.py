@@ -45,7 +45,7 @@ def test(session):
         "--cov-config=setup.cfg",
         f"--junitxml={junit_xml}",
         "--log-level=debug",
-        "--vv",
+        "-vv",
         "--cache-clear",
         *(session.posargs),
     ]
