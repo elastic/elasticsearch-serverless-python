@@ -21,7 +21,7 @@ import time
 from pathlib import Path
 from typing import Optional, Tuple
 
-from elasticsearch_serverless import Elasticsearch, RequestError
+from elasticsearch_serverless import Elasticsearch
 
 SOURCE_DIR = Path(__file__).absolute().parent.parent
 
@@ -68,20 +68,10 @@ def wipe_cluster(client, elasticsearch_api_key):
     except ImportError:
         pass
 
-    is_xpack = True
-    if is_xpack:
-        wipe_data_streams(client)
+    wipe_data_streams(client)
     wipe_indices(client)
-
-    if is_xpack:
-        wipe_xpack_templates(client)
-    else:
-        client.indices.delete_template(name="*")
-        client.indices.delete_index_template(name="*")
-        client.cluster.delete_component_template(name="*")
-
-    if is_xpack:
-        wipe_transforms(client)
+    wipe_xpack_templates(client)
+    wipe_transforms(client)
 
     if close_after_wipe:
         client.close()
@@ -109,22 +99,12 @@ def wipe_xpack_templates(client):
     # indices aren't cleaned up in time before we issue the delete.
     templates = client.cluster.get_component_template()["component_templates"]
     templates_to_delete = [
-        template for template in templates if not is_xpack_template(template["name"])
+        template["name"]
+        for template in templates
+        if not is_xpack_template(template["name"])
     ]
-    for _ in range(3):
-        for template in list(templates_to_delete):
-            try:
-                client.cluster.delete_component_template(
-                    name=template["name"],
-                )
-            except RequestError:
-                pass
-            else:
-                templates_to_delete.remove(template)
-
-        if not templates_to_delete:
-            break
-        time.sleep(0.01)
+    if templates_to_delete:
+        client.cluster.delete_component_template(name=",".join(templates_to_delete))
 
 
 def wipe_transforms(client: Elasticsearch, timeout=30):
@@ -143,38 +123,53 @@ def wipe_transforms(client: Elasticsearch, timeout=30):
 
 
 def is_xpack_template(name):
-    if name.startswith(".monitoring-"):
+    if name.startswith(".alerts-"):
         return True
-    elif name.startswith(".watch") or name.startswith(".triggered_watches"):
+    elif name.startswith(".kibana-data-quality-dashboard-"):
         return True
-    elif name.startswith(".data-frame-"):
+    elif name.startswith(".kibana-elastic-ai-assistant-component-template-"):
         return True
-    elif name.startswith(".ml-"):
+    elif name.startswith("behavioral_analytics-events"):
         return True
-    elif name.startswith(".transform-"):
-        return True
-    elif name.startswith(".deprecation-"):
+    elif name.startswith("elastic-connectors-"):
         return True
     if name in {
-        ".watches",
-        "security_audit_log",
-        ".slm-history",
-        ".async-search",
-        "saml-service-provider",
-        "logs",
-        "logs-settings",
-        "logs-mappings",
-        "metrics",
-        "metrics-settings",
-        "metrics-mappings",
-        "synthetics",
-        "synthetics-settings",
-        "synthetics-mappings",
-        ".snapshot-blob-cache",
-        "ilm-history",
-        "logstash-index-template",
-        "security-index-template",
+        "apm-10d@lifecycle",
+        "apm-180d@lifecycle",
+        "apm-390d@lifecycle",
+        "apm-90d@lifecycle",
+        "apm@mappings",
+        "apm@settings",
         "data-streams-mappings",
+        "data-streams@mappings",
+        "ecs@dynamic_templates",
+        "ecs@mappings",
+        "kibana-reporting@settings",
+        "logs-apm.error@mappings",
+        "logs-apm@settings",
+        "logs-mappings",
+        "logs@mappings",
+        "logs-settings",
+        "logs@settings",
+        "metrics-apm@mappings",
+        "metrics-apm.service_destination@mappings",
+        "metrics-apm.service_summary@mappings",
+        "metrics-apm.service_transaction@mappings",
+        "metrics-apm@settings",
+        "metrics-apm.transaction@mappings",
+        "metrics-mappings",
+        "metrics@mappings",
+        "metrics-settings",
+        "metrics@settings",
+        "metrics-tsdb-settings",
+        "metrics@tsdb-settings",
+        "synthetics-mappings",
+        "synthetics@mappings",
+        "synthetics-settings",
+        "synthetics@settings",
+        "traces-apm@mappings",
+        "traces-apm.rum@mappings",
+        "traces@mappings",
     }:
         return True
     return False
