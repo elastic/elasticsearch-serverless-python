@@ -6,7 +6,7 @@ metadata:
   name: elasticsearch-serverless-python
 spec:
   type: library
-  owner: group:clients-team
+  owner: group:devtools-team
   lifecycle: alpha
 
 ---
@@ -18,7 +18,7 @@ metadata:
   description: elasticsearch-serverless-python - rest tests
 spec:
   type: buildkite-pipeline
-  owner: group:clients-team
+  owner: group:devtools-team
   system: buildkite
   implementation:
     apiVersion: buildkite.elastic.dev/v1
@@ -29,7 +29,7 @@ spec:
       repository: elastic/elasticsearch-serverless-python
       pipeline_file: .buildkite/rest-tests.yaml
       teams:
-        clients-team:
+        devtools-team:
           access_level: MANAGE_BUILD_AND_READ
         everyone:
           access_level: READ_ONLY
