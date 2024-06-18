@@ -14,7 +14,7 @@ def benchmark_to_steps(python, connection_class):
                     "env": {
                         "PYTHON_VERSION": f"{python}",
                         "PYTHON_CONNECTION_CLASS": f"{connection_class}",
-                        # TEMPORARY for 3.11
+                        # For development versions
                         # https://github.com/aio-libs/aiohttp/issues/6600
                         "AIOHTTP_NO_EXTENSIONS": 1,
                         # https://github.com/aio-libs/frozenlist/issues/285
@@ -53,7 +53,7 @@ def benchmark_to_steps(python, connection_class):
 
 if __name__ == "__main__":
     steps = []
-    for python in ["3.7", "3.8", "3.9", "3.10", "3.11"]:
+    for python in ["3.9", "3.10", "3.11", "3.12"]:
         for connection_class in ["urllib3", "requests"]:
             steps.extend(benchmark_to_steps(python, connection_class))
     print(yaml.dump({"steps": steps}, Dumper=yaml.Dumper, sort_keys=False))

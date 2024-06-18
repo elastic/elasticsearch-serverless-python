@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Default environment variables
 export FORCE_COLOR=1
-export PYTHON_VERSION="${PYTHON_VERSION:=3.9}"
+export PYTHON_VERSION="${PYTHON_VERSION:=3.12}"
 export PYTHON_CONNECTION_CLASS="${PYTHON_CONNECTION_CLASS:=urllib3}"
 export EC_PROJECT_NAME="$EC_PROJECT_PREFIX-$BUILDKITE_JOB_ID"
 buildkite-agent meta-data set $EC_PROJECT_PREFIX $EC_PROJECT_NAME
