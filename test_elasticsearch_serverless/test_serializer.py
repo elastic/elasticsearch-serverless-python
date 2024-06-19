@@ -90,7 +90,6 @@ def test_serializes_numpy_integers():
 def test_serializes_numpy_floats():
     ser = JSONSerializer()
     for np_type in (
-        np.float_,
         np.float32,
         np.float64,
     ):
