@@ -572,6 +572,9 @@ try:
             # Skip either 'test_name' or 'test_name[x]'
             if pytest_test_name in FAILING_TESTS or pytest_param_id in FAILING_TESTS:
                 pytest_param["fail"] = True
+            # https://github.com/elastic/elasticsearch-serverless-python/issues/63
+            elif pytest_param_id == "cluster/cluster_info[0]":
+                pytest_param["skip"] = True
 
             YAML_TEST_SPECS.append(pytest.param(pytest_param, id=pytest_param_id))
 
@@ -593,5 +596,7 @@ if not RUN_ASYNC_REST_API_TESTS:
     def test_rest_api_spec(test_spec, sync_runner):
         if test_spec.get("fail", False):
             pytest.xfail("Manually marked as failing in 'FAILING_TESTS'")
+        elif test_spec.get("skip", False):
+            pytest.skip("Manually marked as skipped")
         sync_runner.use_spec(test_spec)
         sync_runner.run()
