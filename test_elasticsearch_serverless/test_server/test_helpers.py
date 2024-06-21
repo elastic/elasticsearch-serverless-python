@@ -474,9 +474,10 @@ def test_scroll_error(sync_client):
         bulk.append({"value": x})
     sync_client.bulk(operations=bulk, refresh=True)
 
-    with patch.object(sync_client, "options", return_value=sync_client), patch.object(
-        sync_client, "scroll"
-    ) as scroll_mock:
+    with (
+        patch.object(sync_client, "options", return_value=sync_client),
+        patch.object(sync_client, "scroll") as scroll_mock,
+    ):
         scroll_mock.side_effect = mock_scroll_responses
         data = list(
             helpers.scan(
@@ -506,21 +507,25 @@ def test_scroll_error(sync_client):
 
 
 def test_initial_search_error(sync_client):
-    with patch.object(
-        sync_client,
-        "search",
-        return_value=ObjectApiResponse(
-            meta=None,
-            raw={
-                "_scroll_id": "dummy_id",
-                "_shards": {"successful": 4, "total": 5, "skipped": 0},
-                "hits": {"hits": [{"search_data": 1}]},
-            },
+    with (
+        patch.object(
+            sync_client,
+            "search",
+            return_value=ObjectApiResponse(
+                meta=None,
+                raw={
+                    "_scroll_id": "dummy_id",
+                    "_shards": {"successful": 4, "total": 5, "skipped": 0},
+                    "hits": {"hits": [{"search_data": 1}]},
+                },
+            ),
         ),
-    ), patch.object(sync_client, "options", return_value=sync_client):
-        with patch.object(sync_client, "scroll") as scroll_mock, patch.object(
-            sync_client, "clear_scroll"
-        ) as clear_scroll_mock:
+        patch.object(sync_client, "options", return_value=sync_client),
+    ):
+        with (
+            patch.object(sync_client, "scroll") as scroll_mock,
+            patch.object(sync_client, "clear_scroll") as clear_scroll_mock,
+        ):
             scroll_mock.side_effect = mock_scroll_responses
             data = list(
                 helpers.scan(
@@ -538,9 +543,10 @@ def test_initial_search_error(sync_client):
                 scroll_id="dummy_id",
             )
 
-        with patch.object(sync_client, "scroll") as scroll_mock, patch.object(
-            sync_client, "clear_scroll"
-        ) as clear_scroll_mock:
+        with (
+            patch.object(sync_client, "scroll") as scroll_mock,
+            patch.object(sync_client, "clear_scroll") as clear_scroll_mock,
+        ):
             scroll_mock.side_effect = mock_scroll_responses
             with pytest.raises(ScanError):
                 data = list(
@@ -558,15 +564,16 @@ def test_initial_search_error(sync_client):
 
 
 def test_no_scroll_id_fast_route(sync_client):
-    with patch.object(
-        sync_client,
-        "search",
-        return_value=ObjectApiResponse(meta=None, raw={"no": "_scroll_id"}),
-    ) as search_mock, patch.object(sync_client, "scroll") as scroll_mock, patch.object(
-        sync_client, "clear_scroll"
-    ) as clear_scroll_mock, patch.object(
-        sync_client, "options", return_value=sync_client
-    ) as options:
+    with (
+        patch.object(
+            sync_client,
+            "search",
+            return_value=ObjectApiResponse(meta=None, raw={"no": "_scroll_id"}),
+        ) as search_mock,
+        patch.object(sync_client, "scroll") as scroll_mock,
+        patch.object(sync_client, "clear_scroll") as clear_scroll_mock,
+        patch.object(sync_client, "options", return_value=sync_client) as options,
+    ):
         data = list(helpers.scan(sync_client, index="test_index"))
 
         assert data == []
@@ -595,32 +602,37 @@ def test_no_scroll_id_fast_route(sync_client):
 def test_scan_auth_kwargs_forwarded(sync_client, kwargs):
     ((key, val),) = kwargs.items()
 
-    with patch.object(
-        sync_client, "options", return_value=sync_client
-    ) as options, patch.object(
-        sync_client,
-        "search",
-        return_value=ObjectApiResponse(
-            meta=None,
-            raw={
-                "_scroll_id": "scroll_id",
-                "_shards": {"successful": 5, "total": 5, "skipped": 0},
-                "hits": {"hits": [{"search_data": 1}]},
-            },
+    with (
+        patch.object(sync_client, "options", return_value=sync_client) as options,
+        patch.object(
+            sync_client,
+            "search",
+            return_value=ObjectApiResponse(
+                meta=None,
+                raw={
+                    "_scroll_id": "scroll_id",
+                    "_shards": {"successful": 5, "total": 5, "skipped": 0},
+                    "hits": {"hits": [{"search_data": 1}]},
+                },
+            ),
         ),
-    ), patch.object(
-        sync_client,
-        "scroll",
-        return_value=ObjectApiResponse(
-            meta=None,
-            raw={
-                "_scroll_id": "scroll_id",
-                "_shards": {"successful": 5, "total": 5, "skipped": 0},
-                "hits": {"hits": []},
-            },
+        patch.object(
+            sync_client,
+            "scroll",
+            return_value=ObjectApiResponse(
+                meta=None,
+                raw={
+                    "_scroll_id": "scroll_id",
+                    "_shards": {"successful": 5, "total": 5, "skipped": 0},
+                    "hits": {"hits": []},
+                },
+            ),
         ),
-    ), patch.object(
-        sync_client, "clear_scroll", return_value=ObjectApiResponse(meta=None, raw={})
+        patch.object(
+            sync_client,
+            "clear_scroll",
+            return_value=ObjectApiResponse(meta=None, raw={}),
+        ),
     ):
         data = list(helpers.scan(sync_client, index="test_index", **kwargs))
 
@@ -635,32 +647,37 @@ def test_scan_auth_kwargs_forwarded(sync_client, kwargs):
 
 
 def test_scan_auth_kwargs_favor_scroll_kwargs_option(sync_client):
-    with patch.object(
-        sync_client, "options", return_value=sync_client
-    ) as options_mock, patch.object(
-        sync_client,
-        "search",
-        return_value=ObjectApiResponse(
-            raw={
-                "_scroll_id": "scroll_id",
-                "_shards": {"successful": 5, "total": 5, "skipped": 0},
-                "hits": {"hits": [{"search_data": 1}]},
-            },
-            meta=None,
+    with (
+        patch.object(sync_client, "options", return_value=sync_client) as options_mock,
+        patch.object(
+            sync_client,
+            "search",
+            return_value=ObjectApiResponse(
+                raw={
+                    "_scroll_id": "scroll_id",
+                    "_shards": {"successful": 5, "total": 5, "skipped": 0},
+                    "hits": {"hits": [{"search_data": 1}]},
+                },
+                meta=None,
+            ),
+        ) as search_mock,
+        patch.object(
+            sync_client,
+            "scroll",
+            return_value=ObjectApiResponse(
+                raw={
+                    "_scroll_id": "scroll_id",
+                    "_shards": {"successful": 5, "total": 5, "skipped": 0},
+                    "hits": {"hits": []},
+                },
+                meta=None,
+            ),
+        ) as scroll_mock,
+        patch.object(
+            sync_client,
+            "clear_scroll",
+            return_value=ObjectApiResponse(raw={}, meta=None),
         ),
-    ) as search_mock, patch.object(
-        sync_client,
-        "scroll",
-        return_value=ObjectApiResponse(
-            raw={
-                "_scroll_id": "scroll_id",
-                "_shards": {"successful": 5, "total": 5, "skipped": 0},
-                "hits": {"hits": []},
-            },
-            meta=None,
-        ),
-    ) as scroll_mock, patch.object(
-        sync_client, "clear_scroll", return_value=ObjectApiResponse(raw={}, meta=None)
     ):
         data = list(
             helpers.scan(
@@ -694,13 +711,11 @@ def test_log_warning_on_shard_failures(sync_client):
         bulk.append({"value": x})
     sync_client.bulk(operations=bulk, refresh=True)
 
-    with patch(
-        "elasticsearch_serverless.helpers.actions.logger"
-    ) as logger_mock, patch.object(
-        sync_client, "options", return_value=sync_client
-    ), patch.object(
-        sync_client, "scroll"
-    ) as scroll_mock:
+    with (
+        patch("elasticsearch_serverless.helpers.actions.logger") as logger_mock,
+        patch.object(sync_client, "options", return_value=sync_client),
+        patch.object(sync_client, "scroll") as scroll_mock,
+    ):
         scroll_mock.side_effect = mock_scroll_responses
         list(
             helpers.scan(
@@ -736,9 +751,12 @@ def test_clear_scroll(sync_client):
         bulk.append({"value": x})
     sync_client.bulk(operations=bulk, refresh=True)
 
-    with patch.object(sync_client, "options", return_value=sync_client), patch.object(
-        sync_client, "clear_scroll", wraps=sync_client.clear_scroll
-    ) as clear_scroll_mock:
+    with (
+        patch.object(sync_client, "options", return_value=sync_client),
+        patch.object(
+            sync_client, "clear_scroll", wraps=sync_client.clear_scroll
+        ) as clear_scroll_mock,
+    ):
         list(helpers.scan(sync_client, index="test_index", size=2))
         clear_scroll_mock.assert_called_once()
 
@@ -753,19 +771,22 @@ def test_clear_scroll(sync_client):
 
 def test_shards_no_skipped_field(sync_client):
     # Test that scan doesn't fail if 'hits.skipped' isn't available.
-    with patch.object(sync_client, "options", return_value=sync_client), patch.object(
-        sync_client,
-        "search",
-        return_value=ObjectApiResponse(
-            raw={
-                "_scroll_id": "dummy_id",
-                "_shards": {"successful": 5, "total": 5},
-                "hits": {"hits": [{"search_data": 1}]},
-            },
-            meta=None,
+    with (
+        patch.object(sync_client, "options", return_value=sync_client),
+        patch.object(
+            sync_client,
+            "search",
+            return_value=ObjectApiResponse(
+                raw={
+                    "_scroll_id": "dummy_id",
+                    "_shards": {"successful": 5, "total": 5},
+                    "hits": {"hits": [{"search_data": 1}]},
+                },
+                meta=None,
+            ),
         ),
-    ), patch.object(sync_client, "scroll") as scroll_mock, patch.object(
-        sync_client, "clear_scroll"
+        patch.object(sync_client, "scroll") as scroll_mock,
+        patch.object(sync_client, "clear_scroll"),
     ):
         scroll_mock.side_effect = [
             ObjectApiResponse(
@@ -804,18 +825,22 @@ def test_shards_no_skipped_field(sync_client):
     ],
 )
 def test_scan_from_keyword_is_aliased(sync_client, scan_kwargs):
-    with patch.object(sync_client, "options", return_value=sync_client), patch.object(
-        sync_client,
-        "search",
-        return_value=ObjectApiResponse(
-            raw={
-                "_scroll_id": "dummy_id",
-                "_shards": {"successful": 5, "total": 5},
-                "hits": {"hits": []},
-            },
-            meta=None,
-        ),
-    ) as search_mock, patch.object(sync_client, "clear_scroll"):
+    with (
+        patch.object(sync_client, "options", return_value=sync_client),
+        patch.object(
+            sync_client,
+            "search",
+            return_value=ObjectApiResponse(
+                raw={
+                    "_scroll_id": "dummy_id",
+                    "_shards": {"successful": 5, "total": 5},
+                    "hits": {"hits": []},
+                },
+                meta=None,
+            ),
+        ) as search_mock,
+        patch.object(sync_client, "clear_scroll"),
+    ):
         list(helpers.scan(sync_client, index="test_index", **scan_kwargs))
         assert search_mock.call_args[1]["from_"] == 1
         assert "from" not in search_mock.call_args[1]
