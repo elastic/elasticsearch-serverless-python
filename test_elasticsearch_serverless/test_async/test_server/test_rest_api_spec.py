@@ -251,5 +251,7 @@ if RUN_ASYNC_REST_API_TESTS:
     async def test_rest_api_spec(test_spec, async_runner):
         if test_spec.get("fail", False):
             pytest.xfail("Manually marked as failing in 'FAILING_TESTS'")
+        elif test_spec.get("skip", False):
+            pytest.xfail("Manually skipped")
         async_runner.use_spec(test_spec)
         await async_runner.run()
