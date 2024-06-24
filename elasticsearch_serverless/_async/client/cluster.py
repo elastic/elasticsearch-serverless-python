@@ -40,7 +40,8 @@ class ClusterClient(NamespacedClient):
         timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes a component template
+        Deletes component templates. Component templates are building blocks for constructing
+        index templates that specify index mappings, settings, and aliases.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-component-template.html>`_
 
@@ -139,7 +140,7 @@ class ClusterClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns one or more component templates
+        Retrieves information about component templates.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-component-template.html>`_
 
@@ -233,7 +234,6 @@ class ClusterClient(NamespacedClient):
         *,
         name: str,
         template: t.Optional[t.Mapping[str, t.Any]] = None,
-        cause: t.Optional[str] = None,
         create: t.Optional[bool] = None,
         deprecated: t.Optional[bool] = None,
         error_trace: t.Optional[bool] = None,
@@ -248,7 +248,19 @@ class ClusterClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Creates or updates a component template
+        Creates or updates a component template. Component templates are building blocks
+        for constructing index templates that specify index mappings, settings, and aliases.
+        An index template can be composed of multiple component templates. To use a component
+        template, specify it in an index template’s `composed_of` list. Component templates
+        are only applied to new data streams and indices as part of a matching index
+        template. Settings and mappings specified directly in the index template or the
+        create index request override any settings or mappings specified in a component
+        template. Component templates are only used during index creation. For data streams,
+        this includes data stream creation and the creation of a stream’s backing indices.
+        Changes to component templates do not affect existing indices, including a stream’s
+        backing indices. You can use C-style `/* *\\/` block comments in component templates.
+        You can include comments anywhere in the request body except before the opening
+        curly bracket.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-component-template.html>`_
 
@@ -263,7 +275,6 @@ class ClusterClient(NamespacedClient):
             update settings API.
         :param template: The template to be applied which includes mappings, settings,
             or aliases configuration.
-        :param cause:
         :param create: If `true`, this request cannot replace or update existing component
             templates.
         :param deprecated: Marks this index template as deprecated. When creating or
@@ -287,8 +298,6 @@ class ClusterClient(NamespacedClient):
         __path = f"/_component_template/{_quote(name)}"
         __query: t.Dict[str, t.Any] = {}
         __body: t.Dict[str, t.Any] = body if body is not None else {}
-        if cause is not None:
-            __query["cause"] = cause
         if create is not None:
             __query["create"] = create
         if error_trace is not None:
