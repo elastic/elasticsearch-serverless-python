@@ -54,6 +54,13 @@ Event Query Language (EQL)
 .. autoclass:: EqlClient
    :members:
 
+
+ES|QL
+-----
+
+.. autoclass:: EqlClient
+   :members:
+
 Graph Explore
 -------------
 
