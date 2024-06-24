@@ -80,9 +80,12 @@ class CatClient(NamespacedClient):
             a suffix to the column name.
         :param v: When set to `true` will enable verbose output.
         """
+        __path_parts: t.Dict[str, str]
         if name not in SKIP_IN_PATH:
-            __path = f"/_cat/aliases/{_quote(name)}"
+            __path_parts = {"name": _quote(name)}
+            __path = f'/_cat/aliases/{__path_parts["name"]}'
         else:
+            __path_parts = {}
             __path = "/_cat/aliases"
         __query: t.Dict[str, t.Any] = {}
         if error_trace is not None:
@@ -111,7 +114,12 @@ class CatClient(NamespacedClient):
             __query["v"] = v
         __headers = {"accept": "text/plain,application/json"}
         return self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="cat.aliases",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters()
@@ -159,9 +167,12 @@ class CatClient(NamespacedClient):
             a suffix to the column name.
         :param v: When set to `true` will enable verbose output.
         """
+        __path_parts: t.Dict[str, str]
         if name not in SKIP_IN_PATH:
-            __path = f"/_cat/component_templates/{_quote(name)}"
+            __path_parts = {"name": _quote(name)}
+            __path = f'/_cat/component_templates/{__path_parts["name"]}'
         else:
+            __path_parts = {}
             __path = "/_cat/component_templates"
         __query: t.Dict[str, t.Any] = {}
         if error_trace is not None:
@@ -188,7 +199,12 @@ class CatClient(NamespacedClient):
             __query["v"] = v
         __headers = {"accept": "text/plain,application/json"}
         return self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="cat.component_templates",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters()
@@ -238,9 +254,12 @@ class CatClient(NamespacedClient):
             a suffix to the column name.
         :param v: When set to `true` will enable verbose output.
         """
+        __path_parts: t.Dict[str, str]
         if index not in SKIP_IN_PATH:
-            __path = f"/_cat/count/{_quote(index)}"
+            __path_parts = {"index": _quote(index)}
+            __path = f'/_cat/count/{__path_parts["index"]}'
         else:
+            __path_parts = {}
             __path = "/_cat/count"
         __query: t.Dict[str, t.Any] = {}
         if error_trace is not None:
@@ -267,7 +286,12 @@ class CatClient(NamespacedClient):
             __query["v"] = v
         __headers = {"accept": "text/plain,application/json"}
         return self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="cat.count",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters()
@@ -308,6 +332,7 @@ class CatClient(NamespacedClient):
             a suffix to the column name.
         :param v: When set to `true` will enable verbose output.
         """
+        __path_parts: t.Dict[str, str] = {}
         __path = "/_cat"
         __query: t.Dict[str, t.Any] = {}
         if error_trace is not None:
@@ -334,7 +359,12 @@ class CatClient(NamespacedClient):
             __query["v"] = v
         __headers = {"accept": "text/plain"}
         return self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="cat.help",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters()
@@ -413,9 +443,12 @@ class CatClient(NamespacedClient):
         :param time: The unit used to display time values.
         :param v: When set to `true` will enable verbose output.
         """
+        __path_parts: t.Dict[str, str]
         if index not in SKIP_IN_PATH:
-            __path = f"/_cat/indices/{_quote(index)}"
+            __path_parts = {"index": _quote(index)}
+            __path = f'/_cat/indices/{__path_parts["index"]}'
         else:
+            __path_parts = {}
             __path = "/_cat/indices"
         __query: t.Dict[str, t.Any] = {}
         if bytes is not None:
@@ -454,7 +487,12 @@ class CatClient(NamespacedClient):
             __query["v"] = v
         __headers = {"accept": "text/plain,application/json"}
         return self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="cat.indices",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters()
@@ -534,9 +572,12 @@ class CatClient(NamespacedClient):
         :param time: Unit used to display time values.
         :param v: When set to `true` will enable verbose output.
         """
+        __path_parts: t.Dict[str, str]
         if id not in SKIP_IN_PATH:
-            __path = f"/_cat/ml/data_frame/analytics/{_quote(id)}"
+            __path_parts = {"id": _quote(id)}
+            __path = f'/_cat/ml/data_frame/analytics/{__path_parts["id"]}'
         else:
+            __path_parts = {}
             __path = "/_cat/ml/data_frame/analytics"
         __query: t.Dict[str, t.Any] = {}
         if allow_no_match is not None:
@@ -569,7 +610,12 @@ class CatClient(NamespacedClient):
             __query["v"] = v
         __headers = {"accept": "text/plain,application/json"}
         return self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="cat.ml_data_frame_analytics",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters()
@@ -655,9 +701,12 @@ class CatClient(NamespacedClient):
         :param time: The unit used to display time values.
         :param v: When set to `true` will enable verbose output.
         """
+        __path_parts: t.Dict[str, str]
         if datafeed_id not in SKIP_IN_PATH:
-            __path = f"/_cat/ml/datafeeds/{_quote(datafeed_id)}"
+            __path_parts = {"datafeed_id": _quote(datafeed_id)}
+            __path = f'/_cat/ml/datafeeds/{__path_parts["datafeed_id"]}'
         else:
+            __path_parts = {}
             __path = "/_cat/ml/datafeeds"
         __query: t.Dict[str, t.Any] = {}
         if allow_no_match is not None:
@@ -688,7 +737,12 @@ class CatClient(NamespacedClient):
             __query["v"] = v
         __headers = {"accept": "text/plain,application/json"}
         return self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="cat.ml_datafeeds",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters()
@@ -778,9 +832,12 @@ class CatClient(NamespacedClient):
         :param time: The unit used to display time values.
         :param v: When set to `true` will enable verbose output.
         """
+        __path_parts: t.Dict[str, str]
         if job_id not in SKIP_IN_PATH:
-            __path = f"/_cat/ml/anomaly_detectors/{_quote(job_id)}"
+            __path_parts = {"job_id": _quote(job_id)}
+            __path = f'/_cat/ml/anomaly_detectors/{__path_parts["job_id"]}'
         else:
+            __path_parts = {}
             __path = "/_cat/ml/anomaly_detectors"
         __query: t.Dict[str, t.Any] = {}
         if allow_no_match is not None:
@@ -813,7 +870,12 @@ class CatClient(NamespacedClient):
             __query["v"] = v
         __headers = {"accept": "text/plain,application/json"}
         return self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="cat.ml_jobs",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters(
@@ -902,9 +964,12 @@ class CatClient(NamespacedClient):
         :param size: The maximum number of transforms to display.
         :param v: When set to `true` will enable verbose output.
         """
+        __path_parts: t.Dict[str, str]
         if model_id not in SKIP_IN_PATH:
-            __path = f"/_cat/ml/trained_models/{_quote(model_id)}"
+            __path_parts = {"model_id": _quote(model_id)}
+            __path = f'/_cat/ml/trained_models/{__path_parts["model_id"]}'
         else:
+            __path_parts = {}
             __path = "/_cat/ml/trained_models"
         __query: t.Dict[str, t.Any] = {}
         if allow_no_match is not None:
@@ -939,7 +1004,12 @@ class CatClient(NamespacedClient):
             __query["v"] = v
         __headers = {"accept": "text/plain,application/json"}
         return self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="cat.ml_trained_models",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters(
@@ -1030,9 +1100,12 @@ class CatClient(NamespacedClient):
         :param time: The unit used to display time values.
         :param v: When set to `true` will enable verbose output.
         """
+        __path_parts: t.Dict[str, str]
         if transform_id not in SKIP_IN_PATH:
-            __path = f"/_cat/transforms/{_quote(transform_id)}"
+            __path_parts = {"transform_id": _quote(transform_id)}
+            __path = f'/_cat/transforms/{__path_parts["transform_id"]}'
         else:
+            __path_parts = {}
             __path = "/_cat/transforms"
         __query: t.Dict[str, t.Any] = {}
         if allow_no_match is not None:
@@ -1067,5 +1140,10 @@ class CatClient(NamespacedClient):
             __query["v"] = v
         __headers = {"accept": "text/plain,application/json"}
         return self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="cat.transforms",
+            path_parts=__path_parts,
         )

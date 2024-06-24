@@ -55,7 +55,8 @@ class TransformClient(NamespacedClient):
         """
         if transform_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'transform_id'")
-        __path = f"/_transform/{_quote(transform_id)}"
+        __path_parts: t.Dict[str, str] = {"transform_id": _quote(transform_id)}
+        __path = f'/_transform/{__path_parts["transform_id"]}'
         __query: t.Dict[str, t.Any] = {}
         if delete_dest_index is not None:
             __query["delete_dest_index"] = delete_dest_index
@@ -73,7 +74,12 @@ class TransformClient(NamespacedClient):
             __query["timeout"] = timeout
         __headers = {"accept": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
-            "DELETE", __path, params=__query, headers=__headers
+            "DELETE",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="transform.delete_transform",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters(
@@ -111,9 +117,12 @@ class TransformClient(NamespacedClient):
         :param from_: Skips the specified number of transforms.
         :param size: Specifies the maximum number of transforms to obtain.
         """
+        __path_parts: t.Dict[str, str]
         if transform_id not in SKIP_IN_PATH:
-            __path = f"/_transform/{_quote(transform_id)}"
+            __path_parts = {"transform_id": _quote(transform_id)}
+            __path = f'/_transform/{__path_parts["transform_id"]}'
         else:
+            __path_parts = {}
             __path = "/_transform"
         __query: t.Dict[str, t.Any] = {}
         if allow_no_match is not None:
@@ -134,7 +143,12 @@ class TransformClient(NamespacedClient):
             __query["size"] = size
         __headers = {"accept": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="transform.get_transform",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters(
@@ -172,7 +186,8 @@ class TransformClient(NamespacedClient):
         """
         if transform_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'transform_id'")
-        __path = f"/_transform/{_quote(transform_id)}/_stats"
+        __path_parts: t.Dict[str, str] = {"transform_id": _quote(transform_id)}
+        __path = f'/_transform/{__path_parts["transform_id"]}/_stats'
         __query: t.Dict[str, t.Any] = {}
         if allow_no_match is not None:
             __query["allow_no_match"] = allow_no_match
@@ -192,7 +207,12 @@ class TransformClient(NamespacedClient):
             __query["timeout"] = timeout
         __headers = {"accept": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="transform.get_transform_stats",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters(
@@ -258,9 +278,12 @@ class TransformClient(NamespacedClient):
         :param timeout: Period to wait for a response. If no response is received before
             the timeout expires, the request fails and returns an error.
         """
+        __path_parts: t.Dict[str, str]
         if transform_id not in SKIP_IN_PATH:
-            __path = f"/_transform/{_quote(transform_id)}/_preview"
+            __path_parts = {"transform_id": _quote(transform_id)}
+            __path = f'/_transform/{__path_parts["transform_id"]}/_preview'
         else:
+            __path_parts = {}
             __path = "/_transform/_preview"
         __query: t.Dict[str, t.Any] = {}
         __body: t.Dict[str, t.Any] = body if body is not None else {}
@@ -299,7 +322,13 @@ class TransformClient(NamespacedClient):
         if __body is not None:
             __headers["content-type"] = "application/json"
         return await self.perform_request(  # type: ignore[return-value]
-            "POST", __path, params=__query, headers=__headers, body=__body
+            "POST",
+            __path,
+            params=__query,
+            headers=__headers,
+            body=__body,
+            endpoint_id="transform.preview_transform",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters(
@@ -399,7 +428,8 @@ class TransformClient(NamespacedClient):
             raise ValueError("Empty value passed for parameter 'dest'")
         if source is None and body is None:
             raise ValueError("Empty value passed for parameter 'source'")
-        __path = f"/_transform/{_quote(transform_id)}"
+        __path_parts: t.Dict[str, str] = {"transform_id": _quote(transform_id)}
+        __path = f'/_transform/{__path_parts["transform_id"]}'
         __query: t.Dict[str, t.Any] = {}
         __body: t.Dict[str, t.Any] = body if body is not None else {}
         if defer_validation is not None:
@@ -437,7 +467,13 @@ class TransformClient(NamespacedClient):
                 __body["sync"] = sync
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
-            "PUT", __path, params=__query, headers=__headers, body=__body
+            "PUT",
+            __path,
+            params=__query,
+            headers=__headers,
+            body=__body,
+            endpoint_id="transform.put_transform",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters()
@@ -467,7 +503,8 @@ class TransformClient(NamespacedClient):
         """
         if transform_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'transform_id'")
-        __path = f"/_transform/{_quote(transform_id)}/_reset"
+        __path_parts: t.Dict[str, str] = {"transform_id": _quote(transform_id)}
+        __path = f'/_transform/{__path_parts["transform_id"]}/_reset'
         __query: t.Dict[str, t.Any] = {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
@@ -481,7 +518,12 @@ class TransformClient(NamespacedClient):
             __query["pretty"] = pretty
         __headers = {"accept": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
-            "POST", __path, params=__query, headers=__headers
+            "POST",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="transform.reset_transform",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters()
@@ -508,7 +550,8 @@ class TransformClient(NamespacedClient):
         """
         if transform_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'transform_id'")
-        __path = f"/_transform/{_quote(transform_id)}/_schedule_now"
+        __path_parts: t.Dict[str, str] = {"transform_id": _quote(transform_id)}
+        __path = f'/_transform/{__path_parts["transform_id"]}/_schedule_now'
         __query: t.Dict[str, t.Any] = {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
@@ -522,7 +565,12 @@ class TransformClient(NamespacedClient):
             __query["timeout"] = timeout
         __headers = {"accept": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
-            "POST", __path, params=__query, headers=__headers
+            "POST",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="transform.schedule_now_transform",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters(
@@ -569,7 +617,8 @@ class TransformClient(NamespacedClient):
         """
         if transform_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'transform_id'")
-        __path = f"/_transform/{_quote(transform_id)}/_start"
+        __path_parts: t.Dict[str, str] = {"transform_id": _quote(transform_id)}
+        __path = f'/_transform/{__path_parts["transform_id"]}/_start'
         __query: t.Dict[str, t.Any] = {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
@@ -585,7 +634,12 @@ class TransformClient(NamespacedClient):
             __query["timeout"] = timeout
         __headers = {"accept": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
-            "POST", __path, params=__query, headers=__headers
+            "POST",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="transform.start_transform",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters()
@@ -632,7 +686,8 @@ class TransformClient(NamespacedClient):
         """
         if transform_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'transform_id'")
-        __path = f"/_transform/{_quote(transform_id)}/_stop"
+        __path_parts: t.Dict[str, str] = {"transform_id": _quote(transform_id)}
+        __path = f'/_transform/{__path_parts["transform_id"]}/_stop'
         __query: t.Dict[str, t.Any] = {}
         if allow_no_match is not None:
             __query["allow_no_match"] = allow_no_match
@@ -654,7 +709,12 @@ class TransformClient(NamespacedClient):
             __query["wait_for_completion"] = wait_for_completion
         __headers = {"accept": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
-            "POST", __path, params=__query, headers=__headers
+            "POST",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="transform.stop_transform",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters(
@@ -722,7 +782,8 @@ class TransformClient(NamespacedClient):
         """
         if transform_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'transform_id'")
-        __path = f"/_transform/{_quote(transform_id)}/_update"
+        __path_parts: t.Dict[str, str] = {"transform_id": _quote(transform_id)}
+        __path = f'/_transform/{__path_parts["transform_id"]}/_update'
         __query: t.Dict[str, t.Any] = {}
         __body: t.Dict[str, t.Any] = body if body is not None else {}
         if defer_validation is not None:
@@ -756,5 +817,11 @@ class TransformClient(NamespacedClient):
                 __body["sync"] = sync
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
-            "POST", __path, params=__query, headers=__headers, body=__body
+            "POST",
+            __path,
+            params=__query,
+            headers=__headers,
+            body=__body,
+            endpoint_id="transform.update_transform",
+            path_parts=__path_parts,
         )
