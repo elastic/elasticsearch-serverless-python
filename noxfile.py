@@ -31,14 +31,11 @@ SOURCE_FILES = (
 INSTALL_ENV = {"AIOHTTP_NO_EXTENSIONS": "1"}
 
 
-@nox.session(python=["3.9", "3.10", "3.11", "3.12"])
-def test(session):
-    session.install(".[dev]", env=INSTALL_ENV)
-
+def pytest_argv():
     junit_xml = os.path.join(
         SOURCE_DIR, "junit", "elasticsearch-serverless-python-junit.xml"
     )
-    pytest_argv = [
+    return [
         "pytest",
         "--cov-report=term-missing",
         "--cov=elasticsearch_serverless",
@@ -47,9 +44,23 @@ def test(session):
         "--log-level=debug",
         "-vv",
         "--cache-clear",
-        *(session.posargs),
     ]
-    session.run(*pytest_argv)
+
+
+@nox.session(python=["3.9", "3.10", "3.11", "3.12"])
+def test(session):
+    session.install(".[dev]", env=INSTALL_ENV)
+
+    session.run(*pytest_argv(), *(session.posargs))
+
+
+@nox.session(python=["3.9", "3.12"])
+def test_otel(session):
+    session.install(".[dev]", env=INSTALL_ENV)
+    session.install("opentelemetry-api", "opentelemetry-sdk")
+
+    argv = pytest_argv() + ["-m", "otel"]
+    session.run(*argv, *(session.posargs), env={"TEST_WITH_OTEL": "1"})
 
 
 @nox.session()

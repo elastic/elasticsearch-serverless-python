@@ -3,7 +3,7 @@ import os
 import yaml
 
 
-def benchmark_to_steps(python, connection_class):
+def benchmark_to_steps(python, connection_class, nox_session):
     return [
         {
             "group": f":elasticsearch: :python: ES Serverless ({python}/{connection_class})",
@@ -14,6 +14,7 @@ def benchmark_to_steps(python, connection_class):
                     "env": {
                         "PYTHON_VERSION": f"{python}",
                         "PYTHON_CONNECTION_CLASS": f"{connection_class}",
+                        "NOX_SESSION": f"{nox_session}",
                         # For development versions
                         # https://github.com/aio-libs/aiohttp/issues/6600
                         "AIOHTTP_NO_EXTENSIONS": 1,
@@ -55,5 +56,7 @@ if __name__ == "__main__":
     steps = []
     for python in ["3.9", "3.10", "3.11", "3.12"]:
         for connection_class in ["urllib3", "requests"]:
-            steps.extend(benchmark_to_steps(python, connection_class))
+            steps.extend(benchmark_to_steps(python, connection_class, "test"))
+    steps.extend(benchmark_to_steps("3.9", "urllib3", "test_otel"))
+    steps.extend(benchmark_to_steps("3.12", "urllib3", "test_otel"))
     print(yaml.dump({"steps": steps}, Dumper=yaml.Dumper, sort_keys=False))
