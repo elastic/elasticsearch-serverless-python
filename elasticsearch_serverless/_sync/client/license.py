@@ -50,6 +50,7 @@ class LicenseClient(NamespacedClient):
         :param local: Specifies whether to retrieve local information. The default value
             is `false`, which means the information is retrieved from the master node.
         """
+        __path_parts: t.Dict[str, str] = {}
         __path = "/_license"
         __query: t.Dict[str, t.Any] = {}
         if accept_enterprise is not None:
@@ -66,5 +67,10 @@ class LicenseClient(NamespacedClient):
             __query["pretty"] = pretty
         __headers = {"accept": "application/json"}
         return self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="license.get",
+            path_parts=__path_parts,
         )

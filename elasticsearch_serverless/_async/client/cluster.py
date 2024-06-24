@@ -55,7 +55,8 @@ class ClusterClient(NamespacedClient):
         """
         if name in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'name'")
-        __path = f"/_component_template/{_quote(name)}"
+        __path_parts: t.Dict[str, str] = {"name": _quote(name)}
+        __path = f'/_component_template/{__path_parts["name"]}'
         __query: t.Dict[str, t.Any] = {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
@@ -71,7 +72,12 @@ class ClusterClient(NamespacedClient):
             __query["timeout"] = timeout
         __headers = {"accept": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
-            "DELETE", __path, params=__query, headers=__headers
+            "DELETE",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="cluster.delete_component_template",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters()
@@ -104,7 +110,8 @@ class ClusterClient(NamespacedClient):
         """
         if name in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'name'")
-        __path = f"/_component_template/{_quote(name)}"
+        __path_parts: t.Dict[str, str] = {"name": _quote(name)}
+        __path = f'/_component_template/{__path_parts["name"]}'
         __query: t.Dict[str, t.Any] = {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
@@ -120,7 +127,12 @@ class ClusterClient(NamespacedClient):
             __query["pretty"] = pretty
         __headers = {"accept": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
-            "HEAD", __path, params=__query, headers=__headers
+            "HEAD",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="cluster.exists_component_template",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters()
@@ -155,9 +167,12 @@ class ClusterClient(NamespacedClient):
             no response is received before the timeout expires, the request fails and
             returns an error.
         """
+        __path_parts: t.Dict[str, str]
         if name not in SKIP_IN_PATH:
-            __path = f"/_component_template/{_quote(name)}"
+            __path_parts = {"name": _quote(name)}
+            __path = f'/_component_template/{__path_parts["name"]}'
         else:
+            __path_parts = {}
             __path = "/_component_template"
         __query: t.Dict[str, t.Any] = {}
         if error_trace is not None:
@@ -178,7 +193,12 @@ class ClusterClient(NamespacedClient):
             __query["pretty"] = pretty
         __headers = {"accept": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="cluster.get_component_template",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters()
@@ -210,7 +230,8 @@ class ClusterClient(NamespacedClient):
         """
         if target in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'target'")
-        __path = f"/_info/{_quote(target)}"
+        __path_parts: t.Dict[str, str] = {"target": _quote(target)}
+        __path = f'/_info/{__path_parts["target"]}'
         __query: t.Dict[str, t.Any] = {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
@@ -222,7 +243,12 @@ class ClusterClient(NamespacedClient):
             __query["pretty"] = pretty
         __headers = {"accept": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="cluster.info",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters(
@@ -295,7 +321,8 @@ class ClusterClient(NamespacedClient):
             raise ValueError("Empty value passed for parameter 'name'")
         if template is None and body is None:
             raise ValueError("Empty value passed for parameter 'template'")
-        __path = f"/_component_template/{_quote(name)}"
+        __path_parts: t.Dict[str, str] = {"name": _quote(name)}
+        __path = f'/_component_template/{__path_parts["name"]}'
         __query: t.Dict[str, t.Any] = {}
         __body: t.Dict[str, t.Any] = body if body is not None else {}
         if create is not None:
@@ -321,5 +348,11 @@ class ClusterClient(NamespacedClient):
                 __body["version"] = version
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
-            "PUT", __path, params=__query, headers=__headers, body=__body
+            "PUT",
+            __path,
+            params=__query,
+            headers=__headers,
+            body=__body,
+            endpoint_id="cluster.put_component_template",
+            path_parts=__path_parts,
         )
