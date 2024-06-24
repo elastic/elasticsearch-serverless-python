@@ -44,6 +44,7 @@ class SecurityClient(NamespacedClient):
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-authenticate.html>`_
         """
+        __path_parts: t.Dict[str, str] = {}
         __path = "/_security/_authenticate"
         __query: t.Dict[str, t.Any] = {}
         if error_trace is not None:
@@ -56,7 +57,12 @@ class SecurityClient(NamespacedClient):
             __query["pretty"] = pretty
         __headers = {"accept": "application/json"}
         return self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="security.authenticate",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters(
@@ -105,6 +111,7 @@ class SecurityClient(NamespacedClient):
             is the same as the request for create role API. For more details, see create
             or update roles API.
         """
+        __path_parts: t.Dict[str, str] = {}
         __path = "/_security/api_key"
         __query: t.Dict[str, t.Any] = {}
         __body: t.Dict[str, t.Any] = body if body is not None else {}
@@ -129,7 +136,13 @@ class SecurityClient(NamespacedClient):
                 __body["role_descriptors"] = role_descriptors
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return self.perform_request(  # type: ignore[return-value]
-            "PUT", __path, params=__query, headers=__headers, body=__body
+            "PUT",
+            __path,
+            params=__query,
+            headers=__headers,
+            body=__body,
+            endpoint_id="security.create_api_key",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters()
@@ -180,6 +193,7 @@ class SecurityClient(NamespacedClient):
         :param with_profile_uid: Determines whether to also retrieve the profile uid,
             for the API key owner principal, if it exists.
         """
+        __path_parts: t.Dict[str, str] = {}
         __path = "/_security/api_key"
         __query: t.Dict[str, t.Any] = {}
         if active_only is not None:
@@ -208,7 +222,12 @@ class SecurityClient(NamespacedClient):
             __query["with_profile_uid"] = with_profile_uid
         __headers = {"accept": "application/json"}
         return self.perform_request(  # type: ignore[return-value]
-            "GET", __path, params=__query, headers=__headers
+            "GET",
+            __path,
+            params=__query,
+            headers=__headers,
+            endpoint_id="security.get_api_key",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters(
@@ -244,9 +263,12 @@ class SecurityClient(NamespacedClient):
         :param cluster: A list of the cluster privileges that you want to check.
         :param index:
         """
+        __path_parts: t.Dict[str, str]
         if user not in SKIP_IN_PATH:
-            __path = f"/_security/user/{_quote(user)}/_has_privileges"
+            __path_parts = {"user": _quote(user)}
+            __path = f'/_security/user/{__path_parts["user"]}/_has_privileges'
         else:
+            __path_parts = {}
             __path = "/_security/user/_has_privileges"
         __query: t.Dict[str, t.Any] = {}
         __body: t.Dict[str, t.Any] = body if body is not None else {}
@@ -267,7 +289,13 @@ class SecurityClient(NamespacedClient):
                 __body["index"] = index
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return self.perform_request(  # type: ignore[return-value]
-            "POST", __path, params=__query, headers=__headers, body=__body
+            "POST",
+            __path,
+            params=__query,
+            headers=__headers,
+            body=__body,
+            endpoint_id="security.has_privileges",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters(
@@ -313,6 +341,7 @@ class SecurityClient(NamespacedClient):
         :param username: The username of a user. This parameter cannot be used with either
             `ids` or `name`, or when `owner` flag is set to `true`.
         """
+        __path_parts: t.Dict[str, str] = {}
         __path = "/_security/api_key"
         __query: t.Dict[str, t.Any] = {}
         __body: t.Dict[str, t.Any] = body if body is not None else {}
@@ -339,7 +368,13 @@ class SecurityClient(NamespacedClient):
                 __body["username"] = username
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return self.perform_request(  # type: ignore[return-value]
-            "DELETE", __path, params=__query, headers=__headers, body=__body
+            "DELETE",
+            __path,
+            params=__query,
+            headers=__headers,
+            body=__body,
+            endpoint_id="security.invalidate_api_key",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters(
@@ -423,6 +458,7 @@ class SecurityClient(NamespacedClient):
         :param with_profile_uid: Determines whether to also retrieve the profile uid,
             for the API key owner principal, if it exists.
         """
+        __path_parts: t.Dict[str, str] = {}
         __path = "/_security/_query/api_key"
         __query: t.Dict[str, t.Any] = {}
         __body: t.Dict[str, t.Any] = body if body is not None else {}
@@ -472,7 +508,13 @@ class SecurityClient(NamespacedClient):
         if __body is not None:
             __headers["content-type"] = "application/json"
         return self.perform_request(  # type: ignore[return-value]
-            "POST", __path, params=__query, headers=__headers, body=__body
+            "POST",
+            __path,
+            params=__query,
+            headers=__headers,
+            body=__body,
+            endpoint_id="security.query_api_keys",
+            path_parts=__path_parts,
         )
 
     @_rewrite_parameters(
@@ -527,7 +569,8 @@ class SecurityClient(NamespacedClient):
         """
         if id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'id'")
-        __path = f"/_security/api_key/{_quote(id)}"
+        __path_parts: t.Dict[str, str] = {"id": _quote(id)}
+        __path = f'/_security/api_key/{__path_parts["id"]}'
         __query: t.Dict[str, t.Any] = {}
         __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
@@ -551,5 +594,11 @@ class SecurityClient(NamespacedClient):
         if __body is not None:
             __headers["content-type"] = "application/json"
         return self.perform_request(  # type: ignore[return-value]
-            "PUT", __path, params=__query, headers=__headers, body=__body
+            "PUT",
+            __path,
+            params=__query,
+            headers=__headers,
+            body=__body,
+            endpoint_id="security.update_api_key",
+            path_parts=__path_parts,
         )
