@@ -25,6 +25,7 @@ from ._sync.client.cat import CatClient as CatClient  # noqa: F401
 from ._sync.client.cluster import ClusterClient as ClusterClient  # noqa: F401
 from ._sync.client.enrich import EnrichClient as EnrichClient  # noqa: F401
 from ._sync.client.eql import EqlClient as EqlClient  # noqa: F401
+from ._sync.client.esql import EsqlClient as EsqlClient  # noqa: F401
 from ._sync.client.graph import GraphClient as GraphClient  # noqa: F401
 from ._sync.client.indices import IndicesClient as IndicesClient  # noqa: F401
 from ._sync.client.inference import InferenceClient as InferenceClient  # noqa: F401
