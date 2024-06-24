@@ -39,6 +39,7 @@ from .cat import CatClient
 from .cluster import ClusterClient
 from .enrich import EnrichClient
 from .eql import EqlClient
+from .esql import EsqlClient
 from .graph import GraphClient
 from .indices import IndicesClient
 from .inference import InferenceClient
@@ -286,6 +287,7 @@ class AsyncElasticsearch(BaseClient):
 
         self.enrich = EnrichClient(self)
         self.eql = EqlClient(self)
+        self.esql = EsqlClient(self)
         self.graph = GraphClient(self)
         self.license = LicenseClient(self)
         self.logstash = LogstashClient(self)
