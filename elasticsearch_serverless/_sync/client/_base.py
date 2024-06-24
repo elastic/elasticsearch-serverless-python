@@ -138,6 +138,8 @@ class BaseClient:
         params: Optional[Mapping[str, Any]] = None,
         headers: Optional[Mapping[str, str]] = None,
         body: Optional[Any] = None,
+        endpoint_id: Optional[str] = None,
+        path_parts: Optional[Mapping[str, Any]] = None,
     ) -> ApiResponse[Any]:
         if headers:
             request_headers = self._headers.copy()
@@ -251,9 +253,17 @@ class NamespacedClient(BaseClient):
         params: Optional[Mapping[str, Any]] = None,
         headers: Optional[Mapping[str, str]] = None,
         body: Optional[Any] = None,
+        endpoint_id: Optional[str] = None,
+        path_parts: Optional[Mapping[str, Any]] = None,
     ) -> ApiResponse[Any]:
         # Use the internal clients .perform_request() implementation
         # so we take advantage of their transport options.
         return self._client.perform_request(
-            method, path, params=params, headers=headers, body=body
+            method,
+            path,
+            params=params,
+            headers=headers,
+            body=body,
+            endpoint_id=endpoint_id,
+            path_parts=path_parts,
         )
