@@ -6,7 +6,7 @@ import yaml
 def benchmark_to_steps(python, connection_class, nox_session):
     return [
         {
-            "group": f":elasticsearch: :python: ES Serverless ({python}/{connection_class})",
+            "group": f":elasticsearch: :python: {nox_session} {python} {connection_class}",
             "steps": [
                 {
                     "label": "Run tests",
@@ -25,12 +25,12 @@ def benchmark_to_steps(python, connection_class, nox_session):
                         "EC_REGISTER_BACKEND": "appex-qa-team-cluster",
                         "EC_ENV": "qa",
                         "EC_REGION": "aws-eu-west-1",
-                        "EC_PROJECT_PREFIX": f"esv-client-python-test-{python}-{connection_class}",
+                        "EC_PROJECT_PREFIX": f"esv-client-python-{nox_session}-{python}-{connection_class}",
                     },
                     "command": "./.buildkite/run-tests",
                     "artifact_paths": "junit/*-junit.xml",
                     "retry": {"manual": False},
-                    "key": f"run_{python.replace('.', '_')}_{connection_class}",
+                    "key": f"run_{python.replace('.', '_')}_{connection_class}_{nox_session}",
                 },
                 {
                     "label": "Teardown",
@@ -41,7 +41,7 @@ def benchmark_to_steps(python, connection_class, nox_session):
                         "EC_REGISTER_BACKEND": "appex-qa-team-cluster",
                         "EC_ENV": "qa",
                         "EC_REGION": "aws-eu-west-1",
-                        "EC_PROJECT_PREFIX": f"esv-client-python-test-{python}-{connection_class}",
+                        "EC_PROJECT_PREFIX": f"esv-client-python-{nox_session}-{python}-{connection_class}",
                     },
                     "command": ".buildkite/teardown-tests",
                     "depends_on": f"run_{python.replace('.', '_')}_{connection_class}",
