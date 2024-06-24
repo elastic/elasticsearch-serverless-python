@@ -169,6 +169,8 @@ class BaseClient:
         headers: Optional[Mapping[str, str]] = None,
         body: Optional[Any] = None,
         otel_span: OpenTelemetrySpan,
+        endpoint_id: Optional[str] = None,
+        path_parts: Optional[Mapping[str, Any]] = None,
     ) -> ApiResponse[Any]:
         if headers:
             request_headers = self._headers.copy()
