@@ -35,8 +35,12 @@ class SecurityClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Enables authentication as a user and retrieve information about the authenticated
-        user.
+        Enables you to submit a request with a basic auth header to authenticate a user
+        and retrieve information about the authenticated user. A successful call returns
+        a JSON structure that shows user information such as their username, the roles
+        that are assigned to the user, any assigned metadata, and information about the
+        realms that authenticated and authorized the user. If the user cannot be authenticated,
+        this API returns a 401 status code.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-authenticate.html>`_
         """
@@ -75,7 +79,11 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Creates an API key for access without requiring basic authentication.
+        Creates an API key for access without requiring basic authentication. A successful
+        request returns a JSON structure that contains the API key, its unique id, and
+        its name. If applicable, it also returns expiration information for the API key
+        in milliseconds. NOTE: By default, API keys never expire. You can specify expiration
+        information when you create the API keys.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-create-api-key.html>`_
 
@@ -142,7 +150,10 @@ class SecurityClient(NamespacedClient):
         with_profile_uid: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Retrieves information for one or more API keys.
+        Retrieves information for one or more API keys. NOTE: If you have only the `manage_own_api_key`
+        privilege, this API returns only the API keys that you own. If you have `read_security`,
+        `manage_api_key` or greater privileges (including `manage_security`), this API
+        returns all API keys regardless of ownership.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-get-api-key.html>`_
 
@@ -278,7 +289,13 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Invalidates one or more API keys.
+        Invalidates one or more API keys. The `manage_api_key` privilege allows deleting
+        any API keys. The `manage_own_api_key` only allows deleting API keys that are
+        owned by the user. In addition, with the `manage_own_api_key` privilege, an invalidation
+        request must be issued in one of the three formats: - Set the parameter `owner=true`.
+        - Or, set both `username` and `realm_name` to match the user’s identity. - Or,
+        if the request is issued by an API key, i.e. an API key invalidates itself, specify
+        its ID in the `ids` field.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-invalidate-api-key.html>`_
 
@@ -364,7 +381,8 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Retrieves information for API keys using a subset of query DSL
+        Retrieves information for API keys in a paginated manner. You can optionally
+        filter the results with a query.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-query-api-key.html>`_
 
@@ -474,7 +492,22 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Updates attributes of an existing API key.
+        Updates attributes of an existing API key. Users can only update API keys that
+        they created or that were granted to them. Use this API to update API keys created
+        by the create API Key or grant API Key APIs. If you need to apply the same update
+        to many API keys, you can use bulk update API Keys to reduce overhead. It’s not
+        possible to update expired API keys, or API keys that have been invalidated by
+        invalidate API Key. This API supports updates to an API key’s access scope and
+        metadata. The access scope of an API key is derived from the `role_descriptors`
+        you specify in the request, and a snapshot of the owner user’s permissions at
+        the time of the request. The snapshot of the owner’s permissions is updated automatically
+        on every call. If you don’t specify `role_descriptors` in the request, a call
+        to this API might still change the API key’s access scope. This change can occur
+        if the owner user’s permissions have changed since the API key was created or
+        last modified. To update another user’s API key, use the `run_as` feature to
+        submit a request on behalf of another user. IMPORTANT: It’s not possible to use
+        an API key as the authentication credential for this API. To update an API key,
+        the owner user’s credentials are required.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-update-api-key.html>`_
 

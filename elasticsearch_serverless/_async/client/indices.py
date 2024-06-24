@@ -129,8 +129,7 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Performs the analysis process on a text and return the tokens breakdown of the
-        text.
+        Performs analysis on a text string and returns the resulting tokens.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-analyze.html>`_
 
@@ -221,7 +220,7 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Creates an index with optional settings and mappings.
+        Creates a new index.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-create-index.html>`_
 
@@ -285,7 +284,8 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Creates a data stream
+        Creates a data stream. You must have a matching index template with data stream
+        enabled.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
 
@@ -331,7 +331,7 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Provides statistics on operations happening in a data stream.
+        Retrieves statistics for one or more data streams.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
 
@@ -386,7 +386,7 @@ class IndicesClient(NamespacedClient):
         timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes an index.
+        Deletes one or more indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-delete-index.html>`_
 
@@ -452,7 +452,7 @@ class IndicesClient(NamespacedClient):
         timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes an alias.
+        Removes a data stream or index from an alias.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html>`_
 
@@ -512,7 +512,8 @@ class IndicesClient(NamespacedClient):
         timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes the data stream lifecycle of the selected data streams.
+        Removes the data lifecycle from a data stream rendering it not managed by the
+        data stream lifecycle
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams-delete-lifecycle.html>`_
 
@@ -565,7 +566,7 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes a data stream.
+        Deletes one or more data streams and their backing indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
 
@@ -608,7 +609,9 @@ class IndicesClient(NamespacedClient):
         timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes an index template.
+        The provided <index-template> may contain multiple template names separated by
+        a comma. If multiple template names are specified then there is no wildcard support
+        and the provided names should match completely with existing templates.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-delete-template.html>`_
 
@@ -665,7 +668,7 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> HeadApiResponse:
         """
-        Returns information about whether a particular index exists.
+        Checks if a data stream, index, or alias exists.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-exists.html>`_
 
@@ -737,7 +740,7 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> HeadApiResponse:
         """
-        Returns information about whether a particular alias exists.
+        Checks if an alias exists.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html>`_
 
@@ -911,7 +914,8 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns information about one or more indices.
+        Returns information about one or more indices. For data streams, the API returns
+        information about the stream’s backing indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-index.html>`_
 
@@ -994,7 +998,7 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns an alias.
+        Retrieves information for one or more aliases.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html>`_
 
@@ -1065,7 +1069,7 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns the data stream lifecycle of the selected data streams.
+        Retrieves the data stream lifecycle configuration of one or more data streams.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams-get-lifecycle.html>`_
 
@@ -1118,7 +1122,7 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns data streams.
+        Retrieves information about one or more data streams.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
 
@@ -1169,7 +1173,7 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns an index template.
+        Returns information about one or more index templates.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-template.html>`_
 
@@ -1236,7 +1240,8 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns mappings for one or more indices.
+        Retrieves mapping definitions for one or more indices. For data streams, the
+        API retrieves mappings for the stream’s backing indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-mapping.html>`_
 
@@ -1314,7 +1319,8 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns settings for one or more indices.
+        Returns setting information for one or more indices. For data streams, returns
+        setting information for the stream’s backing indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-settings.html>`_
 
@@ -1388,7 +1394,14 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Migrates an alias to a data stream
+        Converts an index alias to a data stream. You must have a matching index template
+        that is data stream enabled. The alias must meet the following criteria: The
+        alias must have a write index; All indices for the alias must have a `@timestamp`
+        field mapping of a `date` or `date_nanos` field type; The alias must not have
+        any filters; The alias must not use custom routing. If successful, the request
+        removes the alias and creates a data stream with the same name. The indices for
+        the alias become hidden backing indices for the stream. The write index for the
+        alias becomes the write index for the stream.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
 
@@ -1425,7 +1438,7 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Modifies a data stream
+        Performs one or more data stream modification actions in a single atomic operation.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
 
@@ -1482,7 +1495,7 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Creates or updates an alias.
+        Adds a data stream or index to an alias.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html>`_
 
@@ -1581,7 +1594,7 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Updates the data stream lifecycle of the selected data streams.
+        Update the data lifecycle of the specified data streams.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams-put-lifecycle.html>`_
 
@@ -1677,7 +1690,8 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Creates or updates an index template.
+        Creates or updates an index template. Index templates define settings, mappings,
+        and aliases that can be applied automatically to new indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-template.html>`_
 
@@ -1831,7 +1845,9 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Updates the index mappings.
+        Adds new fields to an existing data stream or index. You can also use this API
+        to change the search settings of existing fields. For data streams, these changes
+        are applied to all backing indices by default.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-mapping.html>`_
 
@@ -1955,7 +1971,8 @@ class IndicesClient(NamespacedClient):
         timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Updates the index settings.
+        Changes a dynamic index setting in real time. For data streams, index setting
+        changes are applied to all backing indices by default.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-update-settings.html>`_
 
@@ -2052,7 +2069,8 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Creates or updates an index template.
+        Creates or updates an index template. Index templates define settings, mappings,
+        and aliases that can be applied automatically to new indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates-v1.html>`_
 
@@ -2133,7 +2151,9 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Performs the refresh operation in one or more indices.
+        A refresh makes recent operations performed on one or more indices available
+        for search. For data streams, the API runs the refresh operation on the stream’s
+        backing indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-refresh.html>`_
 
@@ -2193,7 +2213,8 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns information about any matching indices, aliases, and data streams
+        Resolves the specified name(s) and/or index patterns for indices, aliases, and
+        data streams. Multiple patterns and remote clusters are supported.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-resolve-index-api.html>`_
 
@@ -2251,8 +2272,7 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Updates an alias to point to a new index when the existing index is considered
-        to be too large or too old.
+        Creates a new index for a data stream or index alias.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html>`_
 
@@ -2341,7 +2361,7 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Simulate matching the given index name against the index templates in the system
+
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-simulate-index.html>`_
 
@@ -2414,7 +2434,7 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Simulate resolving the given template name or body
+        Returns the index configuration that would be applied by a particular index template.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-simulate-template.html>`_
 
@@ -2532,7 +2552,7 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Updates index aliases.
+        Adds a data stream or index to an alias.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html>`_
 
@@ -2600,7 +2620,7 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Allows a user to validate a potentially expensive query without executing it.
+        Validates a potentially expensive query without executing it.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-validate.html>`_
 
