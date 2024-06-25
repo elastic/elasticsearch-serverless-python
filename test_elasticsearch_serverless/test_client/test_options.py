@@ -17,6 +17,7 @@
 #  under the License.
 
 import pytest
+from elastic_transport import OpenTelemetrySpan
 from elastic_transport.client_utils import DEFAULT
 
 from elasticsearch_serverless import AsyncElasticsearch, Elasticsearch
@@ -137,6 +138,7 @@ class TestOptions(DummyTransportTestCase):
         assert call.pop("retry_on_timeout") is DEFAULT
         assert call.pop("retry_on_status") is DEFAULT
         assert call.pop("client_meta") is DEFAULT
+        assert isinstance(call.pop("otel_span"), OpenTelemetrySpan)
         assert call == {
             "headers": {
                 "accept": "application/json",
@@ -155,6 +157,7 @@ class TestOptions(DummyTransportTestCase):
         calls = client.transport.calls
         call = calls[("GET", "/test")][1]
         assert call.pop("client_meta") is DEFAULT
+        assert isinstance(call.pop("otel_span"), OpenTelemetrySpan)
         assert call == {
             "headers": {
                 "accept": "application/json",
@@ -180,6 +183,7 @@ class TestOptions(DummyTransportTestCase):
         calls = client.transport.calls
         call = calls[("GET", "/test")][0]
         assert call.pop("client_meta") is DEFAULT
+        assert isinstance(call.pop("otel_span"), OpenTelemetrySpan)
         assert call == {
             "headers": {
                 "accept": "application/json",
@@ -207,6 +211,7 @@ class TestOptions(DummyTransportTestCase):
         assert call.pop("retry_on_timeout") is DEFAULT
         assert call.pop("retry_on_status") is DEFAULT
         assert call.pop("client_meta") is DEFAULT
+        assert isinstance(call.pop("otel_span"), OpenTelemetrySpan)
         assert call == {
             "headers": {
                 "accept": "application/json",
@@ -225,6 +230,7 @@ class TestOptions(DummyTransportTestCase):
         calls = client.transport.calls
         call = calls[("GET", "/test")][1]
         assert call.pop("client_meta") is DEFAULT
+        assert isinstance(call.pop("otel_span"), OpenTelemetrySpan)
         assert call == {
             "headers": {
                 "accept": "application/json",
@@ -250,6 +256,7 @@ class TestOptions(DummyTransportTestCase):
         calls = client.transport.calls
         call = calls[("GET", "/test")][0]
         assert call.pop("client_meta") is DEFAULT
+        assert isinstance(call.pop("otel_span"), OpenTelemetrySpan)
         assert call == {
             "headers": {
                 "accept": "application/json",
@@ -389,6 +396,7 @@ class TestOptions(DummyTransportTestCase):
         calls = client.transport.calls
         call = calls[("GET", "/test")][0]
         assert call.pop("client_meta") is DEFAULT
+        assert isinstance(call.pop("otel_span"), OpenTelemetrySpan)
         assert call == {
             "headers": {
                 "accept": "application/json",
@@ -418,6 +426,7 @@ class TestOptions(DummyTransportTestCase):
         calls = client.transport.calls
         call = calls[("GET", "/test")][0]
         assert call.pop("client_meta") is DEFAULT
+        assert isinstance(call.pop("otel_span"), OpenTelemetrySpan)
         assert call == {
             "headers": {
                 "accept": "application/json",
@@ -442,6 +451,7 @@ class TestOptions(DummyTransportTestCase):
         assert call.pop("retry_on_timeout") is DEFAULT
         assert call.pop("retry_on_status") is DEFAULT
         assert call.pop("client_meta") is DEFAULT
+        assert isinstance(call.pop("otel_span"), OpenTelemetrySpan)
         assert call == {
             "headers": {
                 "accept": "application/json",
@@ -463,6 +473,7 @@ class TestOptions(DummyTransportTestCase):
         calls = client.transport.calls
         call = calls[("GET", "/test")][0]
         assert call.pop("client_meta") is DEFAULT
+        assert isinstance(call.pop("otel_span"), OpenTelemetrySpan)
         assert call == {
             "headers": {
                 "accept": "application/json",

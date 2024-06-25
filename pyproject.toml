@@ -99,7 +99,8 @@ packages = ["elasticsearch_serverless"]
 
 [tool.pytest.ini_options]
 junit_family = "legacy"
-xfail_strict=true
+xfail_strict = true
+markers = "otel"
 
 [tool.isort]
 profile = "black"
