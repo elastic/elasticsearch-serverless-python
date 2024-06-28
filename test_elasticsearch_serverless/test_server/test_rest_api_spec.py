@@ -108,6 +108,12 @@ FAILING_TESTS = {
     "scroll/10_basic",
     "security/10_api_key_basic",
 }
+SKIPPED_TESTS = {
+    # Timeouts with async client
+    # https://github.com/elastic/elasticsearch-serverless-python/issues/63
+    "cluster/cluster_info[0]",
+    "inference/10_basic[0]",
+}
 
 
 XPACK_FEATURES = None
@@ -572,8 +578,7 @@ try:
             # Skip either 'test_name' or 'test_name[x]'
             if pytest_test_name in FAILING_TESTS or pytest_param_id in FAILING_TESTS:
                 pytest_param["fail"] = True
-            # https://github.com/elastic/elasticsearch-serverless-python/issues/63
-            elif pytest_param_id == "cluster/cluster_info[0]":
+            elif pytest_test_name in SKIPPED_TESTS or pytest_param_id in SKIPPED_TESTS:
                 pytest_param["skip"] = True
 
             YAML_TEST_SPECS.append(pytest.param(pytest_param, id=pytest_param_id))
