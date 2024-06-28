@@ -1,6 +1,24 @@
 [[release-notes]]
 == Release notes
 
+=== 1.0.0.20231031
+
+* Removed support for Python 3.7 and 3.8
+* Added support for Python 3.12
+* Added OpenTelemetry support
+* Added ES|QL and Query Rules APIs
+* Updated docstrings for many APIs
+* Added the Update trained model deployment API
+* Added `retriever` to the Search API
+* Added `dry_run` and `force` to the Delete inference API
+* Added `typed_keys` to the Search Application Search API
+* Removed `cause` from the Create or update component template API
+* Allowed setting multiple model ids, tags and job ids using Python lists in multiple ML APIs
+* Fix the put component template, put template and put index template APIs
+* Remove mentions of model in the Inference API
+* Include missing cluster and index privileges
+
+
 === 0.2.0.20231031
 
 * Allowed unrestricted ``body`` parameter (https://github.com/elastic/elasticsearch-serverless-python/pull/34[#34], see https://github.com/elastic/elasticsearch-py/pull/2383[elasticsearch-py#2383])
