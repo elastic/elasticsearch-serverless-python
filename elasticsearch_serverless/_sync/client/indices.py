@@ -672,9 +672,10 @@ class IndicesClient(NamespacedClient):
         timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        The provided <index-template> may contain multiple template names separated by
-        a comma. If multiple template names are specified then there is no wildcard support
-        and the provided names should match completely with existing templates.
+        Delete an index template. The provided <index-template> may contain multiple
+        template names separated by a comma. If multiple template names are specified
+        then there is no wildcard support and the provided names should match completely
+        with existing templates.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-delete-template.html>`_
 
@@ -1298,7 +1299,7 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns information about one or more index templates.
+        Get index templates. Returns information about one or more index templates.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-template.html>`_
 
@@ -1868,7 +1869,7 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Creates or updates an index template. Index templates define settings, mappings,
+        Create or update an index template. Index templates define settings, mappings,
         and aliases that can be applied automatically to new indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-template.html>`_
@@ -2270,7 +2271,7 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Creates or updates an index template. Index templates define settings, mappings,
+        Create or update an index template. Index templates define settings, mappings,
         and aliases that can be applied automatically to new indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-templates-v1.html>`_
@@ -2592,7 +2593,8 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-
+        Simulate an index. Returns the index configuration that would be applied to the
+        specified index from an existing index template.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-simulate-index.html>`_
 
@@ -2671,7 +2673,8 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns the index configuration that would be applied by a particular index template.
+        Simulate an index template. Returns the index configuration that would be applied
+        by a particular index template.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-simulate-template.html>`_
 
