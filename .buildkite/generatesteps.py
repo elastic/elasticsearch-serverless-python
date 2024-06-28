@@ -44,7 +44,7 @@ def benchmark_to_steps(python, connection_class, nox_session):
                         "EC_PROJECT_PREFIX": f"esv-client-python-{nox_session}-{python}-{connection_class}",
                     },
                     "command": ".buildkite/teardown-tests",
-                    "depends_on": f"run_{python.replace('.', '_')}_{connection_class}",
+                    "depends_on": f"run_{python.replace('.', '_')}_{connection_class}_{nox_session}",
                     "allow_dependency_failure": True,
                 },
             ],

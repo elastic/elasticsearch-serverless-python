@@ -47,7 +47,7 @@ from .ingest import IngestClient
 from .license import LicenseClient
 from .logstash import LogstashClient
 from .ml import MlClient
-from .query_ruleset import QueryRulesetClient
+from .query_rules import QueryRulesClient
 from .search_application import SearchApplicationClient
 from .security import SecurityClient
 from .sql import SqlClient
@@ -292,7 +292,7 @@ class Elasticsearch(BaseClient):
         self.license = LicenseClient(self)
         self.logstash = LogstashClient(self)
         self.ml = MlClient(self)
-        self.query_ruleset = QueryRulesetClient(self)
+        self.query_rules = QueryRulesClient(self)
         self.search_application = SearchApplicationClient(self)
         self.security = SecurityClient(self)
         self.sql = SqlClient(self)
