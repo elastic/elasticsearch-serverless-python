@@ -6,7 +6,9 @@
 * Removed support for Python 3.7 and 3.8
 * Added support for Python 3.12
 * Added OpenTelemetry support
-* Added ES|QL and Query Rules APIs
+* Added Query Rules API
+* Moved Query Ruleset API to Query Rules API (`client.query_ruleset.put()` becomes `client.query_rules.put_ruleset()`, and the same applies to `get`, `list` and `delete`)
+* Added ES|QL API
 * Updated docstrings for many APIs
 * Added the Update trained model deployment API
 * Added `retriever` to the Search API
