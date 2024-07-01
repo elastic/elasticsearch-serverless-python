@@ -133,6 +133,8 @@ def is_xpack_template(name):
         return True
     elif name.startswith("elastic-connectors-"):
         return True
+    elif name.startswith("entities_v1_"):
+        return True
     if name in {
         "apm-10d@lifecycle",
         "apm-180d@lifecycle",
