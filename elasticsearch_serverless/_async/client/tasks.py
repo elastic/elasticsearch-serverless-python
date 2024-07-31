@@ -34,11 +34,12 @@ class TasksClient(NamespacedClient):
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         wait_for_completion: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns information about a task.
+        Get task information. Returns information about the tasks currently executing
+        in the cluster.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html>`_
 

@@ -251,7 +251,7 @@ class QueryRulesClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=("actions", "criteria", "type"),
+        body_fields=("actions", "criteria", "type", "priority"),
     )
     async def put_rule(
         self,
@@ -259,12 +259,15 @@ class QueryRulesClient(NamespacedClient):
         ruleset_id: str,
         rule_id: str,
         actions: t.Optional[t.Mapping[str, t.Any]] = None,
-        criteria: t.Optional[t.Sequence[t.Mapping[str, t.Any]]] = None,
-        type: t.Optional[t.Union["t.Literal['pinned']", str]] = None,
+        criteria: t.Optional[
+            t.Union[t.Mapping[str, t.Any], t.Sequence[t.Mapping[str, t.Any]]]
+        ] = None,
+        type: t.Optional[t.Union[str, t.Literal["pinned"]]] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
+        priority: t.Optional[int] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
@@ -279,6 +282,7 @@ class QueryRulesClient(NamespacedClient):
         :param actions:
         :param criteria:
         :param type:
+        :param priority:
         """
         if ruleset_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'ruleset_id'")
@@ -312,6 +316,8 @@ class QueryRulesClient(NamespacedClient):
                 __body["criteria"] = criteria
             if type is not None:
                 __body["type"] = type
+            if priority is not None:
+                __body["priority"] = priority
         __headers = {"accept": "application/json", "content-type": "application/json"}
         return await self.perform_request(  # type: ignore[return-value]
             "PUT",
@@ -330,7 +336,9 @@ class QueryRulesClient(NamespacedClient):
         self,
         *,
         ruleset_id: str,
-        rules: t.Optional[t.Sequence[t.Mapping[str, t.Any]]] = None,
+        rules: t.Optional[
+            t.Union[t.Mapping[str, t.Any], t.Sequence[t.Mapping[str, t.Any]]]
+        ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,

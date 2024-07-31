@@ -30,28 +30,27 @@ class IndicesClient(NamespacedClient):
         self,
         *,
         index: str,
-        block: t.Union["t.Literal['metadata', 'read', 'read_only', 'write']", str],
+        block: t.Union[str, t.Literal["metadata", "read", "read_only", "write"]],
         allow_no_indices: t.Optional[bool] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         ignore_unavailable: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Adds a block to an index.
+        Add an index block. Limits the operations allowed on an index by blocking specific
+        operation types.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/index-modules-blocks.html>`_
 
@@ -226,19 +225,17 @@ class IndicesClient(NamespacedClient):
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         mappings: t.Optional[t.Mapping[str, t.Any]] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         settings: t.Optional[t.Mapping[str, t.Any]] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union["t.Literal['all', 'index-setting']", str]]
+            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
         ] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Creates a new index.
+        Create an index. Creates a new index.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-create-index.html>`_
 
@@ -309,8 +306,8 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Creates a data stream. You must have a matching index template with data stream
-        enabled.
+        Create a data stream. Creates a data stream. You must have a matching index template
+        with data stream enabled.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
 
@@ -352,9 +349,9 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -362,7 +359,7 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Retrieves statistics for one or more data streams.
+        Get data stream stats. Retrieves statistics for one or more data streams.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
 
@@ -410,22 +407,20 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         ignore_unavailable: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes one or more indices.
+        Delete indices. Deletes one or more indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-delete-index.html>`_
 
@@ -490,14 +485,12 @@ class IndicesClient(NamespacedClient):
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Removes a data stream or index from an alias.
+        Delete an alias. Removes a data stream or index from an alias.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html>`_
 
@@ -549,22 +542,20 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Removes the data lifecycle from a data stream rendering it not managed by the
-        data stream lifecycle
+        Delete data stream lifecycles. Removes the data stream lifecycle from a data
+        stream, rendering it not managed by the data stream lifecycle.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams-delete-lifecycle.html>`_
 
@@ -613,9 +604,9 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -623,7 +614,7 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes one or more data streams and their backing indices.
+        Delete data streams. Deletes one or more data streams and their backing indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
 
@@ -665,11 +656,9 @@ class IndicesClient(NamespacedClient):
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
         Delete an index template. The provided <index-template> may contain multiple
@@ -724,9 +713,9 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -738,7 +727,8 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> HeadApiResponse:
         """
-        Checks if a data stream, index, or alias exists.
+        Check indices. Checks if one or more indices, index aliases, or data streams
+        exist.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-exists.html>`_
 
@@ -804,9 +794,9 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -816,7 +806,7 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> HeadApiResponse:
         """
-        Checks if an alias exists.
+        Check aliases. Checks if one or more data stream or index aliases exist.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html>`_
 
@@ -882,9 +872,7 @@ class IndicesClient(NamespacedClient):
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
     ) -> HeadApiResponse:
         """
@@ -932,14 +920,14 @@ class IndicesClient(NamespacedClient):
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         include_defaults: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Retrieves information about the index's current data stream lifecycle, such as
-        any potential encountered error, time since creation etc.
+        Get the status for a data stream lifecycle. Retrieves information about an index
+        or data stream’s current data stream lifecycle status, such as time since index
+        creation, time since rollover, the lifecycle configuration managing the index,
+        or any errors encountered during lifecycle execution.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams-explain-lifecycle.html>`_
 
@@ -985,17 +973,15 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         features: t.Optional[
             t.Union[
-                t.Sequence[
-                    t.Union["t.Literal['aliases', 'mappings', 'settings']", str]
-                ],
-                t.Union["t.Literal['aliases', 'mappings', 'settings']", str],
+                t.Sequence[t.Union[str, t.Literal["aliases", "mappings", "settings"]]],
+                t.Union[str, t.Literal["aliases", "mappings", "settings"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -1004,14 +990,12 @@ class IndicesClient(NamespacedClient):
         ignore_unavailable: t.Optional[bool] = None,
         include_defaults: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns information about one or more indices. For data streams, the API returns
-        information about the stream’s backing indices.
+        Get index information. Returns information about one or more indices. For data
+        streams, the API returns information about the stream’s backing indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-index.html>`_
 
@@ -1088,9 +1072,9 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -1100,7 +1084,7 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Retrieves information for one or more aliases.
+        Get aliases. Retrieves information for one or more data stream or index aliases.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html>`_
 
@@ -1170,9 +1154,9 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -1181,7 +1165,8 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Retrieves the data stream lifecycle configuration of one or more data streams.
+        Get data stream lifecycles. Retrieves the data stream lifecycle configuration
+        of one or more data streams.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams-get-lifecycle.html>`_
 
@@ -1229,9 +1214,9 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -1240,7 +1225,7 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Retrieves information about one or more data streams.
+        Get data streams. Retrieves information about one or more data streams.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
 
@@ -1293,9 +1278,7 @@ class IndicesClient(NamespacedClient):
         human: t.Optional[bool] = None,
         include_defaults: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
@@ -1359,23 +1342,21 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         ignore_unavailable: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Retrieves mapping definitions for one or more indices. For data streams, the
-        API retrieves mappings for the stream’s backing indices.
+        Get mapping definitions. Retrieves mapping definitions for one or more indices.
+        For data streams, the API retrieves mappings for the stream’s backing indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-mapping.html>`_
 
@@ -1444,9 +1425,9 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -1455,14 +1436,12 @@ class IndicesClient(NamespacedClient):
         ignore_unavailable: t.Optional[bool] = None,
         include_defaults: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns setting information for one or more indices. For data streams, returns
-        setting information for the stream’s backing indices.
+        Get index settings. Returns setting information for one or more indices. For
+        data streams, returns setting information for the stream’s backing indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-settings.html>`_
 
@@ -1546,14 +1525,14 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Converts an index alias to a data stream. You must have a matching index template
-        that is data stream enabled. The alias must meet the following criteria: The
-        alias must have a write index; All indices for the alias must have a `@timestamp`
-        field mapping of a `date` or `date_nanos` field type; The alias must not have
-        any filters; The alias must not use custom routing. If successful, the request
-        removes the alias and creates a data stream with the same name. The indices for
-        the alias become hidden backing indices for the stream. The write index for the
-        alias becomes the write index for the stream.
+        Convert an index alias to a data stream. Converts an index alias to a data stream.
+        You must have a matching index template that is data stream enabled. The alias
+        must meet the following criteria: The alias must have a write index; All indices
+        for the alias must have a `@timestamp` field mapping of a `date` or `date_nanos`
+        field type; The alias must not have any filters; The alias must not use custom
+        routing. If successful, the request removes the alias and creates a data stream
+        with the same name. The indices for the alias become hidden backing indices for
+        the stream. The write index for the alias becomes the write index for the stream.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
 
@@ -1596,7 +1575,8 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Performs one or more data stream modification actions in a single atomic operation.
+        Update data streams. Performs one or more data stream modification actions in
+        a single atomic operation.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
 
@@ -1650,17 +1630,15 @@ class IndicesClient(NamespacedClient):
         human: t.Optional[bool] = None,
         index_routing: t.Optional[str] = None,
         is_write_index: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         routing: t.Optional[str] = None,
         search_routing: t.Optional[str] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Adds a data stream or index to an alias.
+        Create or update an alias. Adds a data stream or index to an alias.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html>`_
 
@@ -1743,30 +1721,27 @@ class IndicesClient(NamespacedClient):
         self,
         *,
         name: t.Union[str, t.Sequence[str]],
-        data_retention: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        data_retention: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         downsampling: t.Optional[t.Mapping[str, t.Any]] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update the data lifecycle of the specified data streams.
+        Update data stream lifecycles. Update the data stream lifecycle of the specified
+        data streams.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams-put-lifecycle.html>`_
 
@@ -1858,9 +1833,7 @@ class IndicesClient(NamespacedClient):
         human: t.Optional[bool] = None,
         ignore_missing_component_templates: t.Optional[t.Sequence[str]] = None,
         index_patterns: t.Optional[t.Union[str, t.Sequence[str]]] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         meta: t.Optional[t.Mapping[str, t.Any]] = None,
         pretty: t.Optional[bool] = None,
         priority: t.Optional[int] = None,
@@ -1994,7 +1967,7 @@ class IndicesClient(NamespacedClient):
         allow_no_indices: t.Optional[bool] = None,
         date_detection: t.Optional[bool] = None,
         dynamic: t.Optional[
-            t.Union["t.Literal['false', 'runtime', 'strict', 'true']", str]
+            t.Union[str, t.Literal["false", "runtime", "strict", "true"]]
         ] = None,
         dynamic_date_formats: t.Optional[t.Sequence[str]] = None,
         dynamic_templates: t.Optional[
@@ -2007,18 +1980,16 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         field_names: t.Optional[t.Mapping[str, t.Any]] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         ignore_unavailable: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         meta: t.Optional[t.Mapping[str, t.Any]] = None,
         numeric_detection: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
@@ -2026,14 +1997,14 @@ class IndicesClient(NamespacedClient):
         routing: t.Optional[t.Mapping[str, t.Any]] = None,
         runtime: t.Optional[t.Mapping[str, t.Mapping[str, t.Any]]] = None,
         source: t.Optional[t.Mapping[str, t.Any]] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         write_index_only: t.Optional[bool] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Adds new fields to an existing data stream or index. You can also use this API
-        to change the search settings of existing fields. For data streams, these changes
-        are applied to all backing indices by default.
+        Update field mappings. Adds new fields to an existing data stream or index. You
+        can also use this API to change the search settings of existing fields. For data
+        streams, these changes are applied to all backing indices by default.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-mapping.html>`_
 
@@ -2147,25 +2118,23 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         flat_settings: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
         ignore_unavailable: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         preserve_existing: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Changes a dynamic index setting in real time. For data streams, index setting
-        changes are applied to all backing indices by default.
+        Update index settings. Changes dynamic index settings in real time. For data
+        streams, index setting changes are applied to all backing indices by default.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-update-settings.html>`_
 
@@ -2261,9 +2230,7 @@ class IndicesClient(NamespacedClient):
         human: t.Optional[bool] = None,
         index_patterns: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         mappings: t.Optional[t.Mapping[str, t.Any]] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         order: t.Optional[int] = None,
         pretty: t.Optional[bool] = None,
         settings: t.Optional[t.Mapping[str, t.Any]] = None,
@@ -2349,9 +2316,9 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -2360,9 +2327,9 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        A refresh makes recent operations performed on one or more indices available
-        for search. For data streams, the API runs the refresh operation on the stream’s
-        backing indices.
+        Refresh an index. A refresh makes recent operations performed on one or more
+        indices available for search. For data streams, the API runs the refresh operation
+        on the stream’s backing indices.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-refresh.html>`_
 
@@ -2420,9 +2387,9 @@ class IndicesClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -2483,19 +2450,17 @@ class IndicesClient(NamespacedClient):
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         mappings: t.Optional[t.Mapping[str, t.Any]] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         settings: t.Optional[t.Mapping[str, t.Any]] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union["t.Literal['all', 'index-setting']", str]]
+            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
         ] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Creates a new index for a data stream or index alias.
+        Roll over to a new index. Creates a new index for a data stream or index alias.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html>`_
 
@@ -2587,9 +2552,7 @@ class IndicesClient(NamespacedClient):
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         include_defaults: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
@@ -2662,9 +2625,7 @@ class IndicesClient(NamespacedClient):
         ignore_missing_component_templates: t.Optional[t.Sequence[str]] = None,
         include_defaults: t.Optional[bool] = None,
         index_patterns: t.Optional[t.Union[str, t.Sequence[str]]] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         meta: t.Optional[t.Mapping[str, t.Any]] = None,
         pretty: t.Optional[bool] = None,
         priority: t.Optional[int] = None,
@@ -2793,15 +2754,13 @@ class IndicesClient(NamespacedClient):
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Adds a data stream or index to an alias.
+        Create or update an alias. Adds a data stream or index to an alias.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html>`_
 
@@ -2853,15 +2812,15 @@ class IndicesClient(NamespacedClient):
         allow_no_indices: t.Optional[bool] = None,
         analyze_wildcard: t.Optional[bool] = None,
         analyzer: t.Optional[str] = None,
-        default_operator: t.Optional[t.Union["t.Literal['and', 'or']", str]] = None,
+        default_operator: t.Optional[t.Union[str, t.Literal["and", "or"]]] = None,
         df: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         explain: t.Optional[bool] = None,
@@ -2876,7 +2835,7 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Validates a potentially expensive query without executing it.
+        Validate a query. Validates a query without running it.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-validate.html>`_
 

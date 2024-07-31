@@ -34,9 +34,9 @@ class CatClient(NamespacedClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -45,19 +45,17 @@ class CatClient(NamespacedClient):
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
         """
-        Retrieves the cluster’s index aliases, including filter and routing information.
-        The API does not return data stream aliases. IMPORTANT: cat APIs are only intended
+        Get aliases. Retrieves the cluster’s index aliases, including filter and routing
+        information. The API does not return data stream aliases. CAT APIs are only intended
         for human consumption using the command line or the Kibana console. They are
-        not intended for use by applications. For application consumption, use the aliases
-        API.
+        not intended for use by applications. For application consumption, use the /_alias
+        endpoints.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-alias.html>`_
 
@@ -134,19 +132,18 @@ class CatClient(NamespacedClient):
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
         """
-        Returns information about component templates in a cluster. Component templates
-        are building blocks for constructing index templates that specify index mappings,
-        settings, and aliases. IMPORTANT: cat APIs are only intended for human consumption
-        using the command line or Kibana console. They are not intended for use by applications.
-        For application consumption, use the get component template API.
+        Get component templates. Returns information about component templates in a cluster.
+        Component templates are building blocks for constructing index templates that
+        specify index mappings, settings, and aliases. CAT APIs are only intended for
+        human consumption using the command line or Kibana console. They are not intended
+        for use by applications. For application consumption, use the /_component_template
+        endpoints.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-component-templates.html>`_
 
@@ -219,20 +216,18 @@ class CatClient(NamespacedClient):
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
         """
-        Provides quick access to a document count for a data stream, an index, or an
-        entire cluster. NOTE: The document count only includes live documents, not deleted
-        documents which have not yet been removed by the merge process. IMPORTANT: cat
+        Get a document count. Provides quick access to a document count for a data stream,
+        an index, or an entire cluster.n/ The document count only includes live documents,
+        not deleted documents which have not yet been removed by the merge process. CAT
         APIs are only intended for human consumption using the command line or Kibana
         console. They are not intended for use by applications. For application consumption,
-        use the count API.
+        use /_count endpoints.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-count.html>`_
 
@@ -305,15 +300,13 @@ class CatClient(NamespacedClient):
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         v: t.Optional[bool] = None,
     ) -> TextApiResponse:
         """
-        Returns help for the Cat APIs.
+        Get CAT help. Returns help for the CAT APIs.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat.html>`_
 
@@ -373,47 +366,45 @@ class CatClient(NamespacedClient):
         *,
         index: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         bytes: t.Optional[
-            t.Union["t.Literal['b', 'gb', 'kb', 'mb', 'pb', 'tb']", str]
+            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
         ] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         format: t.Optional[str] = None,
         h: t.Optional[t.Union[str, t.Sequence[str]]] = None,
-        health: t.Optional[t.Union["t.Literal['green', 'red', 'yellow']", str]] = None,
+        health: t.Optional[t.Union[str, t.Literal["green", "red", "yellow"]]] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
         include_unloaded_segments: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         pri: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         time: t.Optional[
-            t.Union["t.Literal['d', 'h', 'm', 'micros', 'ms', 'nanos', 's']", str]
+            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
         """
-        Returns high-level information about indices in a cluster, including backing
-        indices for data streams. IMPORTANT: cat APIs are only intended for human consumption
-        using the command line or Kibana console. They are not intended for use by applications.
-        For application consumption, use the get index API. Use the cat indices API to
-        get the following information for each index in a cluster: shard count; document
-        count; deleted document count; primary store size; total store size of all shards,
-        including shard replicas. These metrics are retrieved directly from Lucene, which
-        Elasticsearch uses internally to power indexing and search. As a result, all
-        document counts include hidden nested documents. To get an accurate count of
-        Elasticsearch documents, use the cat count or count APIs.
+        Get index information. Returns high-level information about indices in a cluster,
+        including backing indices for data streams. Use this request to get the following
+        information for each index in a cluster: - shard count - document count - deleted
+        document count - primary store size - total store size of all shards, including
+        shard replicas These metrics are retrieved directly from Lucene, which Elasticsearch
+        uses internally to power indexing and search. As a result, all document counts
+        include hidden nested documents. To get an accurate count of Elasticsearch documents,
+        use the /_cat/count or _count endpoints. CAT APIs are only intended for human
+        consumption using the command line or Kibana console. They are not intended for
+        use by applications. For application consumption, use an index endpoint.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-indices.html>`_
 
@@ -502,7 +493,7 @@ class CatClient(NamespacedClient):
         id: t.Optional[str] = None,
         allow_no_match: t.Optional[bool] = None,
         bytes: t.Optional[
-            t.Union["t.Literal['b', 'gb', 'kb', 'mb', 'pb', 'tb']", str]
+            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -511,45 +502,111 @@ class CatClient(NamespacedClient):
             t.Union[
                 t.Sequence[
                     t.Union[
-                        "t.Literal['assignment_explanation', 'create_time', 'description', 'dest_index', 'failure_reason', 'id', 'model_memory_limit', 'node.address', 'node.ephemeral_id', 'node.id', 'node.name', 'progress', 'source_index', 'state', 'type', 'version']",
                         str,
+                        t.Literal[
+                            "assignment_explanation",
+                            "create_time",
+                            "description",
+                            "dest_index",
+                            "failure_reason",
+                            "id",
+                            "model_memory_limit",
+                            "node.address",
+                            "node.ephemeral_id",
+                            "node.id",
+                            "node.name",
+                            "progress",
+                            "source_index",
+                            "state",
+                            "type",
+                            "version",
+                        ],
                     ]
                 ],
                 t.Union[
-                    "t.Literal['assignment_explanation', 'create_time', 'description', 'dest_index', 'failure_reason', 'id', 'model_memory_limit', 'node.address', 'node.ephemeral_id', 'node.id', 'node.name', 'progress', 'source_index', 'state', 'type', 'version']",
                     str,
+                    t.Literal[
+                        "assignment_explanation",
+                        "create_time",
+                        "description",
+                        "dest_index",
+                        "failure_reason",
+                        "id",
+                        "model_memory_limit",
+                        "node.address",
+                        "node.ephemeral_id",
+                        "node.id",
+                        "node.name",
+                        "progress",
+                        "source_index",
+                        "state",
+                        "type",
+                        "version",
+                    ],
                 ],
             ]
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[
             t.Union[
                 t.Sequence[
                     t.Union[
-                        "t.Literal['assignment_explanation', 'create_time', 'description', 'dest_index', 'failure_reason', 'id', 'model_memory_limit', 'node.address', 'node.ephemeral_id', 'node.id', 'node.name', 'progress', 'source_index', 'state', 'type', 'version']",
                         str,
+                        t.Literal[
+                            "assignment_explanation",
+                            "create_time",
+                            "description",
+                            "dest_index",
+                            "failure_reason",
+                            "id",
+                            "model_memory_limit",
+                            "node.address",
+                            "node.ephemeral_id",
+                            "node.id",
+                            "node.name",
+                            "progress",
+                            "source_index",
+                            "state",
+                            "type",
+                            "version",
+                        ],
                     ]
                 ],
                 t.Union[
-                    "t.Literal['assignment_explanation', 'create_time', 'description', 'dest_index', 'failure_reason', 'id', 'model_memory_limit', 'node.address', 'node.ephemeral_id', 'node.id', 'node.name', 'progress', 'source_index', 'state', 'type', 'version']",
                     str,
+                    t.Literal[
+                        "assignment_explanation",
+                        "create_time",
+                        "description",
+                        "dest_index",
+                        "failure_reason",
+                        "id",
+                        "model_memory_limit",
+                        "node.address",
+                        "node.ephemeral_id",
+                        "node.id",
+                        "node.name",
+                        "progress",
+                        "source_index",
+                        "state",
+                        "type",
+                        "version",
+                    ],
                 ],
             ]
         ] = None,
-        time: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        time: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
         """
-        Returns configuration and usage information about data frame analytics jobs.
-        IMPORTANT: cat APIs are only intended for human consumption using the Kibana
-        console or command line. They are not intended for use by applications. For application
-        consumption, use the get data frame analytics jobs statistics API.
+        Get data frame analytics jobs. Returns configuration and usage information about
+        data frame analytics jobs. CAT APIs are only intended for human consumption using
+        the Kibana console or command line. They are not intended for use by applications.
+        For application consumption, use the /_ml/data_frame/analytics endpoints.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-dfanalytics.html>`_
 
@@ -631,49 +688,99 @@ class CatClient(NamespacedClient):
             t.Union[
                 t.Sequence[
                     t.Union[
-                        "t.Literal['ae', 'bc', 'id', 'na', 'ne', 'ni', 'nn', 's', 'sba', 'sc', 'seah', 'st']",
                         str,
+                        t.Literal[
+                            "ae",
+                            "bc",
+                            "id",
+                            "na",
+                            "ne",
+                            "ni",
+                            "nn",
+                            "s",
+                            "sba",
+                            "sc",
+                            "seah",
+                            "st",
+                        ],
                     ]
                 ],
                 t.Union[
-                    "t.Literal['ae', 'bc', 'id', 'na', 'ne', 'ni', 'nn', 's', 'sba', 'sc', 'seah', 'st']",
                     str,
+                    t.Literal[
+                        "ae",
+                        "bc",
+                        "id",
+                        "na",
+                        "ne",
+                        "ni",
+                        "nn",
+                        "s",
+                        "sba",
+                        "sc",
+                        "seah",
+                        "st",
+                    ],
                 ],
             ]
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[
             t.Union[
                 t.Sequence[
                     t.Union[
-                        "t.Literal['ae', 'bc', 'id', 'na', 'ne', 'ni', 'nn', 's', 'sba', 'sc', 'seah', 'st']",
                         str,
+                        t.Literal[
+                            "ae",
+                            "bc",
+                            "id",
+                            "na",
+                            "ne",
+                            "ni",
+                            "nn",
+                            "s",
+                            "sba",
+                            "sc",
+                            "seah",
+                            "st",
+                        ],
                     ]
                 ],
                 t.Union[
-                    "t.Literal['ae', 'bc', 'id', 'na', 'ne', 'ni', 'nn', 's', 'sba', 'sc', 'seah', 'st']",
                     str,
+                    t.Literal[
+                        "ae",
+                        "bc",
+                        "id",
+                        "na",
+                        "ne",
+                        "ni",
+                        "nn",
+                        "s",
+                        "sba",
+                        "sc",
+                        "seah",
+                        "st",
+                    ],
                 ],
             ]
         ] = None,
         time: t.Optional[
-            t.Union["t.Literal['d', 'h', 'm', 'micros', 'ms', 'nanos', 's']", str]
+            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
         """
-        Returns configuration and usage information about datafeeds. This API returns
-        a maximum of 10,000 datafeeds. If the Elasticsearch security features are enabled,
-        you must have `monitor_ml`, `monitor`, `manage_ml`, or `manage` cluster privileges
-        to use this API. IMPORTANT: cat APIs are only intended for human consumption
+        Get datafeeds. Returns configuration and usage information about datafeeds. This
+        API returns a maximum of 10,000 datafeeds. If the Elasticsearch security features
+        are enabled, you must have `monitor_ml`, `monitor`, `manage_ml`, or `manage`
+        cluster privileges to use this API. CAT APIs are only intended for human consumption
         using the Kibana console or command line. They are not intended for use by applications.
-        For application consumption, use the get datafeed statistics API.
+        For application consumption, use the /_ml/datafeeds endpoints.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-datafeeds.html>`_
 
@@ -752,7 +859,7 @@ class CatClient(NamespacedClient):
         job_id: t.Optional[str] = None,
         allow_no_match: t.Optional[bool] = None,
         bytes: t.Optional[
-            t.Union["t.Literal['b', 'gb', 'kb', 'mb', 'pb', 'tb']", str]
+            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -761,50 +868,292 @@ class CatClient(NamespacedClient):
             t.Union[
                 t.Sequence[
                     t.Union[
-                        "t.Literal['assignment_explanation', 'buckets.count', 'buckets.time.exp_avg', 'buckets.time.exp_avg_hour', 'buckets.time.max', 'buckets.time.min', 'buckets.time.total', 'data.buckets', 'data.earliest_record', 'data.empty_buckets', 'data.input_bytes', 'data.input_fields', 'data.input_records', 'data.invalid_dates', 'data.last', 'data.last_empty_bucket', 'data.last_sparse_bucket', 'data.latest_record', 'data.missing_fields', 'data.out_of_order_timestamps', 'data.processed_fields', 'data.processed_records', 'data.sparse_buckets', 'forecasts.memory.avg', 'forecasts.memory.max', 'forecasts.memory.min', 'forecasts.memory.total', 'forecasts.records.avg', 'forecasts.records.max', 'forecasts.records.min', 'forecasts.records.total', 'forecasts.time.avg', 'forecasts.time.max', 'forecasts.time.min', 'forecasts.time.total', 'forecasts.total', 'id', 'model.bucket_allocation_failures', 'model.by_fields', 'model.bytes', 'model.bytes_exceeded', 'model.categorization_status', 'model.categorized_doc_count', 'model.dead_category_count', 'model.failed_category_count', 'model.frequent_category_count', 'model.log_time', 'model.memory_limit', 'model.memory_status', 'model.over_fields', 'model.partition_fields', 'model.rare_category_count', 'model.timestamp', 'model.total_category_count', 'node.address', 'node.ephemeral_id', 'node.id', 'node.name', 'opened_time', 'state']",
                         str,
+                        t.Literal[
+                            "assignment_explanation",
+                            "buckets.count",
+                            "buckets.time.exp_avg",
+                            "buckets.time.exp_avg_hour",
+                            "buckets.time.max",
+                            "buckets.time.min",
+                            "buckets.time.total",
+                            "data.buckets",
+                            "data.earliest_record",
+                            "data.empty_buckets",
+                            "data.input_bytes",
+                            "data.input_fields",
+                            "data.input_records",
+                            "data.invalid_dates",
+                            "data.last",
+                            "data.last_empty_bucket",
+                            "data.last_sparse_bucket",
+                            "data.latest_record",
+                            "data.missing_fields",
+                            "data.out_of_order_timestamps",
+                            "data.processed_fields",
+                            "data.processed_records",
+                            "data.sparse_buckets",
+                            "forecasts.memory.avg",
+                            "forecasts.memory.max",
+                            "forecasts.memory.min",
+                            "forecasts.memory.total",
+                            "forecasts.records.avg",
+                            "forecasts.records.max",
+                            "forecasts.records.min",
+                            "forecasts.records.total",
+                            "forecasts.time.avg",
+                            "forecasts.time.max",
+                            "forecasts.time.min",
+                            "forecasts.time.total",
+                            "forecasts.total",
+                            "id",
+                            "model.bucket_allocation_failures",
+                            "model.by_fields",
+                            "model.bytes",
+                            "model.bytes_exceeded",
+                            "model.categorization_status",
+                            "model.categorized_doc_count",
+                            "model.dead_category_count",
+                            "model.failed_category_count",
+                            "model.frequent_category_count",
+                            "model.log_time",
+                            "model.memory_limit",
+                            "model.memory_status",
+                            "model.over_fields",
+                            "model.partition_fields",
+                            "model.rare_category_count",
+                            "model.timestamp",
+                            "model.total_category_count",
+                            "node.address",
+                            "node.ephemeral_id",
+                            "node.id",
+                            "node.name",
+                            "opened_time",
+                            "state",
+                        ],
                     ]
                 ],
                 t.Union[
-                    "t.Literal['assignment_explanation', 'buckets.count', 'buckets.time.exp_avg', 'buckets.time.exp_avg_hour', 'buckets.time.max', 'buckets.time.min', 'buckets.time.total', 'data.buckets', 'data.earliest_record', 'data.empty_buckets', 'data.input_bytes', 'data.input_fields', 'data.input_records', 'data.invalid_dates', 'data.last', 'data.last_empty_bucket', 'data.last_sparse_bucket', 'data.latest_record', 'data.missing_fields', 'data.out_of_order_timestamps', 'data.processed_fields', 'data.processed_records', 'data.sparse_buckets', 'forecasts.memory.avg', 'forecasts.memory.max', 'forecasts.memory.min', 'forecasts.memory.total', 'forecasts.records.avg', 'forecasts.records.max', 'forecasts.records.min', 'forecasts.records.total', 'forecasts.time.avg', 'forecasts.time.max', 'forecasts.time.min', 'forecasts.time.total', 'forecasts.total', 'id', 'model.bucket_allocation_failures', 'model.by_fields', 'model.bytes', 'model.bytes_exceeded', 'model.categorization_status', 'model.categorized_doc_count', 'model.dead_category_count', 'model.failed_category_count', 'model.frequent_category_count', 'model.log_time', 'model.memory_limit', 'model.memory_status', 'model.over_fields', 'model.partition_fields', 'model.rare_category_count', 'model.timestamp', 'model.total_category_count', 'node.address', 'node.ephemeral_id', 'node.id', 'node.name', 'opened_time', 'state']",
                     str,
+                    t.Literal[
+                        "assignment_explanation",
+                        "buckets.count",
+                        "buckets.time.exp_avg",
+                        "buckets.time.exp_avg_hour",
+                        "buckets.time.max",
+                        "buckets.time.min",
+                        "buckets.time.total",
+                        "data.buckets",
+                        "data.earliest_record",
+                        "data.empty_buckets",
+                        "data.input_bytes",
+                        "data.input_fields",
+                        "data.input_records",
+                        "data.invalid_dates",
+                        "data.last",
+                        "data.last_empty_bucket",
+                        "data.last_sparse_bucket",
+                        "data.latest_record",
+                        "data.missing_fields",
+                        "data.out_of_order_timestamps",
+                        "data.processed_fields",
+                        "data.processed_records",
+                        "data.sparse_buckets",
+                        "forecasts.memory.avg",
+                        "forecasts.memory.max",
+                        "forecasts.memory.min",
+                        "forecasts.memory.total",
+                        "forecasts.records.avg",
+                        "forecasts.records.max",
+                        "forecasts.records.min",
+                        "forecasts.records.total",
+                        "forecasts.time.avg",
+                        "forecasts.time.max",
+                        "forecasts.time.min",
+                        "forecasts.time.total",
+                        "forecasts.total",
+                        "id",
+                        "model.bucket_allocation_failures",
+                        "model.by_fields",
+                        "model.bytes",
+                        "model.bytes_exceeded",
+                        "model.categorization_status",
+                        "model.categorized_doc_count",
+                        "model.dead_category_count",
+                        "model.failed_category_count",
+                        "model.frequent_category_count",
+                        "model.log_time",
+                        "model.memory_limit",
+                        "model.memory_status",
+                        "model.over_fields",
+                        "model.partition_fields",
+                        "model.rare_category_count",
+                        "model.timestamp",
+                        "model.total_category_count",
+                        "node.address",
+                        "node.ephemeral_id",
+                        "node.id",
+                        "node.name",
+                        "opened_time",
+                        "state",
+                    ],
                 ],
             ]
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[
             t.Union[
                 t.Sequence[
                     t.Union[
-                        "t.Literal['assignment_explanation', 'buckets.count', 'buckets.time.exp_avg', 'buckets.time.exp_avg_hour', 'buckets.time.max', 'buckets.time.min', 'buckets.time.total', 'data.buckets', 'data.earliest_record', 'data.empty_buckets', 'data.input_bytes', 'data.input_fields', 'data.input_records', 'data.invalid_dates', 'data.last', 'data.last_empty_bucket', 'data.last_sparse_bucket', 'data.latest_record', 'data.missing_fields', 'data.out_of_order_timestamps', 'data.processed_fields', 'data.processed_records', 'data.sparse_buckets', 'forecasts.memory.avg', 'forecasts.memory.max', 'forecasts.memory.min', 'forecasts.memory.total', 'forecasts.records.avg', 'forecasts.records.max', 'forecasts.records.min', 'forecasts.records.total', 'forecasts.time.avg', 'forecasts.time.max', 'forecasts.time.min', 'forecasts.time.total', 'forecasts.total', 'id', 'model.bucket_allocation_failures', 'model.by_fields', 'model.bytes', 'model.bytes_exceeded', 'model.categorization_status', 'model.categorized_doc_count', 'model.dead_category_count', 'model.failed_category_count', 'model.frequent_category_count', 'model.log_time', 'model.memory_limit', 'model.memory_status', 'model.over_fields', 'model.partition_fields', 'model.rare_category_count', 'model.timestamp', 'model.total_category_count', 'node.address', 'node.ephemeral_id', 'node.id', 'node.name', 'opened_time', 'state']",
                         str,
+                        t.Literal[
+                            "assignment_explanation",
+                            "buckets.count",
+                            "buckets.time.exp_avg",
+                            "buckets.time.exp_avg_hour",
+                            "buckets.time.max",
+                            "buckets.time.min",
+                            "buckets.time.total",
+                            "data.buckets",
+                            "data.earliest_record",
+                            "data.empty_buckets",
+                            "data.input_bytes",
+                            "data.input_fields",
+                            "data.input_records",
+                            "data.invalid_dates",
+                            "data.last",
+                            "data.last_empty_bucket",
+                            "data.last_sparse_bucket",
+                            "data.latest_record",
+                            "data.missing_fields",
+                            "data.out_of_order_timestamps",
+                            "data.processed_fields",
+                            "data.processed_records",
+                            "data.sparse_buckets",
+                            "forecasts.memory.avg",
+                            "forecasts.memory.max",
+                            "forecasts.memory.min",
+                            "forecasts.memory.total",
+                            "forecasts.records.avg",
+                            "forecasts.records.max",
+                            "forecasts.records.min",
+                            "forecasts.records.total",
+                            "forecasts.time.avg",
+                            "forecasts.time.max",
+                            "forecasts.time.min",
+                            "forecasts.time.total",
+                            "forecasts.total",
+                            "id",
+                            "model.bucket_allocation_failures",
+                            "model.by_fields",
+                            "model.bytes",
+                            "model.bytes_exceeded",
+                            "model.categorization_status",
+                            "model.categorized_doc_count",
+                            "model.dead_category_count",
+                            "model.failed_category_count",
+                            "model.frequent_category_count",
+                            "model.log_time",
+                            "model.memory_limit",
+                            "model.memory_status",
+                            "model.over_fields",
+                            "model.partition_fields",
+                            "model.rare_category_count",
+                            "model.timestamp",
+                            "model.total_category_count",
+                            "node.address",
+                            "node.ephemeral_id",
+                            "node.id",
+                            "node.name",
+                            "opened_time",
+                            "state",
+                        ],
                     ]
                 ],
                 t.Union[
-                    "t.Literal['assignment_explanation', 'buckets.count', 'buckets.time.exp_avg', 'buckets.time.exp_avg_hour', 'buckets.time.max', 'buckets.time.min', 'buckets.time.total', 'data.buckets', 'data.earliest_record', 'data.empty_buckets', 'data.input_bytes', 'data.input_fields', 'data.input_records', 'data.invalid_dates', 'data.last', 'data.last_empty_bucket', 'data.last_sparse_bucket', 'data.latest_record', 'data.missing_fields', 'data.out_of_order_timestamps', 'data.processed_fields', 'data.processed_records', 'data.sparse_buckets', 'forecasts.memory.avg', 'forecasts.memory.max', 'forecasts.memory.min', 'forecasts.memory.total', 'forecasts.records.avg', 'forecasts.records.max', 'forecasts.records.min', 'forecasts.records.total', 'forecasts.time.avg', 'forecasts.time.max', 'forecasts.time.min', 'forecasts.time.total', 'forecasts.total', 'id', 'model.bucket_allocation_failures', 'model.by_fields', 'model.bytes', 'model.bytes_exceeded', 'model.categorization_status', 'model.categorized_doc_count', 'model.dead_category_count', 'model.failed_category_count', 'model.frequent_category_count', 'model.log_time', 'model.memory_limit', 'model.memory_status', 'model.over_fields', 'model.partition_fields', 'model.rare_category_count', 'model.timestamp', 'model.total_category_count', 'node.address', 'node.ephemeral_id', 'node.id', 'node.name', 'opened_time', 'state']",
                     str,
+                    t.Literal[
+                        "assignment_explanation",
+                        "buckets.count",
+                        "buckets.time.exp_avg",
+                        "buckets.time.exp_avg_hour",
+                        "buckets.time.max",
+                        "buckets.time.min",
+                        "buckets.time.total",
+                        "data.buckets",
+                        "data.earliest_record",
+                        "data.empty_buckets",
+                        "data.input_bytes",
+                        "data.input_fields",
+                        "data.input_records",
+                        "data.invalid_dates",
+                        "data.last",
+                        "data.last_empty_bucket",
+                        "data.last_sparse_bucket",
+                        "data.latest_record",
+                        "data.missing_fields",
+                        "data.out_of_order_timestamps",
+                        "data.processed_fields",
+                        "data.processed_records",
+                        "data.sparse_buckets",
+                        "forecasts.memory.avg",
+                        "forecasts.memory.max",
+                        "forecasts.memory.min",
+                        "forecasts.memory.total",
+                        "forecasts.records.avg",
+                        "forecasts.records.max",
+                        "forecasts.records.min",
+                        "forecasts.records.total",
+                        "forecasts.time.avg",
+                        "forecasts.time.max",
+                        "forecasts.time.min",
+                        "forecasts.time.total",
+                        "forecasts.total",
+                        "id",
+                        "model.bucket_allocation_failures",
+                        "model.by_fields",
+                        "model.bytes",
+                        "model.bytes_exceeded",
+                        "model.categorization_status",
+                        "model.categorized_doc_count",
+                        "model.dead_category_count",
+                        "model.failed_category_count",
+                        "model.frequent_category_count",
+                        "model.log_time",
+                        "model.memory_limit",
+                        "model.memory_status",
+                        "model.over_fields",
+                        "model.partition_fields",
+                        "model.rare_category_count",
+                        "model.timestamp",
+                        "model.total_category_count",
+                        "node.address",
+                        "node.ephemeral_id",
+                        "node.id",
+                        "node.name",
+                        "opened_time",
+                        "state",
+                    ],
                 ],
             ]
         ] = None,
         time: t.Optional[
-            t.Union["t.Literal['d', 'h', 'm', 'micros', 'ms', 'nanos', 's']", str]
+            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
         """
-        Returns configuration and usage information for anomaly detection jobs. This
-        API returns a maximum of 10,000 jobs. If the Elasticsearch security features
-        are enabled, you must have `monitor_ml`, `monitor`, `manage_ml`, or `manage`
-        cluster privileges to use this API. IMPORTANT: cat APIs are only intended for
+        Get anomaly detection jobs. Returns configuration and usage information for anomaly
+        detection jobs. This API returns a maximum of 10,000 jobs. If the Elasticsearch
+        security features are enabled, you must have `monitor_ml`, `monitor`, `manage_ml`,
+        or `manage` cluster privileges to use this API. CAT APIs are only intended for
         human consumption using the Kibana console or command line. They are not intended
-        for use by applications. For application consumption, use the get anomaly detection
-        job statistics API.
+        for use by applications. For application consumption, use the /_ml/anomaly_detectors
+        endpoints.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-anomaly-detectors.html>`_
 
@@ -887,7 +1236,7 @@ class CatClient(NamespacedClient):
         model_id: t.Optional[str] = None,
         allow_no_match: t.Optional[bool] = None,
         bytes: t.Optional[
-            t.Union["t.Literal['b', 'gb', 'kb', 'mb', 'pb', 'tb']", str]
+            t.Union[str, t.Literal["b", "gb", "kb", "mb", "pb", "tb"]]
         ] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -897,34 +1246,92 @@ class CatClient(NamespacedClient):
             t.Union[
                 t.Sequence[
                     t.Union[
-                        "t.Literal['create_time', 'created_by', 'data_frame_analytics_id', 'description', 'heap_size', 'id', 'ingest.count', 'ingest.current', 'ingest.failed', 'ingest.pipelines', 'ingest.time', 'license', 'operations', 'version']",
                         str,
+                        t.Literal[
+                            "create_time",
+                            "created_by",
+                            "data_frame_analytics_id",
+                            "description",
+                            "heap_size",
+                            "id",
+                            "ingest.count",
+                            "ingest.current",
+                            "ingest.failed",
+                            "ingest.pipelines",
+                            "ingest.time",
+                            "license",
+                            "operations",
+                            "version",
+                        ],
                     ]
                 ],
                 t.Union[
-                    "t.Literal['create_time', 'created_by', 'data_frame_analytics_id', 'description', 'heap_size', 'id', 'ingest.count', 'ingest.current', 'ingest.failed', 'ingest.pipelines', 'ingest.time', 'license', 'operations', 'version']",
                     str,
+                    t.Literal[
+                        "create_time",
+                        "created_by",
+                        "data_frame_analytics_id",
+                        "description",
+                        "heap_size",
+                        "id",
+                        "ingest.count",
+                        "ingest.current",
+                        "ingest.failed",
+                        "ingest.pipelines",
+                        "ingest.time",
+                        "license",
+                        "operations",
+                        "version",
+                    ],
                 ],
             ]
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[
             t.Union[
                 t.Sequence[
                     t.Union[
-                        "t.Literal['create_time', 'created_by', 'data_frame_analytics_id', 'description', 'heap_size', 'id', 'ingest.count', 'ingest.current', 'ingest.failed', 'ingest.pipelines', 'ingest.time', 'license', 'operations', 'version']",
                         str,
+                        t.Literal[
+                            "create_time",
+                            "created_by",
+                            "data_frame_analytics_id",
+                            "description",
+                            "heap_size",
+                            "id",
+                            "ingest.count",
+                            "ingest.current",
+                            "ingest.failed",
+                            "ingest.pipelines",
+                            "ingest.time",
+                            "license",
+                            "operations",
+                            "version",
+                        ],
                     ]
                 ],
                 t.Union[
-                    "t.Literal['create_time', 'created_by', 'data_frame_analytics_id', 'description', 'heap_size', 'id', 'ingest.count', 'ingest.current', 'ingest.failed', 'ingest.pipelines', 'ingest.time', 'license', 'operations', 'version']",
                     str,
+                    t.Literal[
+                        "create_time",
+                        "created_by",
+                        "data_frame_analytics_id",
+                        "description",
+                        "heap_size",
+                        "id",
+                        "ingest.count",
+                        "ingest.current",
+                        "ingest.failed",
+                        "ingest.pipelines",
+                        "ingest.time",
+                        "license",
+                        "operations",
+                        "version",
+                    ],
                 ],
             ]
         ] = None,
@@ -932,10 +1339,10 @@ class CatClient(NamespacedClient):
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
         """
-        Returns configuration and usage information about inference trained models. IMPORTANT:
-        cat APIs are only intended for human consumption using the Kibana console or
-        command line. They are not intended for use by applications. For application
-        consumption, use the get trained models statistics API.
+        Get trained models. Returns configuration and usage information about inference
+        trained models. CAT APIs are only intended for human consumption using the Kibana
+        console or command line. They are not intended for use by applications. For application
+        consumption, use the /_ml/trained_models endpoints.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-trained-model.html>`_
 
@@ -1028,48 +1435,182 @@ class CatClient(NamespacedClient):
             t.Union[
                 t.Sequence[
                     t.Union[
-                        "t.Literal['changes_last_detection_time', 'checkpoint', 'checkpoint_duration_time_exp_avg', 'checkpoint_progress', 'create_time', 'delete_time', 'description', 'dest_index', 'docs_per_second', 'documents_deleted', 'documents_indexed', 'documents_processed', 'frequency', 'id', 'index_failure', 'index_time', 'index_total', 'indexed_documents_exp_avg', 'last_search_time', 'max_page_search_size', 'pages_processed', 'pipeline', 'processed_documents_exp_avg', 'processing_time', 'reason', 'search_failure', 'search_time', 'search_total', 'source_index', 'state', 'transform_type', 'trigger_count', 'version']",
                         str,
+                        t.Literal[
+                            "changes_last_detection_time",
+                            "checkpoint",
+                            "checkpoint_duration_time_exp_avg",
+                            "checkpoint_progress",
+                            "create_time",
+                            "delete_time",
+                            "description",
+                            "dest_index",
+                            "docs_per_second",
+                            "documents_deleted",
+                            "documents_indexed",
+                            "documents_processed",
+                            "frequency",
+                            "id",
+                            "index_failure",
+                            "index_time",
+                            "index_total",
+                            "indexed_documents_exp_avg",
+                            "last_search_time",
+                            "max_page_search_size",
+                            "pages_processed",
+                            "pipeline",
+                            "processed_documents_exp_avg",
+                            "processing_time",
+                            "reason",
+                            "search_failure",
+                            "search_time",
+                            "search_total",
+                            "source_index",
+                            "state",
+                            "transform_type",
+                            "trigger_count",
+                            "version",
+                        ],
                     ]
                 ],
                 t.Union[
-                    "t.Literal['changes_last_detection_time', 'checkpoint', 'checkpoint_duration_time_exp_avg', 'checkpoint_progress', 'create_time', 'delete_time', 'description', 'dest_index', 'docs_per_second', 'documents_deleted', 'documents_indexed', 'documents_processed', 'frequency', 'id', 'index_failure', 'index_time', 'index_total', 'indexed_documents_exp_avg', 'last_search_time', 'max_page_search_size', 'pages_processed', 'pipeline', 'processed_documents_exp_avg', 'processing_time', 'reason', 'search_failure', 'search_time', 'search_total', 'source_index', 'state', 'transform_type', 'trigger_count', 'version']",
                     str,
+                    t.Literal[
+                        "changes_last_detection_time",
+                        "checkpoint",
+                        "checkpoint_duration_time_exp_avg",
+                        "checkpoint_progress",
+                        "create_time",
+                        "delete_time",
+                        "description",
+                        "dest_index",
+                        "docs_per_second",
+                        "documents_deleted",
+                        "documents_indexed",
+                        "documents_processed",
+                        "frequency",
+                        "id",
+                        "index_failure",
+                        "index_time",
+                        "index_total",
+                        "indexed_documents_exp_avg",
+                        "last_search_time",
+                        "max_page_search_size",
+                        "pages_processed",
+                        "pipeline",
+                        "processed_documents_exp_avg",
+                        "processing_time",
+                        "reason",
+                        "search_failure",
+                        "search_time",
+                        "search_total",
+                        "source_index",
+                        "state",
+                        "transform_type",
+                        "trigger_count",
+                        "version",
+                    ],
                 ],
             ]
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[
             t.Union[
                 t.Sequence[
                     t.Union[
-                        "t.Literal['changes_last_detection_time', 'checkpoint', 'checkpoint_duration_time_exp_avg', 'checkpoint_progress', 'create_time', 'delete_time', 'description', 'dest_index', 'docs_per_second', 'documents_deleted', 'documents_indexed', 'documents_processed', 'frequency', 'id', 'index_failure', 'index_time', 'index_total', 'indexed_documents_exp_avg', 'last_search_time', 'max_page_search_size', 'pages_processed', 'pipeline', 'processed_documents_exp_avg', 'processing_time', 'reason', 'search_failure', 'search_time', 'search_total', 'source_index', 'state', 'transform_type', 'trigger_count', 'version']",
                         str,
+                        t.Literal[
+                            "changes_last_detection_time",
+                            "checkpoint",
+                            "checkpoint_duration_time_exp_avg",
+                            "checkpoint_progress",
+                            "create_time",
+                            "delete_time",
+                            "description",
+                            "dest_index",
+                            "docs_per_second",
+                            "documents_deleted",
+                            "documents_indexed",
+                            "documents_processed",
+                            "frequency",
+                            "id",
+                            "index_failure",
+                            "index_time",
+                            "index_total",
+                            "indexed_documents_exp_avg",
+                            "last_search_time",
+                            "max_page_search_size",
+                            "pages_processed",
+                            "pipeline",
+                            "processed_documents_exp_avg",
+                            "processing_time",
+                            "reason",
+                            "search_failure",
+                            "search_time",
+                            "search_total",
+                            "source_index",
+                            "state",
+                            "transform_type",
+                            "trigger_count",
+                            "version",
+                        ],
                     ]
                 ],
                 t.Union[
-                    "t.Literal['changes_last_detection_time', 'checkpoint', 'checkpoint_duration_time_exp_avg', 'checkpoint_progress', 'create_time', 'delete_time', 'description', 'dest_index', 'docs_per_second', 'documents_deleted', 'documents_indexed', 'documents_processed', 'frequency', 'id', 'index_failure', 'index_time', 'index_total', 'indexed_documents_exp_avg', 'last_search_time', 'max_page_search_size', 'pages_processed', 'pipeline', 'processed_documents_exp_avg', 'processing_time', 'reason', 'search_failure', 'search_time', 'search_total', 'source_index', 'state', 'transform_type', 'trigger_count', 'version']",
                     str,
+                    t.Literal[
+                        "changes_last_detection_time",
+                        "checkpoint",
+                        "checkpoint_duration_time_exp_avg",
+                        "checkpoint_progress",
+                        "create_time",
+                        "delete_time",
+                        "description",
+                        "dest_index",
+                        "docs_per_second",
+                        "documents_deleted",
+                        "documents_indexed",
+                        "documents_processed",
+                        "frequency",
+                        "id",
+                        "index_failure",
+                        "index_time",
+                        "index_total",
+                        "indexed_documents_exp_avg",
+                        "last_search_time",
+                        "max_page_search_size",
+                        "pages_processed",
+                        "pipeline",
+                        "processed_documents_exp_avg",
+                        "processing_time",
+                        "reason",
+                        "search_failure",
+                        "search_time",
+                        "search_total",
+                        "source_index",
+                        "state",
+                        "transform_type",
+                        "trigger_count",
+                        "version",
+                    ],
                 ],
             ]
         ] = None,
         size: t.Optional[int] = None,
         time: t.Optional[
-            t.Union["t.Literal['d', 'h', 'm', 'micros', 'ms', 'nanos', 's']", str]
+            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
         ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
         """
-        Returns configuration and usage information about transforms. IMPORTANT: cat
-        APIs are only intended for human consumption using the Kibana console or command
-        line. They are not intended for use by applications. For application consumption,
-        use the get transform statistics API.
+        Get transforms. Returns configuration and usage information about transforms.
+        CAT APIs are only intended for human consumption using the Kibana console or
+        command line. They are not intended for use by applications. For application
+        consumption, use the /_transform endpoints.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat-transforms.html>`_
 

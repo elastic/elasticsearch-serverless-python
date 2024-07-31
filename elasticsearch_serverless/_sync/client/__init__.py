@@ -453,21 +453,22 @@ class Elasticsearch(BaseClient):
         pipeline: t.Optional[str] = None,
         pretty: t.Optional[bool] = None,
         refresh: t.Optional[
-            t.Union["t.Literal['false', 'true', 'wait_for']", bool, str]
+            t.Union[bool, str, t.Literal["false", "true", "wait_for"]]
         ] = None,
         require_alias: t.Optional[bool] = None,
         routing: t.Optional[str] = None,
         source: t.Optional[t.Union[bool, t.Union[str, t.Sequence[str]]]] = None,
         source_excludes: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         source_includes: t.Optional[t.Union[str, t.Sequence[str]]] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union["t.Literal['all', 'index-setting']", str]]
+            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Performs multiple indexing or delete operations in a single API call. This reduces
-        overhead and can greatly increase indexing speed.
+        Bulk index or delete documents. Performs multiple indexing or delete operations
+        in a single API call. This reduces overhead and can greatly increase indexing
+        speed.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-bulk.html>`_
 
@@ -664,15 +665,15 @@ class Elasticsearch(BaseClient):
         allow_no_indices: t.Optional[bool] = None,
         analyze_wildcard: t.Optional[bool] = None,
         analyzer: t.Optional[str] = None,
-        default_operator: t.Optional[t.Union["t.Literal['and', 'or']", str]] = None,
+        default_operator: t.Optional[t.Union[str, t.Literal["and", "or"]]] = None,
         df: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -810,22 +811,22 @@ class Elasticsearch(BaseClient):
         pipeline: t.Optional[str] = None,
         pretty: t.Optional[bool] = None,
         refresh: t.Optional[
-            t.Union["t.Literal['false', 'true', 'wait_for']", bool, str]
+            t.Union[bool, str, t.Literal["false", "true", "wait_for"]]
         ] = None,
         routing: t.Optional[str] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union["t.Literal['external', 'external_gte', 'force', 'internal']", str]
+            t.Union[str, t.Literal["external", "external_gte", "force", "internal"]]
         ] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union["t.Literal['all', 'index-setting']", str]]
+            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Adds a JSON document to the specified data stream or index and makes it searchable.
-        If the target is an index and the document already exists, the request updates
-        the document and increments its version.
+        Index a document. Adds a JSON document to the specified data stream or index
+        and makes it searchable. If the target is an index and the document already exists,
+        the request updates the document and increments its version.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html>`_
 
@@ -916,20 +917,20 @@ class Elasticsearch(BaseClient):
         if_seq_no: t.Optional[int] = None,
         pretty: t.Optional[bool] = None,
         refresh: t.Optional[
-            t.Union["t.Literal['false', 'true', 'wait_for']", bool, str]
+            t.Union[bool, str, t.Literal["false", "true", "wait_for"]]
         ] = None,
         routing: t.Optional[str] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union["t.Literal['external', 'external_gte', 'force', 'internal']", str]
+            t.Union[str, t.Literal["external", "external_gte", "force", "internal"]]
         ] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union["t.Literal['all', 'index-setting']", str]]
+            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Removes a JSON document from the specified index.
+        Delete a document. Removes a JSON document from the specified index.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete.html>`_
 
@@ -1005,16 +1006,16 @@ class Elasticsearch(BaseClient):
         allow_no_indices: t.Optional[bool] = None,
         analyze_wildcard: t.Optional[bool] = None,
         analyzer: t.Optional[str] = None,
-        conflicts: t.Optional[t.Union["t.Literal['abort', 'proceed']", str]] = None,
-        default_operator: t.Optional[t.Union["t.Literal['and', 'or']", str]] = None,
+        conflicts: t.Optional[t.Union[str, t.Literal["abort", "proceed"]]] = None,
+        default_operator: t.Optional[t.Union[str, t.Literal["and", "or"]]] = None,
         df: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -1031,29 +1032,27 @@ class Elasticsearch(BaseClient):
         request_cache: t.Optional[bool] = None,
         requests_per_second: t.Optional[float] = None,
         routing: t.Optional[str] = None,
-        scroll: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        scroll: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         scroll_size: t.Optional[int] = None,
-        search_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        search_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         search_type: t.Optional[
-            t.Union["t.Literal['dfs_query_then_fetch', 'query_then_fetch']", str]
+            t.Union[str, t.Literal["dfs_query_then_fetch", "query_then_fetch"]]
         ] = None,
         slice: t.Optional[t.Mapping[str, t.Any]] = None,
-        slices: t.Optional[t.Union[int, t.Union["t.Literal['auto']", str]]] = None,
+        slices: t.Optional[t.Union[int, t.Union[str, t.Literal["auto"]]]] = None,
         sort: t.Optional[t.Sequence[str]] = None,
         stats: t.Optional[t.Sequence[str]] = None,
         terminate_after: t.Optional[int] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         version: t.Optional[bool] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union["t.Literal['all', 'index-setting']", str]]
+            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
         ] = None,
         wait_for_completion: t.Optional[bool] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes documents that match the specified query.
+        Delete documents. Deletes documents that match the specified query.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete-by-query.html>`_
 
@@ -1227,14 +1226,12 @@ class Elasticsearch(BaseClient):
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes a stored script or search template.
+        Delete a script or search template. Deletes a stored script or search template.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html>`_
 
@@ -1298,11 +1295,11 @@ class Elasticsearch(BaseClient):
         stored_fields: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union["t.Literal['external', 'external_gte', 'force', 'internal']", str]
+            t.Union[str, t.Literal["external", "external_gte", "force", "internal"]]
         ] = None,
     ) -> HeadApiResponse:
         """
-        Checks if a document in an index exists.
+        Check a document. Checks if a specified document exists.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html>`_
 
@@ -1399,11 +1396,11 @@ class Elasticsearch(BaseClient):
         source_includes: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union["t.Literal['external', 'external_gte', 'force', 'internal']", str]
+            t.Union[str, t.Literal["external", "external_gte", "force", "internal"]]
         ] = None,
     ) -> HeadApiResponse:
         """
-        Checks if a document's `_source` is stored.
+        Check for a document source. Checks if a document's `_source` is stored.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html>`_
 
@@ -1485,7 +1482,7 @@ class Elasticsearch(BaseClient):
         id: str,
         analyze_wildcard: t.Optional[bool] = None,
         analyzer: t.Optional[str] = None,
-        default_operator: t.Optional[t.Union["t.Literal['and', 'or']", str]] = None,
+        default_operator: t.Optional[t.Union[str, t.Literal["and", "or"]]] = None,
         df: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -1503,8 +1500,8 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns information about why a specific document matches (or doesn’t match)
-        a query.
+        Explain a document match result. Returns information about why a specific document
+        matches, or doesn’t match, a query.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-explain.html>`_
 
@@ -1604,9 +1601,9 @@ class Elasticsearch(BaseClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         fields: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -1738,11 +1735,12 @@ class Elasticsearch(BaseClient):
         stored_fields: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union["t.Literal['external', 'external_gte', 'force', 'internal']", str]
+            t.Union[str, t.Literal["external", "external_gte", "force", "internal"]]
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns a document.
+        Get a document by its ID. Retrieves the document with the specified ID from an
+        index.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html>`_
 
@@ -1827,13 +1825,11 @@ class Elasticsearch(BaseClient):
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Retrieves a stored script or search template.
+        Get a script or search template. Retrieves a stored script or search template.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html>`_
 
@@ -1891,11 +1887,11 @@ class Elasticsearch(BaseClient):
         stored_fields: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union["t.Literal['external', 'external_gte', 'force', 'internal']", str]
+            t.Union[str, t.Literal["external", "external_gte", "force", "internal"]]
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns the source of a document.
+        Get a document's source. Returns the source of a document.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html>`_
 
@@ -1979,27 +1975,27 @@ class Elasticsearch(BaseClient):
         human: t.Optional[bool] = None,
         if_primary_term: t.Optional[int] = None,
         if_seq_no: t.Optional[int] = None,
-        op_type: t.Optional[t.Union["t.Literal['create', 'index']", str]] = None,
+        op_type: t.Optional[t.Union[str, t.Literal["create", "index"]]] = None,
         pipeline: t.Optional[str] = None,
         pretty: t.Optional[bool] = None,
         refresh: t.Optional[
-            t.Union["t.Literal['false', 'true', 'wait_for']", bool, str]
+            t.Union[bool, str, t.Literal["false", "true", "wait_for"]]
         ] = None,
         require_alias: t.Optional[bool] = None,
         routing: t.Optional[str] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union["t.Literal['external', 'external_gte', 'force', 'internal']", str]
+            t.Union[str, t.Literal["external", "external_gte", "force", "internal"]]
         ] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union["t.Literal['all', 'index-setting']", str]]
+            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Adds a JSON document to the specified data stream or index and makes it searchable.
-        If the target is an index and the document already exists, the request updates
-        the document and increments its version.
+        Index a document. Adds a JSON document to the specified data stream or index
+        and makes it searchable. If the target is an index and the document already exists,
+        the request updates the document and increments its version.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html>`_
 
@@ -2108,7 +2104,7 @@ class Elasticsearch(BaseClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns basic information about the cluster.
+        Get cluster info. Returns basic information about the cluster.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/index.html>`_
         """
@@ -2262,9 +2258,9 @@ class Elasticsearch(BaseClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -2278,7 +2274,7 @@ class Elasticsearch(BaseClient):
         rest_total_hits_as_int: t.Optional[bool] = None,
         routing: t.Optional[str] = None,
         search_type: t.Optional[
-            t.Union["t.Literal['dfs_query_then_fetch', 'query_then_fetch']", str]
+            t.Union[str, t.Literal["dfs_query_then_fetch", "query_then_fetch"]]
         ] = None,
         typed_keys: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
@@ -2401,7 +2397,7 @@ class Elasticsearch(BaseClient):
         pretty: t.Optional[bool] = None,
         rest_total_hits_as_int: t.Optional[bool] = None,
         search_type: t.Optional[
-            t.Union["t.Literal['dfs_query_then_fetch', 'query_then_fetch']", str]
+            t.Union[str, t.Literal["dfs_query_then_fetch", "query_then_fetch"]]
         ] = None,
         typed_keys: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
@@ -2496,7 +2492,7 @@ class Elasticsearch(BaseClient):
         term_statistics: t.Optional[bool] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union["t.Literal['external', 'external_gte', 'force', 'internal']", str]
+            t.Union[str, t.Literal["external", "external_gte", "force", "internal"]]
         ] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
@@ -2590,14 +2586,14 @@ class Elasticsearch(BaseClient):
         self,
         *,
         index: t.Union[str, t.Sequence[str]],
-        keep_alive: t.Union["t.Literal[-1]", "t.Literal[0]", str],
+        keep_alive: t.Union[str, t.Literal[-1], t.Literal[0]],
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -2678,15 +2674,14 @@ class Elasticsearch(BaseClient):
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Creates or updates a stored script or search template.
+        Create or update a script or search template. Creates or updates a stored script
+        or search template.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html>`_
 
@@ -2757,9 +2752,9 @@ class Elasticsearch(BaseClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -2845,7 +2840,7 @@ class Elasticsearch(BaseClient):
         *,
         dest: t.Optional[t.Mapping[str, t.Any]] = None,
         source: t.Optional[t.Mapping[str, t.Any]] = None,
-        conflicts: t.Optional[t.Union["t.Literal['abort', 'proceed']", str]] = None,
+        conflicts: t.Optional[t.Union[str, t.Literal["abort", "proceed"]]] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
@@ -2855,20 +2850,20 @@ class Elasticsearch(BaseClient):
         requests_per_second: t.Optional[float] = None,
         require_alias: t.Optional[bool] = None,
         script: t.Optional[t.Mapping[str, t.Any]] = None,
-        scroll: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        scroll: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         size: t.Optional[int] = None,
-        slices: t.Optional[t.Union[int, t.Union["t.Literal['auto']", str]]] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        slices: t.Optional[t.Union[int, t.Union[str, t.Literal["auto"]]]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union["t.Literal['all', 'index-setting']", str]]
+            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
         ] = None,
         wait_for_completion: t.Optional[bool] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Allows to copy documents from one index to another, optionally filtering the
-        source documents by a query, changing the destination index settings, or fetching
-        the documents from a remote cluster.
+        Reindex documents. Copies documents from a source to a destination. The source
+        can be any existing index, alias, or data stream. The destination must differ
+        from the source. For example, you cannot reindex a data stream into itself.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-reindex.html>`_
 
@@ -3038,7 +3033,7 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Runs a script and returns a result.
+        Run a script. Runs a script and returns a result.
 
         `<https://www.elastic.co/guide/en/elasticsearch/painless/master/painless-execute-api.html>`_
 
@@ -3092,7 +3087,7 @@ class Elasticsearch(BaseClient):
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
         rest_total_hits_as_int: t.Optional[bool] = None,
-        scroll: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        scroll: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
@@ -3200,16 +3195,16 @@ class Elasticsearch(BaseClient):
         batched_reduce_size: t.Optional[int] = None,
         ccs_minimize_roundtrips: t.Optional[bool] = None,
         collapse: t.Optional[t.Mapping[str, t.Any]] = None,
-        default_operator: t.Optional[t.Union["t.Literal['and', 'or']", str]] = None,
+        default_operator: t.Optional[t.Union[str, t.Literal["and", "or"]]] = None,
         df: t.Optional[str] = None,
         docvalue_fields: t.Optional[t.Sequence[t.Mapping[str, t.Any]]] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         explain: t.Optional[bool] = None,
@@ -3248,12 +3243,12 @@ class Elasticsearch(BaseClient):
         routing: t.Optional[str] = None,
         runtime_mappings: t.Optional[t.Mapping[str, t.Mapping[str, t.Any]]] = None,
         script_fields: t.Optional[t.Mapping[str, t.Mapping[str, t.Any]]] = None,
-        scroll: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        scroll: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         search_after: t.Optional[
             t.Sequence[t.Union[None, bool, float, int, str, t.Any]]
         ] = None,
         search_type: t.Optional[
-            t.Union["t.Literal['dfs_query_then_fetch', 'query_then_fetch']", str]
+            t.Union[str, t.Literal["dfs_query_then_fetch", "query_then_fetch"]]
         ] = None,
         seq_no_primary_term: t.Optional[bool] = None,
         size: t.Optional[int] = None,
@@ -3272,7 +3267,7 @@ class Elasticsearch(BaseClient):
         suggest: t.Optional[t.Mapping[str, t.Any]] = None,
         suggest_field: t.Optional[str] = None,
         suggest_mode: t.Optional[
-            t.Union["t.Literal['always', 'missing', 'popular']", str]
+            t.Union[str, t.Literal["always", "missing", "popular"]]
         ] = None,
         suggest_size: t.Optional[int] = None,
         suggest_text: t.Optional[str] = None,
@@ -3687,10 +3682,10 @@ class Elasticsearch(BaseClient):
         extent: t.Optional[int] = None,
         fields: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
-        grid_agg: t.Optional[t.Union["t.Literal['geohex', 'geotile']", str]] = None,
+        grid_agg: t.Optional[t.Union[str, t.Literal["geohex", "geotile"]]] = None,
         grid_precision: t.Optional[int] = None,
         grid_type: t.Optional[
-            t.Union["t.Literal['centroid', 'grid', 'point']", str]
+            t.Union[str, t.Literal["centroid", "grid", "point"]]
         ] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
@@ -3708,8 +3703,7 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> BinaryApiResponse:
         """
-        Searches a vector tile for geospatial values. Returns results as a binary Mapbox
-        vector tile.
+        Search a vector tile. Searches a vector tile for geospatial values.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-vector-tile-api.html>`_
 
@@ -3853,9 +3847,9 @@ class Elasticsearch(BaseClient):
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         explain: t.Optional[bool] = None,
@@ -3870,9 +3864,9 @@ class Elasticsearch(BaseClient):
         profile: t.Optional[bool] = None,
         rest_total_hits_as_int: t.Optional[bool] = None,
         routing: t.Optional[str] = None,
-        scroll: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        scroll: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         search_type: t.Optional[
-            t.Union["t.Literal['dfs_query_then_fetch', 'query_then_fetch']", str]
+            t.Union[str, t.Literal["dfs_query_then_fetch", "query_then_fetch"]]
         ] = None,
         source: t.Optional[str] = None,
         typed_keys: t.Optional[bool] = None,
@@ -4007,7 +4001,7 @@ class Elasticsearch(BaseClient):
         search_after: t.Optional[str] = None,
         size: t.Optional[int] = None,
         string: t.Optional[str] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
@@ -4106,13 +4100,13 @@ class Elasticsearch(BaseClient):
         term_statistics: t.Optional[bool] = None,
         version: t.Optional[int] = None,
         version_type: t.Optional[
-            t.Union["t.Literal['external', 'external_gte', 'force', 'internal']", str]
+            t.Union[str, t.Literal["external", "external_gte", "force", "internal"]]
         ] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns information and statistics about terms in the fields of a particular
-        document.
+        Get term vector information. Returns information and statistics about terms in
+        the fields of a particular document.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-termvectors.html>`_
 
@@ -4236,7 +4230,7 @@ class Elasticsearch(BaseClient):
         lang: t.Optional[str] = None,
         pretty: t.Optional[bool] = None,
         refresh: t.Optional[
-            t.Union["t.Literal['false', 'true', 'wait_for']", bool, str]
+            t.Union[bool, str, t.Literal["false", "true", "wait_for"]]
         ] = None,
         require_alias: t.Optional[bool] = None,
         retry_on_conflict: t.Optional[int] = None,
@@ -4246,15 +4240,16 @@ class Elasticsearch(BaseClient):
         source: t.Optional[t.Union[bool, t.Mapping[str, t.Any]]] = None,
         source_excludes: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         source_includes: t.Optional[t.Union[str, t.Sequence[str]]] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         upsert: t.Optional[t.Mapping[str, t.Any]] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union["t.Literal['all', 'index-setting']", str]]
+            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
         ] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Updates a document with a script or partial document.
+        Update a document. Updates a document by running a script or passing a partial
+        document.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update.html>`_
 
@@ -4369,16 +4364,16 @@ class Elasticsearch(BaseClient):
         allow_no_indices: t.Optional[bool] = None,
         analyze_wildcard: t.Optional[bool] = None,
         analyzer: t.Optional[str] = None,
-        conflicts: t.Optional[t.Union["t.Literal['abort', 'proceed']", str]] = None,
-        default_operator: t.Optional[t.Union["t.Literal['and', 'or']", str]] = None,
+        conflicts: t.Optional[t.Union[str, t.Literal["abort", "proceed"]]] = None,
+        default_operator: t.Optional[t.Union[str, t.Literal["and", "or"]]] = None,
         df: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
                 t.Sequence[
-                    t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str]
+                    t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]]
                 ],
-                t.Union["t.Literal['all', 'closed', 'hidden', 'none', 'open']", str],
+                t.Union[str, t.Literal["all", "closed", "hidden", "none", "open"]],
             ]
         ] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -4396,32 +4391,30 @@ class Elasticsearch(BaseClient):
         requests_per_second: t.Optional[float] = None,
         routing: t.Optional[str] = None,
         script: t.Optional[t.Mapping[str, t.Any]] = None,
-        scroll: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        scroll: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         scroll_size: t.Optional[int] = None,
-        search_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        search_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         search_type: t.Optional[
-            t.Union["t.Literal['dfs_query_then_fetch', 'query_then_fetch']", str]
+            t.Union[str, t.Literal["dfs_query_then_fetch", "query_then_fetch"]]
         ] = None,
         slice: t.Optional[t.Mapping[str, t.Any]] = None,
-        slices: t.Optional[t.Union[int, t.Union["t.Literal['auto']", str]]] = None,
+        slices: t.Optional[t.Union[int, t.Union[str, t.Literal["auto"]]]] = None,
         sort: t.Optional[t.Sequence[str]] = None,
         stats: t.Optional[t.Sequence[str]] = None,
         terminate_after: t.Optional[int] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         version: t.Optional[bool] = None,
         version_type: t.Optional[bool] = None,
         wait_for_active_shards: t.Optional[
-            t.Union[int, t.Union["t.Literal['all', 'index-setting']", str]]
+            t.Union[int, t.Union[str, t.Literal["all", "index-setting"]]]
         ] = None,
         wait_for_completion: t.Optional[bool] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Updates documents that match the specified query. If no query is specified, performs
-        an update on every document in the data stream or index without modifying the
-        source, which is useful for picking up mapping changes.
+        Update documents. Updates documents that match the specified query. If no query
+        is specified, performs an update on every document in the data stream or index
+        without modifying the source, which is useful for picking up mapping changes.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update-by-query.html>`_
 

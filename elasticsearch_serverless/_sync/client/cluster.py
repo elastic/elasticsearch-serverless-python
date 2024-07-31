@@ -33,15 +33,14 @@ class ClusterClient(NamespacedClient):
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
-        timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
+        timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes component templates. Component templates are building blocks for constructing
-        index templates that specify index mappings, settings, and aliases.
+        Delete component templates. Deletes component templates. Component templates
+        are building blocks for constructing index templates that specify index mappings,
+        settings, and aliases.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-component-template.html>`_
 
@@ -89,13 +88,12 @@ class ClusterClient(NamespacedClient):
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
     ) -> HeadApiResponse:
         """
-        Returns information about whether a particular component template exist
+        Check component templates. Returns information about whether a particular component
+        template exists.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-component-template.html>`_
 
@@ -146,13 +144,11 @@ class ClusterClient(NamespacedClient):
         human: t.Optional[bool] = None,
         include_defaults: t.Optional[bool] = None,
         local: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Retrieves information about component templates.
+        Get component templates. Retrieves information about component templates.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-component-template.html>`_
 
@@ -208,12 +204,10 @@ class ClusterClient(NamespacedClient):
         target: t.Union[
             t.Sequence[
                 t.Union[
-                    "t.Literal['_all', 'http', 'ingest', 'script', 'thread_pool']", str
+                    str, t.Literal["_all", "http", "ingest", "script", "thread_pool"]
                 ]
             ],
-            t.Union[
-                "t.Literal['_all', 'http', 'ingest', 'script', 'thread_pool']", str
-            ],
+            t.Union[str, t.Literal["_all", "http", "ingest", "script", "thread_pool"]],
         ],
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -221,7 +215,7 @@ class ClusterClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns different information about the cluster.
+        Get cluster info. Returns basic information about the cluster.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-info.html>`_
 
@@ -265,26 +259,25 @@ class ClusterClient(NamespacedClient):
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[
-            t.Union["t.Literal[-1]", "t.Literal[0]", str]
-        ] = None,
+        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         meta: t.Optional[t.Mapping[str, t.Any]] = None,
         pretty: t.Optional[bool] = None,
         version: t.Optional[int] = None,
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Creates or updates a component template. Component templates are building blocks
-        for constructing index templates that specify index mappings, settings, and aliases.
-        An index template can be composed of multiple component templates. To use a component
-        template, specify it in an index template’s `composed_of` list. Component templates
-        are only applied to new data streams and indices as part of a matching index
-        template. Settings and mappings specified directly in the index template or the
-        create index request override any settings or mappings specified in a component
-        template. Component templates are only used during index creation. For data streams,
-        this includes data stream creation and the creation of a stream’s backing indices.
-        Changes to component templates do not affect existing indices, including a stream’s
-        backing indices. You can use C-style `/* *\\/` block comments in component templates.
+        Create or update a component template. Creates or updates a component template.
+        Component templates are building blocks for constructing index templates that
+        specify index mappings, settings, and aliases. An index template can be composed
+        of multiple component templates. To use a component template, specify it in an
+        index template’s `composed_of` list. Component templates are only applied to
+        new data streams and indices as part of a matching index template. Settings and
+        mappings specified directly in the index template or the create index request
+        override any settings or mappings specified in a component template. Component
+        templates are only used during index creation. For data streams, this includes
+        data stream creation and the creation of a stream’s backing indices. Changes
+        to component templates do not affect existing indices, including a stream’s backing
+        indices. You can use C-style `/* *\\/` block comments in component templates.
         You can include comments anywhere in the request body except before the opening
         curly bracket.
 
