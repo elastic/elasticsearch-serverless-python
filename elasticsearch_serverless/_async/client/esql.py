@@ -37,7 +37,7 @@ class EsqlClient(NamespacedClient):
         ),
         ignore_deprecated_options={"params"},
     )
-    def query(
+    async def query(
         self,
         *,
         query: t.Optional[str] = None,
@@ -127,7 +127,7 @@ class EsqlClient(NamespacedClient):
             if tables is not None:
                 __body["tables"] = tables
         __headers = {"accept": "application/json", "content-type": "application/json"}
-        return self.perform_request(  # type: ignore[return-value]
+        return await self.perform_request(  # type: ignore[return-value]
             "POST",
             __path,
             params=__query,
