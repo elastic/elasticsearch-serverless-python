@@ -42,7 +42,7 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Close anomaly detection jobs A job can be opened and closed multiple times throughout
+        Close anomaly detection jobs. A job can be opened and closed multiple times throughout
         its lifecycle. A closed job cannot receive data or perform analysis operations,
         but you can still explore and navigate results. When you close a job, it runs
         housekeeping tasks such as pruning the model history, flushing buffers, calculating
@@ -115,7 +115,8 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Removes all scheduled events from a calendar, then deletes it.
+        Delete a calendar. Removes all scheduled events from a calendar, then deletes
+        it.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-delete-calendar.html>`_
 
@@ -156,7 +157,7 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes scheduled events from a calendar.
+        Delete events from a calendar.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-delete-calendar-event.html>`_
 
@@ -204,7 +205,7 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes anomaly detection jobs from a calendar.
+        Delete anomaly jobs from a calendar.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-delete-calendar-job.html>`_
 
@@ -253,7 +254,7 @@ class MlClient(NamespacedClient):
         timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes a data frame analytics job.
+        Delete a data frame analytics job.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-dfanalytics.html>`_
 
@@ -301,7 +302,7 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes an existing datafeed.
+        Delete a datafeed.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-delete-datafeed.html>`_
 
@@ -348,7 +349,7 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes a filter. If an anomaly detection job references the filter, you cannot
+        Delete a filter. If an anomaly detection job references the filter, you cannot
         delete the filter. You must update or delete the job before you can delete the
         filter.
 
@@ -393,7 +394,7 @@ class MlClient(NamespacedClient):
         wait_for_completion: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes an anomaly detection job. All job configuration, model state and results
+        Delete an anomaly detection job. All job configuration, model state and results
         are deleted. It is not currently possible to delete multiple jobs using wildcards
         or a comma separated list. If you delete a job that has a datafeed, the request
         first tries to delete the datafeed. This behavior is equivalent to calling the
@@ -452,8 +453,8 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes an existing trained inference model that is currently not referenced
-        by an ingest pipeline.
+        Delete an unreferenced trained model. The request deletes a trained inference
+        model that is not referenced by an ingest pipeline.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-trained-models.html>`_
 
@@ -498,9 +499,9 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes a trained model alias. This API deletes an existing model alias that
-        refers to a trained model. If the model alias is missing or refers to a model
-        other than the one identified by the `model_id`, this API returns an error.
+        Delete a trained model alias. This API deletes an existing model alias that refers
+        to a trained model. If the model alias is missing or refers to a model other
+        than the one identified by the `model_id`, this API returns an error.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-trained-models-aliases.html>`_
 
@@ -555,9 +556,9 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Makes an estimation of the memory usage for an anomaly detection job model. It
-        is based on analysis configuration details for the job and cardinality estimates
-        for the fields it references.
+        Estimate job model memory usage. Makes an estimation of the memory usage for
+        an anomaly detection job model. It is based on analysis configuration details
+        for the job and cardinality estimates for the fields it references.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-apis.html>`_
 
@@ -622,10 +623,10 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Evaluates the data frame analytics for an annotated index. The API packages together
-        commonly used evaluation metrics for various types of machine learning features.
-        This has been designed for use on indexes created by data frame analytics. Evaluation
-        requires both a ground truth field and an analytics result field to be present.
+        Evaluate data frame analytics. The API packages together commonly used evaluation
+        metrics for various types of machine learning features. This has been designed
+        for use on indexes created by data frame analytics. Evaluation requires both
+        a ground truth field and an analytics result field to be present.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/evaluate-dfanalytics.html>`_
 
@@ -1665,12 +1666,12 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Opens one or more anomaly detection jobs. An anomaly detection job must be opened
-        in order for it to be ready to receive and analyze data. It can be opened and
-        closed multiple times throughout its lifecycle. When you open a new job, it starts
-        with an empty model. When you open an existing job, the most recent model state
-        is automatically loaded. The job is ready to resume its analysis from where it
-        left off, once new data is received.
+        Open anomaly detection jobs. An anomaly detection job must be opened in order
+        for it to be ready to receive and analyze data. It can be opened and closed multiple
+        times throughout its lifecycle. When you open a new job, it starts with an empty
+        model. When you open an existing job, the most recent model state is automatically
+        loaded. The job is ready to resume its analysis from where it left off, once
+        new data is received.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-open-job.html>`_
 
@@ -2471,8 +2472,8 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Instantiates an anomaly detection job. If you include a `datafeed_config`, you
-        must have read index privileges on the source index.
+        Create an anomaly detection job. If you include a `datafeed_config`, you must
+        have read index privileges on the source index.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-put-job.html>`_
 

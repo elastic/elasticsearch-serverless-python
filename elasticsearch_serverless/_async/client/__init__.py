@@ -468,8 +468,9 @@ class AsyncElasticsearch(BaseClient):
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Performs multiple indexing or delete operations in a single API call. This reduces
-        overhead and can greatly increase indexing speed.
+        Bulk index or delete documents. Performs multiple indexing or delete operations
+        in a single API call. This reduces overhead and can greatly increase indexing
+        speed.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-bulk.html>`_
 
@@ -825,9 +826,9 @@ class AsyncElasticsearch(BaseClient):
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Adds a JSON document to the specified data stream or index and makes it searchable.
-        If the target is an index and the document already exists, the request updates
-        the document and increments its version.
+        Index a document. Adds a JSON document to the specified data stream or index
+        and makes it searchable. If the target is an index and the document already exists,
+        the request updates the document and increments its version.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html>`_
 
@@ -931,7 +932,7 @@ class AsyncElasticsearch(BaseClient):
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Removes a JSON document from the specified index.
+        Delete a document. Removes a JSON document from the specified index.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete.html>`_
 
@@ -1055,7 +1056,7 @@ class AsyncElasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes documents that match the specified query.
+        Delete documents. Deletes documents that match the specified query.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-delete-by-query.html>`_
 
@@ -1236,7 +1237,7 @@ class AsyncElasticsearch(BaseClient):
         timeout: t.Optional[t.Union["t.Literal[-1]", "t.Literal[0]", str]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Deletes a stored script or search template.
+        Delete a script or search template. Deletes a stored script or search template.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html>`_
 
@@ -1304,7 +1305,7 @@ class AsyncElasticsearch(BaseClient):
         ] = None,
     ) -> HeadApiResponse:
         """
-        Checks if a document in an index exists.
+        Check a document. Checks if a specified document exists.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html>`_
 
@@ -1405,7 +1406,7 @@ class AsyncElasticsearch(BaseClient):
         ] = None,
     ) -> HeadApiResponse:
         """
-        Checks if a document's `_source` is stored.
+        Check for a document source. Checks if a document's `_source` is stored.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html>`_
 
@@ -1505,8 +1506,8 @@ class AsyncElasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns information about why a specific document matches (or doesn’t match)
-        a query.
+        Explain a document match result. Returns information about why a specific document
+        matches, or doesn’t match, a query.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-explain.html>`_
 
@@ -1744,7 +1745,8 @@ class AsyncElasticsearch(BaseClient):
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns a document.
+        Get a document by its ID. Retrieves the document with the specified ID from an
+        index.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html>`_
 
@@ -1835,7 +1837,7 @@ class AsyncElasticsearch(BaseClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Retrieves a stored script or search template.
+        Get a script or search template. Retrieves a stored script or search template.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html>`_
 
@@ -1897,7 +1899,7 @@ class AsyncElasticsearch(BaseClient):
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns the source of a document.
+        Get a document's source. Returns the source of a document.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html>`_
 
@@ -1999,9 +2001,9 @@ class AsyncElasticsearch(BaseClient):
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Adds a JSON document to the specified data stream or index and makes it searchable.
-        If the target is an index and the document already exists, the request updates
-        the document and increments its version.
+        Index a document. Adds a JSON document to the specified data stream or index
+        and makes it searchable. If the target is an index and the document already exists,
+        the request updates the document and increments its version.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-index_.html>`_
 
@@ -2110,7 +2112,7 @@ class AsyncElasticsearch(BaseClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns basic information about the cluster.
+        Get cluster info. Returns basic information about the cluster.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/index.html>`_
         """
@@ -2688,7 +2690,8 @@ class AsyncElasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Creates or updates a stored script or search template.
+        Create or update a script or search template. Creates or updates a stored script
+        or search template.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/modules-scripting.html>`_
 
@@ -2868,9 +2871,9 @@ class AsyncElasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Allows to copy documents from one index to another, optionally filtering the
-        source documents by a query, changing the destination index settings, or fetching
-        the documents from a remote cluster.
+        Reindex documents. Copies documents from a source to a destination. The source
+        can be any existing index, alias, or data stream. The destination must differ
+        from the source. For example, you cannot reindex a data stream into itself.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-reindex.html>`_
 
@@ -3040,7 +3043,7 @@ class AsyncElasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Runs a script and returns a result.
+        Run a script. Runs a script and returns a result.
 
         `<https://www.elastic.co/guide/en/elasticsearch/painless/master/painless-execute-api.html>`_
 
@@ -3710,8 +3713,7 @@ class AsyncElasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> BinaryApiResponse:
         """
-        Searches a vector tile for geospatial values. Returns results as a binary Mapbox
-        vector tile.
+        Search a vector tile. Searches a vector tile for geospatial values.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-vector-tile-api.html>`_
 
@@ -4113,8 +4115,8 @@ class AsyncElasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns information and statistics about terms in the fields of a particular
-        document.
+        Get term vector information. Returns information and statistics about terms in
+        the fields of a particular document.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-termvectors.html>`_
 
@@ -4256,7 +4258,8 @@ class AsyncElasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Updates a document with a script or partial document.
+        Update a document. Updates a document by running a script or passing a partial
+        document.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update.html>`_
 
@@ -4421,9 +4424,9 @@ class AsyncElasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Updates documents that match the specified query. If no query is specified, performs
-        an update on every document in the data stream or index without modifying the
-        source, which is useful for picking up mapping changes.
+        Update documents. Updates documents that match the specified query. If no query
+        is specified, performs an update on every document in the data stream or index
+        without modifying the source, which is useful for picking up mapping changes.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-update-by-query.html>`_
 
