@@ -23,6 +23,7 @@ from ._sync.client.async_search import (  # noqa: F401
 )
 from ._sync.client.cat import CatClient as CatClient  # noqa: F401
 from ._sync.client.cluster import ClusterClient as ClusterClient  # noqa: F401
+from ._sync.client.connector import ConnectorClient as ConnectorClient  # noqa: F401
 from ._sync.client.enrich import EnrichClient as EnrichClient  # noqa: F401
 from ._sync.client.eql import EqlClient as EqlClient  # noqa: F401
 from ._sync.client.esql import EsqlClient as EsqlClient  # noqa: F401
@@ -53,6 +54,7 @@ __all__ = [
     "AsyncSearchClient",
     "CatClient",
     "ClusterClient",
+    "ConnectorClient",
     "Elasticsearch",
     "EnrichClient",
     "EqlClient",

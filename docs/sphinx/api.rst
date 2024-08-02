@@ -42,6 +42,14 @@ Cluster
 .. autoclass:: ClusterClient
    :members:
 
+Connector
+---------
+.. py:module:: elasticsearch.client
+   :noindex:
+
+.. autoclass:: ConnectorClient
+   :members:
+
 Enrich Policies
 ---------------
 
