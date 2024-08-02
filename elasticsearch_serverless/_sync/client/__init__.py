@@ -37,6 +37,7 @@ from ._base import BaseClient, resolve_auth_headers
 from .async_search import AsyncSearchClient
 from .cat import CatClient
 from .cluster import ClusterClient
+from .connector import ConnectorClient
 from .enrich import EnrichClient
 from .eql import EqlClient
 from .esql import EsqlClient
@@ -279,6 +280,7 @@ class Elasticsearch(BaseClient):
         # namespaced clients for compatibility with API names
         self.async_search = AsyncSearchClient(self)
         self.cat = CatClient(self)
+        self.connector = ConnectorClient(self)
         self.cluster = ClusterClient(self)
         self.indices = IndicesClient(self)
         self.inference = InferenceClient(self)
