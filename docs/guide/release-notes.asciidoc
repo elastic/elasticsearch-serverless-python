@@ -1,6 +1,12 @@
 [[release-notes]]
 == Release notes
 
+=== 0.4.0.20231031 (2024-08-09)
+
+- Added the Connector API (https://github.com/elastic/elasticsearch-serverless-python/pull/78[#78])
+- Added `drop_null_columns`, `profile`, `tables` to ES|QL query API
+- Added `priority` to Create or update query rule API
+
 === 0.3.0.20231031
 
 * Removed support for Python 3.7 and 3.8
