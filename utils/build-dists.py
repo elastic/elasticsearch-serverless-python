@@ -17,7 +17,7 @@
 
 """A command line tool for building and verifying releases
 Can be used for building both 'elasticsearch' and 'elasticsearchX' dists.
-Only requires 'name' in 'setup.py' and the directory to be changed.
+Only requires 'name' in 'pyproject.toml' and the directory to be changed.
 """
 
 import contextlib
@@ -65,7 +65,9 @@ def run(*argv, expect_exit_code=0):
 
 def test_dist(dist):
     with set_tmp_dir() as tmp_dir:
-        dist_name = re.match(r"^(elasticsearch\d*)-", os.path.basename(dist)).group(1)
+        dist_name = re.match(
+            r"^(elasticsearch_serverless\d*)-", os.path.basename(dist)
+        ).group(1)
 
         # Build the venv and install the dist
         run("python", "-m", "venv", os.path.join(tmp_dir, "venv"))
@@ -80,6 +82,7 @@ def test_dist(dist):
             "mypy",
             "numpy",
             "pandas-stubs",
+            "opentelemetry-api",
         )
         run(venv_python, "-m", "pip", "install", dist)
 
@@ -127,7 +130,7 @@ def test_dist(dist):
 
         # Ensure that the namespaces are correct for the dist
         for suffix in ("", "1", "2", "5", "6", "7", "8", "9", "10"):
-            distx_name = f"elasticsearch{suffix}"
+            distx_name = f"elasticsearch_serverless{suffix}"
             run(
                 venv_python,
                 "-c",
@@ -136,7 +139,7 @@ def test_dist(dist):
             )
 
         # Check that sync types work for 'elasticsearch_serverless' and
-        # that aliased types work for 'elasticsearchX'
+        # that aliased types work for 'elasticsearch_serverlessX'
         if dist_name == "elasticsearch_serverless":
             run(
                 venv_python,
@@ -174,8 +177,8 @@ def test_dist(dist):
 
 
 def main():
-    run("git", "checkout", "--", "setup.py", "elasticsearch_serverless/")
-    run("rm", "-rf", "build/", "dist/*", "*.egg-info", ".eggs")
+    run("git", "checkout", "--", "pyproject.toml", "elasticsearch_serverless/")
+    run("rm", "-rf", "dist")
 
     # Grab the major version to be used as a suffix.
     version_path = os.path.join(base_dir, "elasticsearch_serverless/_version.py")
@@ -183,7 +186,7 @@ def main():
         version = re.search(
             r"^__versionstr__\s+=\s+[\"\']([^\"\']+)[\"\']", f.read(), re.M
         ).group(1)
-    major_version = version.split(".")[0]
+    # major_version = version.split(".")[0]
 
     # If we're handed a version from the build manager we
     # should check that the version is correct or write
@@ -231,17 +234,19 @@ def main():
             )
             exit(1)
 
-    for suffix in ("", major_version):
+    for suffix in ("",):
         run("rm", "-rf", "build/", "*.egg-info", ".eggs")
 
         # Rename the module to fit the suffix.
         shutil.move(
             os.path.join(base_dir, "elasticsearch_serverless"),
-            os.path.join(base_dir, f"elasticsearch{suffix}"),
+            os.path.join(base_dir, f"elasticsearch_serverless{suffix}"),
         )
 
         # Ensure that the version within 'elasticsearch_serverless/_version.py' is correct.
-        version_path = os.path.join(base_dir, f"elasticsearch{suffix}/_version.py")
+        version_path = os.path.join(
+            base_dir, f"elasticsearch_serverless{suffix}/_version.py"
+        )
         with open(version_path) as f:
             version_data = f.read()
         version_data = re.sub(
@@ -253,17 +258,15 @@ def main():
             f.truncate()
             f.write(version_data)
 
-        # Rewrite setup.py with the new name.
-        setup_py_path = os.path.join(base_dir, "setup.py")
-        with open(setup_py_path) as f:
-            setup_py = f.read()
-        with open(setup_py_path, "w") as f:
+        # Rewrite pyproject.toml with the new name.
+        pyproject_toml_path = os.path.join(base_dir, "pyproject.toml")
+        with open(pyproject_toml_path) as f:
+            pyproject_toml = f.read()
+        with open(pyproject_toml_path, "w") as f:
             f.truncate()
-            assert 'package_name = "elasticsearch_serverless"' in setup_py
             f.write(
-                setup_py.replace(
-                    'package_name = "elasticsearch_serverless"',
-                    f'package_name = "elasticsearch{suffix}"',
+                pyproject_toml.replace(
+                    "elasticsearch_serverless", f"elasticsearch_serverless{suffix}"
                 )
             )
 
@@ -271,13 +274,13 @@ def main():
         run("python", "-m", "build")
 
         # Clean up everything.
-        run("git", "checkout", "--", "setup.py", "elasticsearch_serverless/")
+        run("git", "checkout", "--", "pyproject.toml", "elasticsearch_serverless/")
         if suffix:
-            run("rm", "-rf", f"elasticsearch{suffix}/")
+            run("rm", "-rf", f"elasticsearch_serverless{suffix}/")
 
     # Test everything that got created
     dists = os.listdir(os.path.join(base_dir, "dist"))
-    assert len(dists) == 4
+    assert len(dists) == 2
     for dist in dists:
         test_dist(os.path.join(base_dir, "dist", dist))
     os.system('bash -c "chmod a+w dist/*"')
