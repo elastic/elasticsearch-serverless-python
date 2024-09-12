@@ -16,7 +16,6 @@
 #  under the License.
 
 import asyncio
-import sys
 from datetime import datetime, timedelta, timezone
 from unittest.mock import MagicMock, call, patch
 
@@ -29,11 +28,6 @@ from elasticsearch_serverless.exceptions import ApiError
 from elasticsearch_serverless.helpers import ScanError
 
 pytestmark = [pytest.mark.asyncio]
-
-
-async_bulk_xfail = pytest.mark.xfail(
-    sys.version_info < (3, 11), reason="Investigated in issue #62"
-)
 
 
 class AsyncMock(MagicMock):
@@ -82,7 +76,6 @@ class TestStreamingBulk(object):
             assert ok
         assert [{"_id": 1}, {"_id": 2}] == actions
 
-    @async_bulk_xfail
     async def test_all_documents_get_inserted(self, async_client):
         docs = [{"answer": x, "_id": x} for x in range(100)]
         async for ok, item in helpers.async_streaming_bulk(
@@ -95,7 +88,6 @@ class TestStreamingBulk(object):
             "_source"
         ]
 
-    @async_bulk_xfail
     async def test_documents_data_types(self, async_client):
         async def async_gen():
             for x in range(100):
@@ -314,7 +306,6 @@ class TestBulk(object):
             "_source"
         ]
 
-    @async_bulk_xfail
     async def test_all_documents_get_inserted(self, async_client):
         docs = [{"answer": x, "_id": x} for x in range(100)]
         success, failed = await helpers.async_bulk(
@@ -328,7 +319,6 @@ class TestBulk(object):
             "_source"
         ]
 
-    @async_bulk_xfail
     async def test_stats_only_reports_numbers(self, async_client):
         docs = [{"answer": x} for x in range(100)]
         success, failed = await helpers.async_bulk(
@@ -369,6 +359,10 @@ class TestBulk(object):
             await helpers.async_bulk(async_client, [{"a": 42}, {"a": "c"}], index="i")
 
     async def test_ignore_error_if_raised(self, async_client):
+        await async_client.indices.create(
+            index="i", mappings={"properties": {"a": {"type": "long"}}}
+        )
+
         # ignore the status code 400 in tuple
         await helpers.async_bulk(
             async_client, [{"a": 42}, {"a": "c"}], index="i", ignore_status=(400,)
@@ -464,7 +458,6 @@ async def scan_teardown(async_client):
 
 
 class TestScan(object):
-    @async_bulk_xfail
     async def test_order_can_be_preserved(self, async_client, scan_teardown):
         bulk = []
         for x in range(100):
@@ -486,7 +479,6 @@ class TestScan(object):
         assert list(map(str, range(100))) == list(d["_id"] for d in docs)
         assert list(range(100)) == list(d["_source"]["answer"] for d in docs)
 
-    @async_bulk_xfail
     async def test_all_documents_are_read(self, async_client, scan_teardown):
         bulk = []
         for x in range(100):
@@ -898,7 +890,6 @@ async def reindex_setup(async_client):
 
 
 class TestReindex(object):
-    @async_bulk_xfail
     async def test_reindex_passes_kwargs_to_scan_and_bulk(
         self, async_client, reindex_setup
     ):
@@ -920,7 +911,6 @@ class TestReindex(object):
             await async_client.get(index="prod_index", id=42)
         )["_source"]
 
-    @async_bulk_xfail
     async def test_reindex_accepts_a_query(self, async_client, reindex_setup):
         await helpers.async_reindex(
             async_client,
@@ -940,7 +930,6 @@ class TestReindex(object):
             await async_client.get(index="prod_index", id=42)
         )["_source"]
 
-    @async_bulk_xfail
     async def test_all_documents_get_moved(self, async_client, reindex_setup):
         await helpers.async_reindex(
             async_client, "test_index", "prod_index", bulk_kwargs={"refresh": True}
@@ -991,7 +980,6 @@ async def reindex_data_stream_setup(async_client):
 
 class TestAsyncDataStreamReindex(object):
     @pytest.mark.parametrize("op_type", [None, "create"])
-    @async_bulk_xfail
     async def test_reindex_index_datastream(
         self, op_type, async_client, reindex_data_stream_setup
     ):
@@ -1011,7 +999,6 @@ class TestAsyncDataStreamReindex(object):
             ]
         )
 
-    @async_bulk_xfail
     async def test_reindex_index_datastream_op_type_index(
         self, async_client, reindex_data_stream_setup
     ):

@@ -356,6 +356,10 @@ def test_error_is_raised(sync_client):
 
 
 def test_ignore_error_if_raised(sync_client):
+    sync_client.indices.create(
+        index="i", mappings={"properties": {"a": {"type": "long"}}}
+    )
+
     # ignore the status code 400 in tuple
     helpers.bulk(sync_client, [{"a": 42}, {"a": "c"}], index="i", ignore_status=(400,))
 
