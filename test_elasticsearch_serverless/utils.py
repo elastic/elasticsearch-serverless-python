@@ -172,6 +172,14 @@ def is_xpack_template(name):
         "traces-apm@mappings",
         "traces-apm.rum@mappings",
         "traces@mappings",
+        "traces@settings",
+        # otel
+        "metrics-otel@mappings",
+        "semconv-resource-to-ecs@mappings",
+        "traces-otel@mappings",
+        "ecs-tsdb@mappings",
+        "logs-otel@mappings",
+        "otel@mappings",
     }:
         return True
     return False
