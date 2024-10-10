@@ -171,13 +171,21 @@ class IngestClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=("description", "meta", "on_failure", "processors", "version"),
+        body_fields=(
+            "deprecated",
+            "description",
+            "meta",
+            "on_failure",
+            "processors",
+            "version",
+        ),
         parameter_aliases={"_meta": "meta"},
     )
     def put_pipeline(
         self,
         *,
         id: str,
+        deprecated: t.Optional[bool] = None,
         description: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -199,6 +207,10 @@ class IngestClient(NamespacedClient):
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ingest.html>`_
 
         :param id: ID of the ingest pipeline to create or update.
+        :param deprecated: Marks this ingest pipeline as deprecated. When a deprecated
+            ingest pipeline is referenced as the default or final pipeline when creating
+            or updating a non-deprecated index template, Elasticsearch will emit a deprecation
+            warning.
         :param description: Description of the ingest pipeline.
         :param if_version: Required version for optimistic concurrency control for pipeline
             updates
@@ -242,6 +254,8 @@ class IngestClient(NamespacedClient):
         if timeout is not None:
             __query["timeout"] = timeout
         if not __body:
+            if deprecated is not None:
+                __body["deprecated"] = deprecated
             if description is not None:
                 __body["description"] = description
             if meta is not None:
@@ -269,8 +283,8 @@ class IngestClient(NamespacedClient):
     def simulate(
         self,
         *,
-        id: t.Optional[str] = None,
         docs: t.Optional[t.Sequence[t.Mapping[str, t.Any]]] = None,
+        id: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
@@ -284,15 +298,17 @@ class IngestClient(NamespacedClient):
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/simulate-pipeline-api.html>`_
 
+        :param docs: Sample documents to test in the pipeline.
         :param id: Pipeline to test. If you don’t specify a `pipeline` in the request
             body, this parameter is required.
-        :param docs: Sample documents to test in the pipeline.
         :param pipeline: Pipeline to test. If you don’t specify the `pipeline` request
             path parameter, this parameter is required. If you specify both this and
             the request path parameter, the API only uses the request path parameter.
         :param verbose: If `true`, the response includes output data for each processor
             in the executed pipeline.
         """
+        if docs is None and body is None:
+            raise ValueError("Empty value passed for parameter 'docs'")
         __path_parts: t.Dict[str, str]
         if id not in SKIP_IN_PATH:
             __path_parts = {"id": _quote(id)}

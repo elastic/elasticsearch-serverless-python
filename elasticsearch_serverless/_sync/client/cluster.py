@@ -284,7 +284,7 @@ class ClusterClient(NamespacedClient):
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-component-template.html>`_
 
         :param name: Name of the component template to create. Elasticsearch includes
-            the following built-in component templates: `logs-mappings`; 'logs-settings`;
+            the following built-in component templates: `logs-mappings`; `logs-settings`;
             `metrics-mappings`; `metrics-settings`;`synthetics-mapping`; `synthetics-settings`.
             Elastic Agent uses these templates to configure backing indices for its data
             streams. If you use Elastic Agent and want to overwrite one of these templates,
