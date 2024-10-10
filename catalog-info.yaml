@@ -28,6 +28,9 @@ spec:
     spec:
       repository: elastic/elasticsearch-serverless-python
       pipeline_file: .buildkite/rest-tests.yaml
+      env:
+        SLACK_NOTIFICATIONS_CHANNEL: '#devtools-notify-python'
+        ELASTIC_SLACK_NOTIFICATIONS_ENABLED: 'true'
       teams:
         devtools-team:
           access_level: MANAGE_BUILD_AND_READ
