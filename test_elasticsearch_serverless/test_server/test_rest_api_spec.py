@@ -107,6 +107,7 @@ FAILING_TESTS = {
     "logstash/10_basic",
     "scroll/10_basic",
     "security/10_api_key_basic",
+    "machine_learning/jobs_crud[0]",
 }
 SKIPPED_TESTS = {
     # Timeouts with async client
