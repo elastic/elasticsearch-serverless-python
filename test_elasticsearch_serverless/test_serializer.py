@@ -30,10 +30,13 @@ except ImportError:
 
 import re
 
-from elasticsearch.serializer import JSONSerializer, OrjsonSerializer, TextSerializer
-
 from elasticsearch_serverless import Elasticsearch
 from elasticsearch_serverless.exceptions import SerializationError
+from elasticsearch_serverless.serializer import (
+    JSONSerializer,
+    OrjsonSerializer,
+    TextSerializer,
+)
 
 requires_numpy_and_pandas = pytest.mark.skipif(
     np is None or pd is None, reason="Test requires numpy and pandas to be available"
