@@ -127,7 +127,9 @@ def test_serializes_numpy_nan_to_nan():
 
 @requires_numpy_and_pandas
 def test_serializes_pandas_timestamp(json_serializer):
-    assert b'{"d":"2010-10-01T02:30:00"}' == json_serializer.dumps()
+    assert b'{"d":"2010-10-01T02:30:00"}' == json_serializer.dumps(
+        {"d": pd.Timestamp("2010-10-01T02:30:00")}
+    )
 
 
 @requires_numpy_and_pandas
