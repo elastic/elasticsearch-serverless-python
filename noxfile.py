@@ -86,7 +86,7 @@ def lint(session):
     session.run("python", "utils/license-headers.py", "check", *SOURCE_FILES)
 
     # Workaround to make '-r' to still work despite uninstalling aiohttp below.
-    session.install(".[async,requests]", env=INSTALL_ENV)
+    session.install(".[async,requests,orjson]", env=INSTALL_ENV)
 
     # Run mypy on the package and then the type examples separately for
     # the two different mypy use-cases, ourselves and our users.
@@ -118,5 +118,5 @@ def lint(session):
 
 @nox.session()
 def docs(session):
-    session.install(".[docs]")
+    session.install(".[docs,orjson]")
     session.run("sphinx-build", "docs/sphinx/", "docs/sphinx/_build", "-b", "html")
