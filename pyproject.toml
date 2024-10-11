@@ -44,12 +44,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-async = [
-    "aiohttp>=3,<4",
-]
-requests = [
-    "requests>=2.4.0, <3.0.0",
-]
+async = ["aiohttp>=3,<4"]
+requests = ["requests>=2.4.0, <3.0.0" ]
+orjson = ["orjson>=3"]
 dev = [
     "requests>=2, <3",
     "aiohttp",
@@ -66,6 +63,7 @@ dev = [
     "twine",
     "build",
     "nox",
+    "orjson",
     "numpy",
     "pandas",
     "mapbox-vector-tile",
