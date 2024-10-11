@@ -49,7 +49,7 @@ def pytest_argv():
 
 @nox.session(python=["3.9", "3.10", "3.11", "3.12"])
 def test(session):
-    session.install(".[async,requests,orjson]", env=INSTALL_ENV)
+    session.install(".[dev]", env=INSTALL_ENV)
 
     session.run(*pytest_argv(), *(session.posargs))
 
@@ -118,5 +118,5 @@ def lint(session):
 
 @nox.session()
 def docs(session):
-    session.install(".[docs]")
+    session.install(".[docs,orjson]")
     session.run("sphinx-build", "docs/sphinx/", "docs/sphinx/_build", "-b", "html")
