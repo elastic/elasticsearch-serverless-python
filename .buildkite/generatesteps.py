@@ -54,9 +54,9 @@ def benchmark_to_steps(python, connection_class, nox_session):
 
 if __name__ == "__main__":
     steps = []
-    for python in ["3.9", "3.10", "3.11", "3.12"]:
+    for python in ["3.9", "3.10", "3.11", "3.12", "3.13"]:
         for connection_class in ["urllib3", "requests"]:
             steps.extend(benchmark_to_steps(python, connection_class, "test"))
     steps.extend(benchmark_to_steps("3.9", "urllib3", "test_otel"))
-    steps.extend(benchmark_to_steps("3.12", "urllib3", "test_otel"))
+    steps.extend(benchmark_to_steps("3.13", "urllib3", "test_otel"))
     print(yaml.dump({"steps": steps}, Dumper=yaml.Dumper, sort_keys=False))
