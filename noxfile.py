@@ -85,8 +85,7 @@ def lint(session):
     session.run("flake8", *SOURCE_FILES)
     session.run("python", "utils/license-headers.py", "check", *SOURCE_FILES)
 
-    # Workaround to make '-r' to still work despite uninstalling aiohttp below.
-    session.install(".[async,requests,orjson]", env=INSTALL_ENV)
+    session.install(".[async,requests,orjson,pyarrow]", env=INSTALL_ENV)
 
     # Run mypy on the package and then the type examples separately for
     # the two different mypy use-cases, ourselves and our users.

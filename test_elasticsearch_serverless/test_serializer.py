@@ -20,6 +20,7 @@ import uuid
 from datetime import datetime
 from decimal import Decimal
 
+import pyarrow as pa
 import pytest
 
 try:
@@ -35,6 +36,7 @@ from elasticsearch_serverless.exceptions import SerializationError
 from elasticsearch_serverless.serializer import (
     JSONSerializer,
     OrjsonSerializer,
+    PyArrowSerializer,
     TextSerializer,
 )
 
@@ -159,6 +161,25 @@ def test_serializes_pandas_category(json_serializer):
 
     cat = pd.Categorical([1, 2, 3], categories=[1, 2, 3])
     assert b'{"d":[1,2,3]}' == json_serializer.dumps({"d": cat})
+
+
+def test_pyarrow_loads():
+    data = [
+        pa.array([1, 2, 3, 4]),
+        pa.array(["foo", "bar", "baz", None]),
+        pa.array([True, None, False, True]),
+    ]
+    batch = pa.record_batch(data, names=["f0", "f1", "f2"])
+    sink = pa.BufferOutputStream()
+    with pa.ipc.new_stream(sink, batch.schema) as writer:
+        writer.write_batch(batch)
+
+    serializer = PyArrowSerializer()
+    assert serializer.loads(sink.getvalue()).to_pydict() == {
+        "f0": [1, 2, 3, 4],
+        "f1": ["foo", "bar", "baz", None],
+        "f2": [True, None, False, True],
+    }
 
 
 def test_json_raises_serialization_error_on_dump_error(json_serializer):
