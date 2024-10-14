@@ -41,6 +41,6 @@ spec:
         build_branches: true
       cancel_intermediate_builds: false
       schedules:
-        main_semi_daily:
+        main_daily:
           branch: 'main'
-          cronline: '0 */12 * * *'
+          cronline: '0 2 * * *'
