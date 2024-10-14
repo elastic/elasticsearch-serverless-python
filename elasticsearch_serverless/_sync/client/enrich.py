@@ -213,39 +213,3 @@ class EnrichClient(NamespacedClient):
             endpoint_id="enrich.put_policy",
             path_parts=__path_parts,
         )
-
-    @_rewrite_parameters()
-    def stats(
-        self,
-        *,
-        error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
-        human: t.Optional[bool] = None,
-        pretty: t.Optional[bool] = None,
-    ) -> ObjectApiResponse[t.Any]:
-        """
-        Get enrich stats. Returns enrich coordinator statistics and information about
-        enrich policies that are currently executing.
-
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/enrich-stats-api.html>`_
-        """
-        __path_parts: t.Dict[str, str] = {}
-        __path = "/_enrich/_stats"
-        __query: t.Dict[str, t.Any] = {}
-        if error_trace is not None:
-            __query["error_trace"] = error_trace
-        if filter_path is not None:
-            __query["filter_path"] = filter_path
-        if human is not None:
-            __query["human"] = human
-        if pretty is not None:
-            __query["pretty"] = pretty
-        __headers = {"accept": "application/json"}
-        return self.perform_request(  # type: ignore[return-value]
-            "GET",
-            __path,
-            params=__query,
-            headers=__headers,
-            endpoint_id="enrich.stats",
-            path_parts=__path_parts,
-        )
