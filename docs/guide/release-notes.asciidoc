@@ -1,6 +1,20 @@
 [[release-notes]]
 == Release notes
 
+=== 0.5.0.20231031 (2024-10-11)
+
+- Fix OTel context loss in bulk helpers (https://github.com/elastic/elasticsearch-serverless-python/pull/87[#87])
+- Add optional Arrow deserialization support (https://github.com/elastic/elasticsearch-serverless-python/pull/86[#86])
+- Add optional orjson support (https://github.com/elastic/elasticsearch-serverless-python/pull/85[#85])
+- Updated build-dists.py to work with pyproject.toml (https://github.com/elastic/elasticsearch-serverless-python/pull/83[#83])
+- Remove Get data stream stats API
+- Add `include_named_queries_score` to Search and Multi Search API
+- Add `q` to Update by Query API
+- Add `index_filter` to Open point in time API
+- Add `timeout`, `master_timeout` and `verbose` to various APIs
+- Add `allow_no_indices` and `ignore_unavailable` to Resolve index API
+- Add `deprecated` to Put pipeline API
+
 === 0.4.0.20231031 (2024-08-09)
 
 - Added the Connector API (https://github.com/elastic/elasticsearch-serverless-python/pull/78[#78])
