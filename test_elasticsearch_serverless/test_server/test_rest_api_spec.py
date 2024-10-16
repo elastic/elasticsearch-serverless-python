@@ -94,14 +94,6 @@ FAILING_TESTS = {
     "cluster/component_templates",
     # TODO: expecting `ct_field` field mapping to be returned, but instead only finds `field`
     "indices/simulate_template",
-    # Fixed by https://github.com/elastic/elasticsearch-clients-tests/pull/56
-    "cat/aliases",
-    "cat/component_templates",
-    "cat/count",
-    "cat/help",
-    "cat/indices",
-    "cat/ml",
-    "cat/transform",
     # TODO: Not investigated yet
     "indices/settings",
     "logstash/10_basic",
@@ -110,10 +102,11 @@ FAILING_TESTS = {
     "machine_learning/jobs_crud[0]",
 }
 SKIPPED_TESTS = {
-    # Timeouts with async client
+    # Timeouts
     # https://github.com/elastic/elasticsearch-serverless-python/issues/63
     "cluster/cluster_info[0]",
     "inference/10_basic[0]",
+    "machine_learning/20_trained_model_serverless[0]",
 }
 
 
