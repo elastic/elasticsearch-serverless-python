@@ -2,13 +2,13 @@
 set -euo pipefail
 
 # Default environment variables
-export PYTHON_VERSION="${PYTHON_VERSION:=3.12}"
+export PYTHON_VERSION="${PYTHON_VERSION:=3.13}"
 export PYTHON_CONNECTION_CLASS="${PYTHON_CONNECTION_CLASS:=urllib3}"
 export EC_PROJECT_NAME=$(buildkite-agent meta-data get $EC_PROJECT_PREFIX)
 
 # fetch cloud creds used by qaf
 CLOUD_ACCESS_KEY=$(vault read -field="$EC_ENV" secret/ci/elastic-elasticsearch-serverless-python/cloud-access)
-echo "{\"api_key\":{\"$EC_ENV\":\"$CLOUD_ACCESS_KEY\"}}" > "$(pwd)/cloud.json"
+echo "{\"api_key\":{\"$EC_ENV\":\"$CLOUD_ACCESS_KEY\"}}" >"$(pwd)/cloud.json"
 
 run_qaf() {
   cmd=$1
