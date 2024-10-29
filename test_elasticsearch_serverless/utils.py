@@ -95,8 +95,6 @@ def wipe_indices(client):
 
 
 def wipe_xpack_templates(client):
-    # Delete component templates, need to retry because sometimes
-    # indices aren't cleaned up in time before we issue the delete.
     templates = client.cluster.get_component_template()["component_templates"]
     templates_to_delete = [
         template["name"]
@@ -135,7 +133,7 @@ def is_xpack_template(name):
         return True
     elif name.startswith("entities_v1_"):
         return True
-    if name in {
+    return name in {
         "apm-10d@lifecycle",
         "apm-180d@lifecycle",
         "apm-390d@lifecycle",
@@ -153,6 +151,7 @@ def is_xpack_template(name):
         "logs@mappings",
         "logs-settings",
         "logs@settings",
+        "logs-fleet_server.output_health",
         "metrics-apm@mappings",
         "metrics-apm.service_destination@mappings",
         "metrics-apm.service_summary@mappings",
@@ -165,6 +164,8 @@ def is_xpack_template(name):
         "metrics@settings",
         "metrics-tsdb-settings",
         "metrics@tsdb-settings",
+        "metrics-fleet_server.agent_status",
+        "metrics-fleet_server.agent_versions",
         "synthetics-mappings",
         "synthetics@mappings",
         "synthetics-settings",
@@ -180,9 +181,7 @@ def is_xpack_template(name):
         "ecs-tsdb@mappings",
         "logs-otel@mappings",
         "otel@mappings",
-    }:
-        return True
-    return False
+    }
 
 
 def es_api_key() -> str:
