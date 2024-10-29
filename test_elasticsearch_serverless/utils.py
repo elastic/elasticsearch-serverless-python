@@ -121,17 +121,15 @@ def wipe_transforms(client: Elasticsearch, timeout=30):
 
 
 def is_xpack_template(name):
-    if name.startswith(".alerts-"):
-        return True
-    elif name.startswith(".kibana-data-quality-dashboard-"):
-        return True
-    elif name.startswith(".kibana-elastic-ai-assistant-component-template-"):
+    if name.startswith("."):
         return True
     elif name.startswith("behavioral_analytics-events"):
         return True
     elif name.startswith("elastic-connectors-"):
         return True
     elif name.startswith("entities_v1_"):
+        return True
+    elif "fleet_server" in name:
         return True
     return name in {
         "apm-10d@lifecycle",
@@ -151,7 +149,6 @@ def is_xpack_template(name):
         "logs@mappings",
         "logs-settings",
         "logs@settings",
-        "logs-fleet_server.output_health",
         "metrics-apm@mappings",
         "metrics-apm.service_destination@mappings",
         "metrics-apm.service_summary@mappings",
@@ -164,8 +161,6 @@ def is_xpack_template(name):
         "metrics@settings",
         "metrics-tsdb-settings",
         "metrics@tsdb-settings",
-        "metrics-fleet_server.agent_status",
-        "metrics-fleet_server.agent_versions",
         "synthetics-mappings",
         "synthetics@mappings",
         "synthetics-settings",
