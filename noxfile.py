@@ -78,14 +78,16 @@ def format(session):
 
 @nox.session()
 def lint(session):
-    session.install("flake8", "black~=24.0", "mypy", "isort", "types-requests")
+    session.install(
+        "flake8", "black~=24.0", "mypy", "isort", "types-requests", "opentelemetry-api"
+    )
 
     session.run("isort", "--check", "--profile=black", *SOURCE_FILES)
     session.run("black", "--check", *SOURCE_FILES)
     session.run("flake8", *SOURCE_FILES)
     session.run("python", "utils/license-headers.py", "check", *SOURCE_FILES)
 
-    session.install(".[async,requests,orjson,pyarrow]", env=INSTALL_ENV)
+    session.install(".[dev]", env=INSTALL_ENV)
 
     # Run mypy on the package and then the type examples separately for
     # the two different mypy use-cases, ourselves and our users.

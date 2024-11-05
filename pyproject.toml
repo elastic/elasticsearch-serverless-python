@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "elasticsearch-serverless"
-version = "0.4.0.20231031"
+version = "0.5.0.20231031"
 description = "Python client for Elasticsearch Serverless"
 readme = "README.rst"
 license = "Apache-2.0"
@@ -102,6 +102,7 @@ packages = ["elasticsearch_serverless"]
 junit_family = "legacy"
 xfail_strict = true
 markers = "otel"
+asyncio_default_fixture_loop_scope = "function"
 
 [tool.isort]
 profile = "black"
