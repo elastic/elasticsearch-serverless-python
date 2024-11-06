@@ -20,12 +20,19 @@ import typing as t
 from elastic_transport import ObjectApiResponse
 
 from ._base import NamespacedClient
-from .utils import SKIP_IN_PATH, _quote, _rewrite_parameters
+from .utils import (
+    SKIP_IN_PATH,
+    Stability,
+    _quote,
+    _rewrite_parameters,
+    _stability_warning,
+)
 
 
 class TasksClient(NamespacedClient):
 
     @_rewrite_parameters()
+    @_stability_warning(Stability.EXPERIMENTAL)
     def get(
         self,
         *,
