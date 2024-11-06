@@ -569,7 +569,8 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Clears the search context and results for a scrolling search.
+        Clear a scrolling search. Clear the search context and results for a scrolling
+        search.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/clear-scroll-api.html>`_
 
@@ -619,7 +620,11 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Closes a point-in-time.
+        Close a point in time. A point in time must be opened explicitly before being
+        used in search requests. The `keep_alive` parameter tells Elasticsearch how long
+        it should persist. A point in time is automatically closed when the `keep_alive`
+        period has elapsed. However, keeping points in time has a cost; close them as
+        soon as they are no longer required for search requests.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/point-in-time-api.html>`_
 
@@ -1622,10 +1627,11 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        The field capabilities API returns the information about the capabilities of
-        fields among multiple indices. The field capabilities API returns runtime fields
-        like any other field. For example, a runtime field with a type of keyword is
-        returned as any other field that belongs to the `keyword` family.
+        Get the field capabilities. Get information about the capabilities of fields
+        among multiple indices. For data streams, the API returns field capabilities
+        among the stream’s backing indices. It returns runtime fields like any other
+        field. For example, a runtime field with a type of keyword is returned the same
+        as any other field that belongs to the `keyword` family.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-field-caps.html>`_
 
@@ -2161,7 +2167,10 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Allows to get multiple documents in one request.
+        Get multiple documents. Get multiple JSON documents by ID from one or more indices.
+        If you specify an index in the request URI, you only need to specify the document
+        IDs in the request body. To ensure fast responses, this multi get (mget) API
+        responds with partial results if one or more shards fail.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-get.html>`_
 
@@ -2282,7 +2291,13 @@ class Elasticsearch(BaseClient):
         typed_keys: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Allows to execute several search operations in one request.
+        Run multiple searches. The format of the request is similar to the bulk API format
+        and makes use of the newline delimited JSON (NDJSON) format. The structure is
+        as follows: ``` header\\n body\\n header\\n body\\n ``` This structure is specifically
+        optimized to reduce parsing if a specific search ends up redirected to another
+        node. IMPORTANT: The final line of data must end with a newline character `\\n`.
+        Each newline character may be preceded by a carriage return `\\r`. When sending
+        requests to this endpoint the `Content-Type` header should be set to `application/x-ndjson`.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-multi-search.html>`_
 
@@ -2414,7 +2429,7 @@ class Elasticsearch(BaseClient):
         typed_keys: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Runs multiple templated searches with a single request.
+        Run multiple templated searches.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-multi-search.html>`_
 
@@ -2509,7 +2524,11 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns multiple termvectors in one request.
+        Get multiple term vectors. You can specify existing documents by index and ID
+        or provide artificial documents in the body of the request. You can specify the
+        index in the request body or request URI. The response contains a `docs` array
+        with all the fetched termvectors. Each element has the structure provided by
+        the termvectors API.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-termvectors.html>`_
 
@@ -2620,13 +2639,15 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        A search request by default executes against the most recent visible data of
-        the target indices, which is called point in time. Elasticsearch pit (point in
-        time) is a lightweight view into the state of the data as it existed when initiated.
-        In some cases, it’s preferred to perform multiple search requests using the same
-        point in time. For example, if refreshes happen between `search_after` requests,
-        then the results of those requests might not be consistent as changes happening
-        between searches are only visible to the more recent point in time.
+        Open a point in time. A search request by default runs against the most recent
+        visible data of the target indices, which is called point in time. Elasticsearch
+        pit (point in time) is a lightweight view into the state of the data as it existed
+        when initiated. In some cases, it’s preferred to perform multiple search requests
+        using the same point in time. For example, if refreshes happen between `search_after`
+        requests, then the results of those requests might not be consistent as changes
+        happening between searches are only visible to the more recent point in time.
+        A point in time must be opened explicitly before being used in search requests.
+        The `keep_alive` parameter tells Elasticsearch how long it should persist.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/point-in-time-api.html>`_
 
@@ -2793,8 +2814,8 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Enables you to evaluate the quality of ranked search results over a set of typical
-        search queries.
+        Evaluate ranked search results. Evaluate the quality of ranked search results
+        over a set of typical search queries.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-rank-eval.html>`_
 
@@ -2992,7 +3013,7 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Renders a search template as a search request body.
+        Render a search template. Render a search template as a search request body.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/render-search-template-api.html>`_
 
@@ -3118,7 +3139,22 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Allows to retrieve a large numbers of results from a single search request.
+        Run a scrolling search. IMPORTANT: The scroll API is no longer recommend for
+        deep pagination. If you need to preserve the index state while paging through
+        more than 10,000 hits, use the `search_after` parameter with a point in time
+        (PIT). The scroll API gets large sets of results from a single scrolling search
+        request. To get the necessary scroll ID, submit a search API request that includes
+        an argument for the `scroll` query parameter. The `scroll` parameter indicates
+        how long Elasticsearch should retain the search context for the request. The
+        search response returns a scroll ID in the `_scroll_id` response body parameter.
+        You can then use the scroll ID with the scroll API to retrieve the next batch
+        of results for the request. If the Elasticsearch security features are enabled,
+        the access to the results of a specific scroll ID is restricted to the user or
+        API key that submitted the search. You can also use the scroll API to specify
+        a new scroll parameter that extends or shortens the retention period for the
+        search context. IMPORTANT: Results from a scrolling search reflect the state
+        of the index at the time of the initial search request. Subsequent indexing or
+        document changes only affect later search and scroll requests.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#request-body-search-scroll>`_
 
@@ -3308,9 +3344,9 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns search hits that match the query defined in the request. You can provide
-        search queries using the `q` query string parameter or the request body. If both
-        are specified, only the query parameter is used.
+        Run a search. Get search hits that match the query defined in the request. You
+        can provide search queries using the `q` query string parameter or the request
+        body. If both are specified, only the query parameter is used.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-search.html>`_
 
@@ -3740,7 +3776,7 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> BinaryApiResponse:
         """
-        Search a vector tile. Searches a vector tile for geospatial values.
+        Search a vector tile. Search a vector tile for geospatial values.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-vector-tile-api.html>`_
 
@@ -3910,7 +3946,7 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Runs a search with a search template.
+        Run a search with a search template.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-template.html>`_
 
@@ -4042,9 +4078,15 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        The terms enum API can be used to discover terms in the index that begin with
-        the provided string. It is designed for low-latency look-ups used in auto-complete
-        scenarios.
+        Get terms in an index. Discover terms that match a partial string in an index.
+        This "terms enum" API is designed for low-latency look-ups used in auto-complete
+        scenarios. If the `complete` property in the response is false, the returned
+        terms set may be incomplete and should be treated as approximate. This can occur
+        due to a few reasons, such as a request timeout or a node error. NOTE: The terms
+        enum API may return terms from deleted documents. Deleted documents are initially
+        only marked as deleted. It is not until their segments are merged that documents
+        are actually deleted. Until that happens, the terms enum API will return terms
+        from these documents.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-terms-enum.html>`_
 
@@ -4142,8 +4184,8 @@ class Elasticsearch(BaseClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get term vector information. Returns information and statistics about terms in
-        the fields of a particular document.
+        Get term vector information. Get information and statistics about terms in the
+        fields of a particular document.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-termvectors.html>`_
 

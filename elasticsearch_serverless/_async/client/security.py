@@ -85,7 +85,7 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create an API key. Creates an API key for access without requiring basic authentication.
+        Create an API key. Create an API key for access without requiring basic authentication.
         A successful request returns a JSON structure that contains the API key, its
         unique id, and its name. If applicable, it also returns expiration information
         for the API key in milliseconds. NOTE: By default, API keys never expire. You
@@ -159,7 +159,7 @@ class SecurityClient(NamespacedClient):
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Removes roles in the native realm.
+        Delete roles. Delete roles in the native realm.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-delete-role.html>`_
 
@@ -289,8 +289,8 @@ class SecurityClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Retrieves the list of cluster privileges and index privileges that are available
-        in this version of Elasticsearch.
+        Get builtin privileges. Get the list of cluster privileges and index privileges
+        that are available in this version of Elasticsearch.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-get-builtin-privileges.html>`_
         """
@@ -326,9 +326,7 @@ class SecurityClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        The role management APIs are generally the preferred way to manage roles, rather
-        than using file-based role management. The get roles API cannot retrieve roles
-        that are defined in roles files.
+        Get roles. Get roles in the native realm.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-get-role.html>`_
 
@@ -445,8 +443,8 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Check user privileges. Determines whether the specified user has a specified
-        list of privileges.
+        Check user privileges. Determine whether the specified user has a specified list
+        of privileges.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-has-privileges.html>`_
 
@@ -509,13 +507,17 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Invalidate API keys. Invalidates one or more API keys. The `manage_api_key` privilege
-        allows deleting any API keys. The `manage_own_api_key` only allows deleting API
-        keys that are owned by the user. In addition, with the `manage_own_api_key` privilege,
-        an invalidation request must be issued in one of the three formats: - Set the
-        parameter `owner=true`. - Or, set both `username` and `realm_name` to match the
-        user’s identity. - Or, if the request is issued by an API key, i.e. an API key
-        invalidates itself, specify its ID in the `ids` field.
+        Invalidate API keys. This API invalidates API keys created by the create API
+        key or grant API key APIs. Invalidated API keys fail authentication, but they
+        can still be viewed using the get API key information and query API key information
+        APIs, for at least the configured retention period, until they are automatically
+        deleted. The `manage_api_key` privilege allows deleting any API keys. The `manage_own_api_key`
+        only allows deleting API keys that are owned by the user. In addition, with the
+        `manage_own_api_key` privilege, an invalidation request must be issued in one
+        of the three formats: - Set the parameter `owner=true`. - Or, set both `username`
+        and `realm_name` to match the user’s identity. - Or, if the request is issued
+        by an API key, that is to say an API key invalidates itself, specify its ID in
+        the `ids` field.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-invalidate-api-key.html>`_
 
@@ -672,9 +674,10 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        The role management APIs are generally the preferred way to manage roles, rather
-        than using file-based role management. The create or update roles API cannot
-        update roles that are defined in roles files.
+        Create or update roles. The role management APIs are generally the preferred
+        way to manage roles in the native realm, rather than using file-based role management.
+        The create or update roles API cannot update roles that are defined in roles
+        files. File-based role management is not available in Elastic Serverless.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-put-role.html>`_
 
@@ -792,7 +795,7 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Query API keys. Retrieves a paginated list of API keys and their information.
+        Find API keys with a query. Get a paginated list of API keys and their information.
         You can optionally filter the results with a query.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-query-api-key.html>`_
