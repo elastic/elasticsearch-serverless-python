@@ -18,8 +18,12 @@
 
 import warnings
 
-from elasticsearch._sync.client.utils import Stability, _quote, _stability_warning
-from elasticsearch.exceptions import GeneralAvailabilityWarning
+from elasticsearch_serverless._sync.client.utils import (
+    Stability,
+    _quote,
+    _stability_warning,
+)
+from elasticsearch_serverless.exceptions import GeneralAvailabilityWarning
 
 
 def test_handles_ascii():
