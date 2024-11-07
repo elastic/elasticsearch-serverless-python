@@ -70,7 +70,6 @@ class Stability(Enum):
     STABLE = auto()
     BETA = auto()
     EXPERIMENTAL = auto()
-    DEPRECATED = auto()
 
 
 _TYPE_HOST = Union[str, Mapping[str, Union[str, int]], NodeConfig]
@@ -452,12 +451,6 @@ def _stability_warning(
                     "This API is in technical preview and may be changed or removed in a future release. "
                     "Elastic will work to fix any issues, but features in technical preview are not subject to the support SLA of official GA features.",
                     category=GeneralAvailabilityWarning,
-                    stacklevel=warn_stacklevel(),
-                )
-            elif stability == Stability.DEPRECATED:
-                warnings.warn(
-                    f"This API was deprecated in Elasticsearch {version}. {message}",
-                    category=DeprecationWarning,
                     stacklevel=warn_stacklevel(),
                 )
 
