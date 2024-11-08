@@ -1,6 +1,11 @@
 [[release-notes]]
 == Release notes
 
+=== 0.6.0.20231031 (2024-11-08)
+
+- Support Python 3.13 (https://github.com/elastic/elasticsearch-serverless-python/pull/88[#88])
+- Emit Python warnings for beta and tech preview APIs (https://github.com/elastic/elasticsearch-serverless-python/pull/96[#96])
+
 === 0.5.0.20231031 (2024-10-11)
 
 - Fix OTel context loss in bulk helpers (https://github.com/elastic/elasticsearch-serverless-python/pull/87[#87])
