@@ -59,8 +59,10 @@ from .utils import (
     _TYPE_HOST,
     CLIENT_META_SERVICE,
     SKIP_IN_PATH,
+    Stability,
     _quote,
     _rewrite_parameters,
+    _stability_warning,
     client_node_config,
     is_requests_http_auth,
     is_requests_node_class,
@@ -3070,6 +3072,7 @@ class AsyncElasticsearch(BaseClient):
     @_rewrite_parameters(
         body_fields=("context", "context_setup", "script"),
     )
+    @_stability_warning(Stability.EXPERIMENTAL)
     async def scripts_painless_execute(
         self,
         *,
