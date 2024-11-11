@@ -44,7 +44,6 @@ class CatClient(NamespacedClient):
         h: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
-        local: t.Optional[bool] = None,
         master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -68,10 +67,6 @@ class CatClient(NamespacedClient):
         :param h: List of columns to appear in the response. Supports simple wildcards.
         :param help: When set to `true` will output available columns. This option can't
             be combined with any other query string option.
-        :param local: If `true`, the request computes the list of selected nodes from
-            the local cluster state. If `false` the list of selected nodes are computed
-            from the cluster state of the master node. In both cases the coordinating
-            node will send requests for further information to each selected node.
         :param master_timeout: Period to wait for a connection to the master node.
         :param s: List of columns that determine how the table should be sorted. Sorting
             defaults to ascending and can be changed by setting `:asc` or `:desc` as
@@ -100,8 +95,6 @@ class CatClient(NamespacedClient):
             __query["help"] = help
         if human is not None:
             __query["human"] = human
-        if local is not None:
-            __query["local"] = local
         if master_timeout is not None:
             __query["master_timeout"] = master_timeout
         if pretty is not None:
@@ -215,7 +208,6 @@ class CatClient(NamespacedClient):
         h: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
-        local: t.Optional[bool] = None,
         master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -239,10 +231,6 @@ class CatClient(NamespacedClient):
         :param h: List of columns to appear in the response. Supports simple wildcards.
         :param help: When set to `true` will output available columns. This option can't
             be combined with any other query string option.
-        :param local: If `true`, the request computes the list of selected nodes from
-            the local cluster state. If `false` the list of selected nodes are computed
-            from the cluster state of the master node. In both cases the coordinating
-            node will send requests for further information to each selected node.
         :param master_timeout: Period to wait for a connection to the master node.
         :param s: List of columns that determine how the table should be sorted. Sorting
             defaults to ascending and can be changed by setting `:asc` or `:desc` as
@@ -269,8 +257,6 @@ class CatClient(NamespacedClient):
             __query["help"] = help
         if human is not None:
             __query["human"] = human
-        if local is not None:
-            __query["local"] = local
         if master_timeout is not None:
             __query["master_timeout"] = master_timeout
         if pretty is not None:
@@ -299,7 +285,6 @@ class CatClient(NamespacedClient):
         h: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
-        local: t.Optional[bool] = None,
         master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
@@ -315,10 +300,6 @@ class CatClient(NamespacedClient):
         :param h: List of columns to appear in the response. Supports simple wildcards.
         :param help: When set to `true` will output available columns. This option can't
             be combined with any other query string option.
-        :param local: If `true`, the request computes the list of selected nodes from
-            the local cluster state. If `false` the list of selected nodes are computed
-            from the cluster state of the master node. In both cases the coordinating
-            node will send requests for further information to each selected node.
         :param master_timeout: Period to wait for a connection to the master node.
         :param s: List of columns that determine how the table should be sorted. Sorting
             defaults to ascending and can be changed by setting `:asc` or `:desc` as
@@ -340,8 +321,6 @@ class CatClient(NamespacedClient):
             __query["help"] = help
         if human is not None:
             __query["human"] = human
-        if local is not None:
-            __query["local"] = local
         if master_timeout is not None:
             __query["master_timeout"] = master_timeout
         if pretty is not None:
@@ -384,7 +363,6 @@ class CatClient(NamespacedClient):
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
         include_unloaded_segments: t.Optional[bool] = None,
-        local: t.Optional[bool] = None,
         master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         pri: t.Optional[bool] = None,
@@ -422,10 +400,6 @@ class CatClient(NamespacedClient):
             be combined with any other query string option.
         :param include_unloaded_segments: If true, the response includes information
             from segments that are not loaded into memory.
-        :param local: If `true`, the request computes the list of selected nodes from
-            the local cluster state. If `false` the list of selected nodes are computed
-            from the cluster state of the master node. In both cases the coordinating
-            node will send requests for further information to each selected node.
         :param master_timeout: Period to wait for a connection to the master node.
         :param pri: If true, the response only includes information from primary shards.
         :param s: List of columns that determine how the table should be sorted. Sorting
@@ -462,8 +436,6 @@ class CatClient(NamespacedClient):
             __query["human"] = human
         if include_unloaded_segments is not None:
             __query["include_unloaded_segments"] = include_unloaded_segments
-        if local is not None:
-            __query["local"] = local
         if master_timeout is not None:
             __query["master_timeout"] = master_timeout
         if pretty is not None:
@@ -548,7 +520,6 @@ class CatClient(NamespacedClient):
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
-        local: t.Optional[bool] = None,
         master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[
@@ -620,10 +591,6 @@ class CatClient(NamespacedClient):
         :param h: Comma-separated list of column names to display.
         :param help: When set to `true` will output available columns. This option can't
             be combined with any other query string option.
-        :param local: If `true`, the request computes the list of selected nodes from
-            the local cluster state. If `false` the list of selected nodes are computed
-            from the cluster state of the master node. In both cases the coordinating
-            node will send requests for further information to each selected node.
         :param master_timeout: Period to wait for a connection to the master node.
         :param s: Comma-separated list of column names or column aliases used to sort
             the response.
@@ -654,8 +621,6 @@ class CatClient(NamespacedClient):
             __query["help"] = help
         if human is not None:
             __query["human"] = human
-        if local is not None:
-            __query["local"] = local
         if master_timeout is not None:
             __query["master_timeout"] = master_timeout
         if pretty is not None:
@@ -727,7 +692,6 @@ class CatClient(NamespacedClient):
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
-        local: t.Optional[bool] = None,
         master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[
@@ -799,10 +763,6 @@ class CatClient(NamespacedClient):
         :param h: Comma-separated list of column names to display.
         :param help: When set to `true` will output available columns. This option can't
             be combined with any other query string option.
-        :param local: If `true`, the request computes the list of selected nodes from
-            the local cluster state. If `false` the list of selected nodes are computed
-            from the cluster state of the master node. In both cases the coordinating
-            node will send requests for further information to each selected node.
         :param master_timeout: Period to wait for a connection to the master node.
         :param s: Comma-separated list of column names or column aliases used to sort
             the response.
@@ -831,8 +791,6 @@ class CatClient(NamespacedClient):
             __query["help"] = help
         if human is not None:
             __query["human"] = human
-        if local is not None:
-            __query["local"] = local
         if master_timeout is not None:
             __query["master_timeout"] = master_timeout
         if pretty is not None:
@@ -1003,7 +961,6 @@ class CatClient(NamespacedClient):
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
-        local: t.Optional[bool] = None,
         master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[
@@ -1172,10 +1129,6 @@ class CatClient(NamespacedClient):
         :param h: Comma-separated list of column names to display.
         :param help: When set to `true` will output available columns. This option can't
             be combined with any other query string option.
-        :param local: If `true`, the request computes the list of selected nodes from
-            the local cluster state. If `false` the list of selected nodes are computed
-            from the cluster state of the master node. In both cases the coordinating
-            node will send requests for further information to each selected node.
         :param master_timeout: Period to wait for a connection to the master node.
         :param s: Comma-separated list of column names or column aliases used to sort
             the response.
@@ -1206,8 +1159,6 @@ class CatClient(NamespacedClient):
             __query["help"] = help
         if human is not None:
             __query["human"] = human
-        if local is not None:
-            __query["local"] = local
         if master_timeout is not None:
             __query["master_timeout"] = master_timeout
         if pretty is not None:
@@ -1289,7 +1240,6 @@ class CatClient(NamespacedClient):
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
-        local: t.Optional[bool] = None,
         master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[
@@ -1362,10 +1312,6 @@ class CatClient(NamespacedClient):
         :param h: A comma-separated list of column names to display.
         :param help: When set to `true` will output available columns. This option can't
             be combined with any other query string option.
-        :param local: If `true`, the request computes the list of selected nodes from
-            the local cluster state. If `false` the list of selected nodes are computed
-            from the cluster state of the master node. In both cases the coordinating
-            node will send requests for further information to each selected node.
         :param master_timeout: Period to wait for a connection to the master node.
         :param s: A comma-separated list of column names or aliases used to sort the
             response.
@@ -1398,8 +1344,6 @@ class CatClient(NamespacedClient):
             __query["help"] = help
         if human is not None:
             __query["human"] = human
-        if local is not None:
-            __query["local"] = local
         if master_timeout is not None:
             __query["master_timeout"] = master_timeout
         if pretty is not None:
@@ -1516,7 +1460,6 @@ class CatClient(NamespacedClient):
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
-        local: t.Optional[bool] = None,
         master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[
@@ -1631,10 +1574,6 @@ class CatClient(NamespacedClient):
         :param h: Comma-separated list of column names to display.
         :param help: When set to `true` will output available columns. This option can't
             be combined with any other query string option.
-        :param local: If `true`, the request computes the list of selected nodes from
-            the local cluster state. If `false` the list of selected nodes are computed
-            from the cluster state of the master node. In both cases the coordinating
-            node will send requests for further information to each selected node.
         :param master_timeout: Period to wait for a connection to the master node.
         :param s: Comma-separated list of column names or column aliases used to sort
             the response.
@@ -1666,8 +1605,6 @@ class CatClient(NamespacedClient):
             __query["help"] = help
         if human is not None:
             __query["human"] = human
-        if local is not None:
-            __query["local"] = local
         if master_timeout is not None:
             __query["master_timeout"] = master_timeout
         if pretty is not None:
