@@ -1551,7 +1551,7 @@ class CatClient(NamespacedClient):
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
         """
-        Get transforms. Returns configuration and usage information about transforms.
+        Get transform information. Get configuration and usage information about transforms.
         CAT APIs are only intended for human consumption using the Kibana console or
         command line. They are not intended for use by applications. For application
         consumption, use the get transform statistics API.
