@@ -1,6 +1,19 @@
 [[release-notes]]
 == Release notes
 
+=== 0.7.0.20231031 (2024-12-11)
+
+- Fix import when trace is missing from opentelemetry (https://github.com/elastic/elasticsearch-serverless-python/pull/99[#99])
+- Update APIs:
+  * Mark all Inference APIs as stable.
+  * Add `remote_cluster` to Create or update roles API.
+  * Add `allow_partial_search_results` to the Open Point in Time API
+  * Add `keep_alive` to the Get async search status API
+  * Add `master_timeout` to the Alias exists and Get alias APIs.
+  * Remove `local` from various cat APIs
+  * Remove `min_compatible_shard_node`,  `keep_alive`, `pre_filter_shard_size` and `scroll` from the Submit async search API.
+
+
 === 0.6.0.20231031 (2024-11-08)
 
 - Support Python 3.13 (https://github.com/elastic/elasticsearch-serverless-python/pull/88[#88])
