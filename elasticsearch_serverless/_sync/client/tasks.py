@@ -45,8 +45,7 @@ class TasksClient(NamespacedClient):
         wait_for_completion: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get task information. Returns information about the tasks currently executing
-        in the cluster.
+        Get task information. Get information about a task currently running in the cluster.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html>`_
 

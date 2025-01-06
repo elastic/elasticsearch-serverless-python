@@ -208,7 +208,6 @@ class CatClient(NamespacedClient):
         h: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         v: t.Optional[bool] = None,
@@ -231,7 +230,6 @@ class CatClient(NamespacedClient):
         :param h: List of columns to appear in the response. Supports simple wildcards.
         :param help: When set to `true` will output available columns. This option can't
             be combined with any other query string option.
-        :param master_timeout: Period to wait for a connection to the master node.
         :param s: List of columns that determine how the table should be sorted. Sorting
             defaults to ascending and can be changed by setting `:asc` or `:desc` as
             a suffix to the column name.
@@ -257,8 +255,6 @@ class CatClient(NamespacedClient):
             __query["help"] = help
         if human is not None:
             __query["human"] = human
-        if master_timeout is not None:
-            __query["master_timeout"] = master_timeout
         if pretty is not None:
             __query["pretty"] = pretty
         if s is not None:
@@ -276,59 +272,15 @@ class CatClient(NamespacedClient):
         )
 
     @_rewrite_parameters()
-    def help(
-        self,
-        *,
-        error_trace: t.Optional[bool] = None,
-        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
-        format: t.Optional[str] = None,
-        h: t.Optional[t.Union[str, t.Sequence[str]]] = None,
-        help: t.Optional[bool] = None,
-        human: t.Optional[bool] = None,
-        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
-        pretty: t.Optional[bool] = None,
-        s: t.Optional[t.Union[str, t.Sequence[str]]] = None,
-        v: t.Optional[bool] = None,
-    ) -> TextApiResponse:
+    def help(self) -> TextApiResponse:
         """
         Get CAT help. Returns help for the CAT APIs.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cat.html>`_
-
-        :param format: Specifies the format to return the columnar data in, can be set
-            to `text`, `json`, `cbor`, `yaml`, or `smile`.
-        :param h: List of columns to appear in the response. Supports simple wildcards.
-        :param help: When set to `true` will output available columns. This option can't
-            be combined with any other query string option.
-        :param master_timeout: Period to wait for a connection to the master node.
-        :param s: List of columns that determine how the table should be sorted. Sorting
-            defaults to ascending and can be changed by setting `:asc` or `:desc` as
-            a suffix to the column name.
-        :param v: When set to `true` will enable verbose output.
         """
         __path_parts: t.Dict[str, str] = {}
         __path = "/_cat"
         __query: t.Dict[str, t.Any] = {}
-        if error_trace is not None:
-            __query["error_trace"] = error_trace
-        if filter_path is not None:
-            __query["filter_path"] = filter_path
-        if format is not None:
-            __query["format"] = format
-        if h is not None:
-            __query["h"] = h
-        if help is not None:
-            __query["help"] = help
-        if human is not None:
-            __query["human"] = human
-        if master_timeout is not None:
-            __query["master_timeout"] = master_timeout
-        if pretty is not None:
-            __query["pretty"] = pretty
-        if s is not None:
-            __query["s"] = s
-        if v is not None:
-            __query["v"] = v
         __headers = {"accept": "text/plain"}
         return self.perform_request(  # type: ignore[return-value]
             "GET",
@@ -520,7 +472,6 @@ class CatClient(NamespacedClient):
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[
             t.Union[
@@ -570,7 +521,9 @@ class CatClient(NamespacedClient):
                 ],
             ]
         ] = None,
-        time: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
+        time: t.Optional[
+            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+        ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
         """
@@ -591,7 +544,6 @@ class CatClient(NamespacedClient):
         :param h: Comma-separated list of column names to display.
         :param help: When set to `true` will output available columns. This option can't
             be combined with any other query string option.
-        :param master_timeout: Period to wait for a connection to the master node.
         :param s: Comma-separated list of column names or column aliases used to sort
             the response.
         :param time: Unit used to display time values.
@@ -621,8 +573,6 @@ class CatClient(NamespacedClient):
             __query["help"] = help
         if human is not None:
             __query["human"] = human
-        if master_timeout is not None:
-            __query["master_timeout"] = master_timeout
         if pretty is not None:
             __query["pretty"] = pretty
         if s is not None:
@@ -692,7 +642,6 @@ class CatClient(NamespacedClient):
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[
             t.Union[
@@ -763,7 +712,6 @@ class CatClient(NamespacedClient):
         :param h: Comma-separated list of column names to display.
         :param help: When set to `true` will output available columns. This option can't
             be combined with any other query string option.
-        :param master_timeout: Period to wait for a connection to the master node.
         :param s: Comma-separated list of column names or column aliases used to sort
             the response.
         :param time: The unit used to display time values.
@@ -791,8 +739,6 @@ class CatClient(NamespacedClient):
             __query["help"] = help
         if human is not None:
             __query["human"] = human
-        if master_timeout is not None:
-            __query["master_timeout"] = master_timeout
         if pretty is not None:
             __query["pretty"] = pretty
         if s is not None:
@@ -961,7 +907,6 @@ class CatClient(NamespacedClient):
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[
             t.Union[
@@ -1129,7 +1074,6 @@ class CatClient(NamespacedClient):
         :param h: Comma-separated list of column names to display.
         :param help: When set to `true` will output available columns. This option can't
             be combined with any other query string option.
-        :param master_timeout: Period to wait for a connection to the master node.
         :param s: Comma-separated list of column names or column aliases used to sort
             the response.
         :param time: The unit used to display time values.
@@ -1159,8 +1103,6 @@ class CatClient(NamespacedClient):
             __query["help"] = help
         if human is not None:
             __query["human"] = human
-        if master_timeout is not None:
-            __query["master_timeout"] = master_timeout
         if pretty is not None:
             __query["pretty"] = pretty
         if s is not None:
@@ -1240,7 +1182,6 @@ class CatClient(NamespacedClient):
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[
             t.Union[
@@ -1287,6 +1228,9 @@ class CatClient(NamespacedClient):
             ]
         ] = None,
         size: t.Optional[int] = None,
+        time: t.Optional[
+            t.Union[str, t.Literal["d", "h", "m", "micros", "ms", "nanos", "s"]]
+        ] = None,
         v: t.Optional[bool] = None,
     ) -> t.Union[ObjectApiResponse[t.Any], TextApiResponse]:
         """
@@ -1312,10 +1256,10 @@ class CatClient(NamespacedClient):
         :param h: A comma-separated list of column names to display.
         :param help: When set to `true` will output available columns. This option can't
             be combined with any other query string option.
-        :param master_timeout: Period to wait for a connection to the master node.
         :param s: A comma-separated list of column names or aliases used to sort the
             response.
         :param size: The maximum number of transforms to display.
+        :param time: Unit used to display time values.
         :param v: When set to `true` will enable verbose output.
         """
         __path_parts: t.Dict[str, str]
@@ -1344,14 +1288,14 @@ class CatClient(NamespacedClient):
             __query["help"] = help
         if human is not None:
             __query["human"] = human
-        if master_timeout is not None:
-            __query["master_timeout"] = master_timeout
         if pretty is not None:
             __query["pretty"] = pretty
         if s is not None:
             __query["s"] = s
         if size is not None:
             __query["size"] = size
+        if time is not None:
+            __query["time"] = time
         if v is not None:
             __query["v"] = v
         __headers = {"accept": "text/plain,application/json"}
@@ -1460,7 +1404,6 @@ class CatClient(NamespacedClient):
         ] = None,
         help: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
-        master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         s: t.Optional[
             t.Union[
@@ -1574,7 +1517,6 @@ class CatClient(NamespacedClient):
         :param h: Comma-separated list of column names to display.
         :param help: When set to `true` will output available columns. This option can't
             be combined with any other query string option.
-        :param master_timeout: Period to wait for a connection to the master node.
         :param s: Comma-separated list of column names or column aliases used to sort
             the response.
         :param size: The maximum number of transforms to obtain.
@@ -1605,8 +1547,6 @@ class CatClient(NamespacedClient):
             __query["help"] = help
         if human is not None:
             __query["human"] = human
-        if master_timeout is not None:
-            __query["master_timeout"] = master_timeout
         if pretty is not None:
             __query["pretty"] = pretty
         if s is not None:
