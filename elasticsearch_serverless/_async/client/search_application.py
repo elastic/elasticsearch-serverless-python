@@ -216,7 +216,7 @@ class SearchApplicationClient(NamespacedClient):
         size: t.Optional[int] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Returns the existing search applications.
+        Get search applications. Get information about search applications.
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/list-search-applications.html>`_
 
