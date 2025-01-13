@@ -904,6 +904,91 @@ class SecurityClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
+        body_fields=("from_", "query", "search_after", "size", "sort"),
+        parameter_aliases={"from": "from_"},
+    )
+    def query_role(
+        self,
+        *,
+        error_trace: t.Optional[bool] = None,
+        filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
+        from_: t.Optional[int] = None,
+        human: t.Optional[bool] = None,
+        pretty: t.Optional[bool] = None,
+        query: t.Optional[t.Mapping[str, t.Any]] = None,
+        search_after: t.Optional[
+            t.Sequence[t.Union[None, bool, float, int, str, t.Any]]
+        ] = None,
+        size: t.Optional[int] = None,
+        sort: t.Optional[
+            t.Union[
+                t.Sequence[t.Union[str, t.Mapping[str, t.Any]]],
+                t.Union[str, t.Mapping[str, t.Any]],
+            ]
+        ] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
+    ) -> ObjectApiResponse[t.Any]:
+        """
+        Find roles with a query. Get roles in a paginated manner. You can optionally
+        filter the results with a query.
+
+        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-query-role.html>`_
+
+        :param from_: Starting document offset. By default, you cannot page through more
+            than 10,000 hits using the from and size parameters. To page through more
+            hits, use the `search_after` parameter.
+        :param query: A query to filter which roles to return. If the query parameter
+            is missing, it is equivalent to a `match_all` query. The query supports a
+            subset of query types, including `match_all`, `bool`, `term`, `terms`, `match`,
+            `ids`, `prefix`, `wildcard`, `exists`, `range`, and `simple_query_string`.
+            You can query the following information associated with roles: `name`, `description`,
+            `metadata`, `applications.application`, `applications.privileges`, `applications.resources`.
+        :param search_after: Search after definition
+        :param size: The number of hits to return. By default, you cannot page through
+            more than 10,000 hits using the `from` and `size` parameters. To page through
+            more hits, use the `search_after` parameter.
+        :param sort: All public fields of a role are eligible for sorting. In addition,
+            sort can also be applied to the `_doc` field to sort by index order.
+        """
+        __path_parts: t.Dict[str, str] = {}
+        __path = "/_security/_query/role"
+        __query: t.Dict[str, t.Any] = {}
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
+        if error_trace is not None:
+            __query["error_trace"] = error_trace
+        if filter_path is not None:
+            __query["filter_path"] = filter_path
+        if human is not None:
+            __query["human"] = human
+        if pretty is not None:
+            __query["pretty"] = pretty
+        if not __body:
+            if from_ is not None:
+                __body["from"] = from_
+            if query is not None:
+                __body["query"] = query
+            if search_after is not None:
+                __body["search_after"] = search_after
+            if size is not None:
+                __body["size"] = size
+            if sort is not None:
+                __body["sort"] = sort
+        if not __body:
+            __body = None  # type: ignore[assignment]
+        __headers = {"accept": "application/json"}
+        if __body is not None:
+            __headers["content-type"] = "application/json"
+        return self.perform_request(  # type: ignore[return-value]
+            "POST",
+            __path,
+            params=__query,
+            headers=__headers,
+            body=__body,
+            endpoint_id="security.query_role",
+            path_parts=__path_parts,
+        )
+
+    @_rewrite_parameters(
         body_fields=("expiration", "metadata", "role_descriptors"),
     )
     def update_api_key(
