@@ -132,6 +132,9 @@ def is_xpack_template(name):
     elif "fleet_server" in name:
         return True
     return name in {
+        "agentless",
+        "agentless@mappings",
+        "agentless@settings",
         "apm-10d@lifecycle",
         "apm-180d@lifecycle",
         "apm-390d@lifecycle",
