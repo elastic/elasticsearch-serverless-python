@@ -39,9 +39,12 @@ class SqlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Clear an SQL search cursor.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/clear-sql-cursor-api.html>`_
+          <p>Clear an SQL search cursor.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-sql-clear-cursor>`_
 
         :param cursor: Cursor to clear.
         """
@@ -84,13 +87,19 @@ class SqlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete an async SQL search. Delete an async SQL search or a stored synchronous
-        SQL search. If the search is still running, the API cancels it. If the Elasticsearch
-        security features are enabled, only the following users can use this API to delete
-        a search: * Users with the `cancel_task` cluster privilege. * The user who first
-        submitted the search.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-async-sql-search-api.html>`_
+          <p>Delete an async SQL search.
+          Delete an async SQL search or a stored synchronous SQL search.
+          If the search is still running, the API cancels it.</p>
+          <p>If the Elasticsearch security features are enabled, only the following users can use this API to delete a search:</p>
+          <ul>
+          <li>Users with the <code>cancel_task</code> cluster privilege.</li>
+          <li>The user who first submitted the search.</li>
+          </ul>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-sql-delete-async>`_
 
         :param id: The identifier for the search.
         """
@@ -134,12 +143,14 @@ class SqlClient(NamespacedClient):
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get async SQL search results. Get the current status and available results for
-        an async SQL search or stored synchronous SQL search. If the Elasticsearch security
-        features are enabled, only the user who first submitted the SQL search can retrieve
-        the search using this API.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-async-sql-search-api.html>`_
+          <p>Get async SQL search results.
+          Get the current status and available results for an async SQL search or stored synchronous SQL search.</p>
+          <p>If the Elasticsearch security features are enabled, only the user who first submitted the SQL search can retrieve the search using this API.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-sql-get-async>`_
 
         :param id: The identifier for the search.
         :param delimiter: The separator for CSV results. The API supports this parameter
@@ -195,10 +206,13 @@ class SqlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get the async SQL search status. Get the current status of an async SQL search
-        or a stored synchronous SQL search.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-async-sql-search-status-api.html>`_
+          <p>Get the async SQL search status.
+          Get the current status of an async SQL search or a stored synchronous SQL search.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-sql-get-async-status>`_
 
         :param id: The identifier for the search.
         """
@@ -281,9 +295,13 @@ class SqlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get SQL search results. Run an SQL request.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/sql-search-api.html>`_
+          <p>Get SQL search results.
+          Run an SQL request.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-sql-query>`_
 
         :param allow_partial_search_results: If `true`, the response has partial results
             when there are shard request timeouts or shard failures. If `false`, the
@@ -402,11 +420,14 @@ class SqlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Translate SQL into Elasticsearch queries. Translate an SQL search into a search
-        API request containing Query DSL. It accepts the same request body parameters
-        as the SQL search API, excluding `cursor`.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/sql-translate-api.html>`_
+          <p>Translate SQL into Elasticsearch queries.
+          Translate an SQL search into a search API request containing Query DSL.
+          It accepts the same request body parameters as the SQL search API, excluding <code>cursor</code>.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-sql-translate>`_
 
         :param query: The SQL query to run.
         :param fetch_size: The maximum number of rows (or entries) to return in one response.

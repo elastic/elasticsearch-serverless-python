@@ -38,9 +38,13 @@ class IngestClient(NamespacedClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete pipelines. Delete one or more ingest pipelines.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-pipeline-api.html>`_
+          <p>Delete pipelines.
+          Delete one or more ingest pipelines.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ingest-delete-pipeline>`_
 
         :param id: Pipeline ID or wildcard expression of pipeline IDs used to limit the
             request. To delete all ingest pipelines in a cluster, use a value of `*`.
@@ -90,10 +94,14 @@ class IngestClient(NamespacedClient):
         summary: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get pipelines. Get information about one or more ingest pipelines. This API returns
-        a local reference of the pipeline.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-pipeline-api.html>`_
+          <p>Get pipelines.</p>
+          <p>Get information about one or more ingest pipelines.
+          This API returns a local reference of the pipeline.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ingest-get-pipeline>`_
 
         :param id: Comma-separated list of pipeline IDs to retrieve. Wildcard (`*`) expressions
             are supported. To get all ingest pipelines, omit this parameter or use `*`.
@@ -142,10 +150,13 @@ class IngestClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Run a grok processor. Extract structured fields out of a single text field within
-        a document. You must choose which field to extract matched fields from, as well
-        as the grok pattern you expect will match. A grok pattern is like a regular expression
-        that supports aliased expressions that can be reused.
+        .. raw:: html
+
+          <p>Run a grok processor.
+          Extract structured fields out of a single text field within a document.
+          You must choose which field to extract matched fields from, as well as the grok pattern you expect will match.
+          A grok pattern is like a regular expression that supports aliased expressions that can be reused.</p>
+
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/grok-processor.html>`_
         """
@@ -201,7 +212,11 @@ class IngestClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create or update a pipeline. Changes made using this API take effect immediately.
+        .. raw:: html
+
+          <p>Create or update a pipeline.
+          Changes made using this API take effect immediately.</p>
+
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ingest.html>`_
 
@@ -293,16 +308,19 @@ class IngestClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Simulate a pipeline. Run an ingest pipeline against a set of provided documents.
-        You can either specify an existing pipeline to use with the provided documents
-        or supply a pipeline definition in the body of the request.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/simulate-pipeline-api.html>`_
+          <p>Simulate a pipeline.</p>
+          <p>Run an ingest pipeline against a set of provided documents.
+          You can either specify an existing pipeline to use with the provided documents or supply a pipeline definition in the body of the request.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ingest-simulate>`_
 
         :param docs: Sample documents to test in the pipeline.
-        :param id: Pipeline to test. If you don’t specify a `pipeline` in the request
+        :param id: The pipeline to test. If you don't specify a `pipeline` in the request
             body, this parameter is required.
-        :param pipeline: Pipeline to test. If you don’t specify the `pipeline` request
+        :param pipeline: The pipeline to test. If you don't specify the `pipeline` request
             path parameter, this parameter is required. If you specify both this and
             the request path parameter, the API only uses the request path parameter.
         :param verbose: If `true`, the response includes output data for each processor

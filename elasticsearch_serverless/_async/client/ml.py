@@ -48,21 +48,16 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Close anomaly detection jobs. A job can be opened and closed multiple times throughout
-        its lifecycle. A closed job cannot receive data or perform analysis operations,
-        but you can still explore and navigate results. When you close a job, it runs
-        housekeeping tasks such as pruning the model history, flushing buffers, calculating
-        final results and persisting the model snapshots. Depending upon the size of
-        the job, it could take several minutes to close and the equivalent time to re-open.
-        After it is closed, the job has a minimal overhead on the cluster except for
-        maintaining its meta data. Therefore it is a best practice to close jobs that
-        are no longer required to process data. If you close an anomaly detection job
-        whose datafeed is running, the request first tries to stop the datafeed. This
-        behavior is equivalent to calling stop datafeed API with the same timeout and
-        force parameters as the close job request. When a datafeed that has a specified
-        end date stops, it automatically closes its associated job.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-close-job.html>`_
+          <p>Close anomaly detection jobs.</p>
+          <p>A job can be opened and closed multiple times throughout its lifecycle. A closed job cannot receive data or perform analysis operations, but you can still explore and navigate results.
+          When you close a job, it runs housekeeping tasks such as pruning the model history, flushing buffers, calculating final results and persisting the model snapshots. Depending upon the size of the job, it could take several minutes to close and the equivalent time to re-open. After it is closed, the job has a minimal overhead on the cluster except for maintaining its meta data. Therefore it is a best practice to close jobs that are no longer required to process data.
+          If you close an anomaly detection job whose datafeed is running, the request first tries to stop the datafeed. This behavior is equivalent to calling stop datafeed API with the same timeout and force parameters as the close job request.
+          When a datafeed that has a specified end date stops, it automatically closes its associated job.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-close-job>`_
 
         :param job_id: Identifier for the anomaly detection job. It can be a job identifier,
             a group name, or a wildcard expression. You can close multiple anomaly detection
@@ -121,10 +116,13 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete a calendar. Removes all scheduled events from a calendar, then deletes
-        it.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-delete-calendar.html>`_
+          <p>Delete a calendar.</p>
+          <p>Remove all scheduled events from a calendar, then delete it.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-delete-calendar>`_
 
         :param calendar_id: A string that uniquely identifies a calendar.
         """
@@ -163,9 +161,12 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete events from a calendar.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-delete-calendar-event.html>`_
+          <p>Delete events from a calendar.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-delete-calendar-event>`_
 
         :param calendar_id: A string that uniquely identifies a calendar.
         :param event_id: Identifier for the scheduled event. You can obtain this identifier
@@ -211,9 +212,12 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete anomaly jobs from a calendar.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-delete-calendar-job.html>`_
+          <p>Delete anomaly jobs from a calendar.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-delete-calendar-job>`_
 
         :param calendar_id: A string that uniquely identifies a calendar.
         :param job_id: An identifier for the anomaly detection jobs. It can be a job
@@ -260,9 +264,12 @@ class MlClient(NamespacedClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete a data frame analytics job.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-dfanalytics.html>`_
+          <p>Delete a data frame analytics job.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-delete-data-frame-analytics>`_
 
         :param id: Identifier for the data frame analytics job.
         :param force: If `true`, it deletes a job that is not stopped; this method is
@@ -308,9 +315,12 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete a datafeed.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-delete-datafeed.html>`_
+          <p>Delete a datafeed.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-delete-datafeed>`_
 
         :param datafeed_id: A numerical character string that uniquely identifies the
             datafeed. This identifier can contain lowercase alphanumeric characters (a-z
@@ -355,11 +365,14 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete a filter. If an anomaly detection job references the filter, you cannot
-        delete the filter. You must update or delete the job before you can delete the
-        filter.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-delete-filter.html>`_
+          <p>Delete a filter.</p>
+          <p>If an anomaly detection job references the filter, you cannot delete the
+          filter. You must update or delete the job before you can delete the filter.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-delete-filter>`_
 
         :param filter_id: A string that uniquely identifies a filter.
         """
@@ -400,14 +413,18 @@ class MlClient(NamespacedClient):
         wait_for_completion: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete an anomaly detection job. All job configuration, model state and results
-        are deleted. It is not currently possible to delete multiple jobs using wildcards
-        or a comma separated list. If you delete a job that has a datafeed, the request
-        first tries to delete the datafeed. This behavior is equivalent to calling the
-        delete datafeed API with the same timeout and force parameters as the delete
-        job request.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-delete-job.html>`_
+          <p>Delete an anomaly detection job.</p>
+          <p>All job configuration, model state and results are deleted.
+          It is not currently possible to delete multiple jobs using wildcards or a
+          comma separated list. If you delete a job that has a datafeed, the request
+          first tries to delete the datafeed. This behavior is equivalent to calling
+          the delete datafeed API with the same timeout and force parameters as the
+          delete job request.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-delete-job>`_
 
         :param job_id: Identifier for the anomaly detection job.
         :param delete_user_annotations: Specifies whether annotations that have been
@@ -460,10 +477,13 @@ class MlClient(NamespacedClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete an unreferenced trained model. The request deletes a trained inference
-        model that is not referenced by an ingest pipeline.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-trained-models.html>`_
+          <p>Delete an unreferenced trained model.</p>
+          <p>The request deletes a trained inference model that is not referenced by an ingest pipeline.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-delete-trained-model>`_
 
         :param model_id: The unique identifier of the trained model.
         :param force: Forcefully deletes a trained model that is referenced by ingest
@@ -510,11 +530,15 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete a trained model alias. This API deletes an existing model alias that refers
-        to a trained model. If the model alias is missing or refers to a model other
-        than the one identified by the `model_id`, this API returns an error.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-trained-models-aliases.html>`_
+          <p>Delete a trained model alias.</p>
+          <p>This API deletes an existing model alias that refers to a trained model. If
+          the model alias is missing or refers to a model other than the one identified
+          by the <code>model_id</code>, this API returns an error.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-delete-trained-model-alias>`_
 
         :param model_id: The trained model ID to which the model alias refers.
         :param model_alias: The model alias to delete.
@@ -567,11 +591,15 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Estimate job model memory usage. Makes an estimation of the memory usage for
-        an anomaly detection job model. It is based on analysis configuration details
-        for the job and cardinality estimates for the fields it references.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-apis.html>`_
+          <p>Estimate job model memory usage.</p>
+          <p>Make an estimation of the memory usage for an anomaly detection job model.
+          The estimate is based on analysis configuration details for the job and cardinality
+          estimates for the fields it references.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-estimate-model-memory>`_
 
         :param analysis_config: For a list of the properties that you can specify in
             the `analysis_config` component of the body of this API.
@@ -634,12 +662,16 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Evaluate data frame analytics. The API packages together commonly used evaluation
-        metrics for various types of machine learning features. This has been designed
-        for use on indexes created by data frame analytics. Evaluation requires both
-        a ground truth field and an analytics result field to be present.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/evaluate-dfanalytics.html>`_
+          <p>Evaluate data frame analytics.</p>
+          <p>The API packages together commonly used evaluation metrics for various types
+          of machine learning features. This has been designed for use on indexes
+          created by data frame analytics. Evaluation requires both a ground truth
+          field and an analytics result field to be present.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-evaluate-data-frame>`_
 
         :param evaluation: Defines the type of evaluation you want to perform.
         :param index: Defines the `index` in which the evaluation will be performed.
@@ -699,16 +731,20 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Force buffered data to be processed. The flush jobs API is only applicable when
-        sending data for analysis using the post data API. Depending on the content of
-        the buffer, then it might additionally calculate new results. Both flush and
-        close operations are similar, however the flush is more efficient if you are
-        expecting to send more data for analysis. When flushing, the job remains open
-        and is available to continue analyzing data. A close operation additionally prunes
-        and persists the model state to disk and the job must be opened again before
-        analyzing further data.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-flush-job.html>`_
+          <p>Force buffered data to be processed.
+          The flush jobs API is only applicable when sending data for analysis using
+          the post data API. Depending on the content of the buffer, then it might
+          additionally calculate new results. Both flush and close operations are
+          similar, however the flush is more efficient if you are expecting to send
+          more data for analysis. When flushing, the job remains open and is available
+          to continue analyzing data. A close operation additionally prunes and
+          persists the model state to disk and the job must be opened again before
+          analyzing further data.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-flush-job>`_
 
         :param job_id: Identifier for the anomaly detection job.
         :param advance_time: Refer to the description for the `advance_time` query parameter.
@@ -775,9 +811,12 @@ class MlClient(NamespacedClient):
         start: t.Optional[t.Union[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get info about events in calendars.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-get-calendar-event.html>`_
+          <p>Get info about events in calendars.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-get-calendar-events>`_
 
         :param calendar_id: A string that uniquely identifies a calendar. You can get
             information for multiple calendars by using a comma-separated list of ids
@@ -841,9 +880,12 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get calendar configuration info.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-get-calendar.html>`_
+          <p>Get calendar configuration info.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-get-calendars>`_
 
         :param calendar_id: A string that uniquely identifies a calendar. You can get
             information for multiple calendars by using a comma-separated list of ids
@@ -911,11 +953,15 @@ class MlClient(NamespacedClient):
         size: t.Optional[int] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get data frame analytics job configuration info. You can get information for
-        multiple data frame analytics jobs in a single API request by using a comma-separated
-        list of data frame analytics jobs or a wildcard expression.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-dfanalytics.html>`_
+          <p>Get data frame analytics job configuration info.
+          You can get information for multiple data frame analytics jobs in a single
+          API request by using a comma-separated list of data frame analytics jobs or a
+          wildcard expression.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-get-data-frame-analytics>`_
 
         :param id: Identifier for the data frame analytics job. If you do not specify
             this option, the API returns information for the first hundred data frame
@@ -985,9 +1031,12 @@ class MlClient(NamespacedClient):
         verbose: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get data frame analytics jobs usage info.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-dfanalytics-stats.html>`_
+          <p>Get data frame analytics jobs usage info.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-get-data-frame-analytics-stats>`_
 
         :param id: Identifier for the data frame analytics job. If you do not specify
             this option, the API returns information for the first hundred data frame
@@ -1050,14 +1099,18 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get datafeeds usage info. You can get statistics for multiple datafeeds in a
-        single API request by using a comma-separated list of datafeeds or a wildcard
-        expression. You can get statistics for all datafeeds by using `_all`, by specifying
-        `*` as the `<feed_id>`, or by omitting the `<feed_id>`. If the datafeed is stopped,
-        the only information you receive is the `datafeed_id` and the `state`. This API
-        returns a maximum of 10,000 datafeeds.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-get-datafeed-stats.html>`_
+          <p>Get datafeeds usage info.
+          You can get statistics for multiple datafeeds in a single API request by
+          using a comma-separated list of datafeeds or a wildcard expression. You can
+          get statistics for all datafeeds by using <code>_all</code>, by specifying <code>*</code> as the
+          <code>&lt;feed_id&gt;</code>, or by omitting the <code>&lt;feed_id&gt;</code>. If the datafeed is stopped, the
+          only information you receive is the <code>datafeed_id</code> and the <code>state</code>.
+          This API returns a maximum of 10,000 datafeeds.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-get-datafeed-stats>`_
 
         :param datafeed_id: Identifier for the datafeed. It can be a datafeed identifier
             or a wildcard expression. If you do not specify one of these options, the
@@ -1111,13 +1164,17 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get datafeeds configuration info. You can get information for multiple datafeeds
-        in a single API request by using a comma-separated list of datafeeds or a wildcard
-        expression. You can get information for all datafeeds by using `_all`, by specifying
-        `*` as the `<feed_id>`, or by omitting the `<feed_id>`. This API returns a maximum
-        of 10,000 datafeeds.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-get-datafeed.html>`_
+          <p>Get datafeeds configuration info.
+          You can get information for multiple datafeeds in a single API request by
+          using a comma-separated list of datafeeds or a wildcard expression. You can
+          get information for all datafeeds by using <code>_all</code>, by specifying <code>*</code> as the
+          <code>&lt;feed_id&gt;</code>, or by omitting the <code>&lt;feed_id&gt;</code>.
+          This API returns a maximum of 10,000 datafeeds.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-get-datafeeds>`_
 
         :param datafeed_id: Identifier for the datafeed. It can be a datafeed identifier
             or a wildcard expression. If you do not specify one of these options, the
@@ -1178,9 +1235,13 @@ class MlClient(NamespacedClient):
         size: t.Optional[int] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get filters. You can get a single filter or all filters.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-get-filter.html>`_
+          <p>Get filters.
+          You can get a single filter or all filters.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-get-filters>`_
 
         :param filter_id: A string that uniquely identifies a filter.
         :param from_: Skips the specified number of filters.
@@ -1228,9 +1289,12 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get anomaly detection jobs usage info.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-get-job-stats.html>`_
+          <p>Get anomaly detection jobs usage info.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-get-job-stats>`_
 
         :param job_id: Identifier for the anomaly detection job. It can be a job identifier,
             a group name, a comma-separated list of jobs, or a wildcard expression. If
@@ -1285,13 +1349,16 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get anomaly detection jobs configuration info. You can get information for multiple
-        anomaly detection jobs in a single API request by using a group name, a comma-separated
-        list of jobs, or a wildcard expression. You can get information for all anomaly
-        detection jobs by using `_all`, by specifying `*` as the `<job_id>`, or by omitting
-        the `<job_id>`.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-get-job.html>`_
+          <p>Get anomaly detection jobs configuration info.
+          You can get information for multiple anomaly detection jobs in a single API
+          request by using a group name, a comma-separated list of jobs, or a wildcard
+          expression. You can get information for all anomaly detection jobs by using
+          <code>_all</code>, by specifying <code>*</code> as the <code>&lt;job_id&gt;</code>, or by omitting the <code>&lt;job_id&gt;</code>.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-get-jobs>`_
 
         :param job_id: Identifier for the anomaly detection job. It can be a job identifier,
             a group name, or a wildcard expression. If you do not specify one of these
@@ -1366,21 +1433,28 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get overall bucket results. Retrievs overall bucket results that summarize the
-        bucket results of multiple anomaly detection jobs. The `overall_score` is calculated
-        by combining the scores of all the buckets within the overall bucket span. First,
-        the maximum `anomaly_score` per anomaly detection job in the overall bucket is
-        calculated. Then the `top_n` of those scores are averaged to result in the `overall_score`.
-        This means that you can fine-tune the `overall_score` so that it is more or less
-        sensitive to the number of jobs that detect an anomaly at the same time. For
-        example, if you set `top_n` to `1`, the `overall_score` is the maximum bucket
-        score in the overall bucket. Alternatively, if you set `top_n` to the number
-        of jobs, the `overall_score` is high only when all jobs detect anomalies in that
-        overall bucket. If you set the `bucket_span` parameter (to a value greater than
-        its default), the `overall_score` is the maximum `overall_score` of the overall
-        buckets that have a span equal to the jobs' largest bucket span.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-get-overall-buckets.html>`_
+          <p>Get overall bucket results.</p>
+          <p>Retrievs overall bucket results that summarize the bucket results of
+          multiple anomaly detection jobs.</p>
+          <p>The <code>overall_score</code> is calculated by combining the scores of all the
+          buckets within the overall bucket span. First, the maximum
+          <code>anomaly_score</code> per anomaly detection job in the overall bucket is
+          calculated. Then the <code>top_n</code> of those scores are averaged to result in
+          the <code>overall_score</code>. This means that you can fine-tune the
+          <code>overall_score</code> so that it is more or less sensitive to the number of
+          jobs that detect an anomaly at the same time. For example, if you set
+          <code>top_n</code> to <code>1</code>, the <code>overall_score</code> is the maximum bucket score in the
+          overall bucket. Alternatively, if you set <code>top_n</code> to the number of jobs,
+          the <code>overall_score</code> is high only when all jobs detect anomalies in that
+          overall bucket. If you set the <code>bucket_span</code> parameter (to a value
+          greater than its default), the <code>overall_score</code> is the maximum
+          <code>overall_score</code> of the overall buckets that have a span equal to the
+          jobs' largest bucket span.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-get-overall-buckets>`_
 
         :param job_id: Identifier for the anomaly detection job. It can be a job identifier,
             a group name, a comma-separated list of jobs or groups, or a wildcard expression.
@@ -1475,9 +1549,12 @@ class MlClient(NamespacedClient):
         tags: t.Optional[t.Union[str, t.Sequence[str]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get trained model configuration info.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-trained-models.html>`_
+          <p>Get trained model configuration info.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-get-trained-models>`_
 
         :param model_id: The unique identifier of the trained model or a model alias.
             You can get information for multiple trained models in a single API request
@@ -1561,11 +1638,14 @@ class MlClient(NamespacedClient):
         size: t.Optional[int] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get trained models usage info. You can get usage information for multiple trained
-        models in a single API request by using a comma-separated list of model IDs or
-        a wildcard expression.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-trained-models-stats.html>`_
+          <p>Get trained models usage info.
+          You can get usage information for multiple trained
+          models in a single API request by using a comma-separated list of model IDs or a wildcard expression.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-get-trained-models-stats>`_
 
         :param model_id: The unique identifier of the trained model or a model alias.
             It can be a comma-separated list or a wildcard expression.
@@ -1626,9 +1706,12 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Evaluate a trained model.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/infer-trained-model.html>`_
+          <p>Evaluate a trained model.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-infer-trained-model>`_
 
         :param model_id: The unique identifier of the trained model.
         :param docs: An array of objects to pass to the model for inference. The objects
@@ -1688,14 +1771,18 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Open anomaly detection jobs. An anomaly detection job must be opened to be ready
-        to receive and analyze data. It can be opened and closed multiple times throughout
-        its lifecycle. When you open a new job, it starts with an empty model. When you
-        open an existing job, the most recent model state is automatically loaded. The
-        job is ready to resume its analysis from where it left off, once new data is
-        received.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-open-job.html>`_
+          <p>Open anomaly detection jobs.</p>
+          <p>An anomaly detection job must be opened to be ready to receive and analyze
+          data. It can be opened and closed multiple times throughout its lifecycle.
+          When you open a new job, it starts with an empty model.
+          When you open an existing job, the most recent model state is automatically
+          loaded. The job is ready to resume its analysis from where it left off, once
+          new data is received.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-open-job>`_
 
         :param job_id: Identifier for the anomaly detection job.
         :param timeout: Refer to the description for the `timeout` query parameter.
@@ -1747,9 +1834,12 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Add scheduled events to the calendar.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-post-calendar-event.html>`_
+          <p>Add scheduled events to the calendar.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-post-calendar-events>`_
 
         :param calendar_id: A string that uniquely identifies a calendar.
         :param events: A list of one of more scheduled events. The event’s start and
@@ -1801,10 +1891,13 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Preview features used by data frame analytics. Previews the extracted features
-        used by a data frame analytics config.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/preview-dfanalytics.html>`_
+          <p>Preview features used by data frame analytics.
+          Preview the extracted features used by a data frame analytics config.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-preview-data-frame-analytics>`_
 
         :param id: Identifier for the data frame analytics job.
         :param config: A data frame analytics config as described in create data frame
@@ -1864,17 +1957,20 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Preview a datafeed. This API returns the first "page" of search results from
-        a datafeed. You can preview an existing datafeed or provide configuration details
-        for a datafeed and anomaly detection job in the API. The preview shows the structure
-        of the data that will be passed to the anomaly detection engine. IMPORTANT: When
-        Elasticsearch security features are enabled, the preview uses the credentials
-        of the user that called the API. However, when the datafeed starts it uses the
-        roles of the last user that created or updated the datafeed. To get a preview
-        that accurately reflects the behavior of the datafeed, use the appropriate credentials.
-        You can also use secondary authorization headers to supply the credentials.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-preview-datafeed.html>`_
+          <p>Preview a datafeed.
+          This API returns the first &quot;page&quot; of search results from a datafeed.
+          You can preview an existing datafeed or provide configuration details for a datafeed
+          and anomaly detection job in the API. The preview shows the structure of the data
+          that will be passed to the anomaly detection engine.
+          IMPORTANT: When Elasticsearch security features are enabled, the preview uses the credentials of the user that
+          called the API. However, when the datafeed starts it uses the roles of the last user that created or updated the
+          datafeed. To get a preview that accurately reflects the behavior of the datafeed, use the appropriate credentials.
+          You can also use secondary authorization headers to supply the credentials.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-preview-datafeed>`_
 
         :param datafeed_id: A numerical character string that uniquely identifies the
             datafeed. This identifier can contain lowercase alphanumeric characters (a-z
@@ -1948,9 +2044,12 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create a calendar.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-put-calendar.html>`_
+          <p>Create a calendar.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-put-calendar>`_
 
         :param calendar_id: A string that uniquely identifies a calendar.
         :param description: A description of the calendar.
@@ -2002,9 +2101,12 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Add anomaly detection job to calendar.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-put-calendar-job.html>`_
+          <p>Add anomaly detection job to calendar.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-put-calendar-job>`_
 
         :param calendar_id: A string that uniquely identifies a calendar.
         :param job_id: An identifier for the anomaly detection jobs. It can be a job
@@ -2077,15 +2179,17 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create a data frame analytics job. This API creates a data frame analytics job
-        that performs an analysis on the source indices and stores the outcome in a destination
-        index. By default, the query used in the source configuration is `{"match_all":
-        {}}`. If the destination index does not exist, it is created automatically when
-        you start the job. If you supply only a subset of the regression or classification
-        parameters, hyperparameter optimization occurs. It determines a value for each
-        of the undefined parameters.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/put-dfanalytics.html>`_
+          <p>Create a data frame analytics job.
+          This API creates a data frame analytics job that performs an analysis on the
+          source indices and stores the outcome in a destination index.
+          By default, the query used in the source configuration is <code>{&quot;match_all&quot;: {}}</code>.</p>
+          <p>If the destination index does not exist, it is created automatically when you start the job.</p>
+          <p>If you supply only a subset of the regression or classification parameters, hyperparameter optimization occurs. It determines a value for each of the undefined parameters.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-put-data-frame-analytics>`_
 
         :param id: Identifier for the data frame analytics job. This identifier can contain
             lowercase alphanumeric characters (a-z and 0-9), hyphens, and underscores.
@@ -2256,20 +2360,21 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create a datafeed. Datafeeds retrieve data from Elasticsearch for analysis by
-        an anomaly detection job. You can associate only one datafeed with each anomaly
-        detection job. The datafeed contains a query that runs at a defined interval
-        (`frequency`). If you are concerned about delayed data, you can add a delay (`query_delay')
-        at each interval. By default, the datafeed uses the following query: `{"match_all":
-        {"boost": 1}}`. When Elasticsearch security features are enabled, your datafeed
-        remembers which roles the user who created it had at the time of creation and
-        runs the query using those same roles. If you provide secondary authorization
-        headers, those credentials are used instead. You must use Kibana, this API, or
-        the create anomaly detection jobs API to create a datafeed. Do not add a datafeed
-        directly to the `.ml-config` index. Do not give users `write` privileges on the
-        `.ml-config` index.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-put-datafeed.html>`_
+          <p>Create a datafeed.
+          Datafeeds retrieve data from Elasticsearch for analysis by an anomaly detection job.
+          You can associate only one datafeed with each anomaly detection job.
+          The datafeed contains a query that runs at a defined interval (<code>frequency</code>).
+          If you are concerned about delayed data, you can add a delay (<code>query_delay') at each interval. By default, the datafeed uses the following query: </code>{&quot;match_all&quot;: {&quot;boost&quot;: 1}}`.</p>
+          <p>When Elasticsearch security features are enabled, your datafeed remembers which roles the user who created it had
+          at the time of creation and runs the query using those same roles. If you provide secondary authorization headers,
+          those credentials are used instead.
+          You must use Kibana, this API, or the create anomaly detection jobs API to create a datafeed. Do not add a datafeed
+          directly to the <code>.ml-config</code> index. Do not give users <code>write</code> privileges on the <code>.ml-config</code> index.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-put-datafeed>`_
 
         :param datafeed_id: A numerical character string that uniquely identifies the
             datafeed. This identifier can contain lowercase alphanumeric characters (a-z
@@ -2424,11 +2529,14 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create a filter. A filter contains a list of strings. It can be used by one or
-        more anomaly detection jobs. Specifically, filters are referenced in the `custom_rules`
-        property of detector configuration objects.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-put-filter.html>`_
+          <p>Create a filter.
+          A filter contains a list of strings. It can be used by one or more anomaly detection jobs.
+          Specifically, filters are referenced in the <code>custom_rules</code> property of detector configuration objects.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-put-filter>`_
 
         :param filter_id: A string that uniquely identifies a filter.
         :param description: A description of the filter.
@@ -2523,11 +2631,14 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create an anomaly detection job. If you include a `datafeed_config`, you must
-        have read index privileges on the source index. If you include a `datafeed_config`
-        but do not provide a query, the datafeed uses `{"match_all": {"boost": 1}}`.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-put-job.html>`_
+          <p>Create an anomaly detection job.</p>
+          <p>If you include a <code>datafeed_config</code>, you must have read index privileges on the source index.
+          If you include a <code>datafeed_config</code> but do not provide a query, the datafeed uses <code>{&quot;match_all&quot;: {&quot;boost&quot;: 1}}</code>.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-put-job>`_
 
         :param job_id: The identifier for the anomaly detection job. This identifier
             can contain lowercase alphanumeric characters (a-z and 0-9), hyphens, and
@@ -2729,10 +2840,13 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create a trained model. Enable you to supply a trained model that is not created
-        by data frame analytics.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/put-trained-models.html>`_
+          <p>Create a trained model.
+          Enable you to supply a trained model that is not created by data frame analytics.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-put-trained-model>`_
 
         :param model_id: The unique identifier of the trained model.
         :param compressed_definition: The compressed (GZipped and Base64 encoded) inference
@@ -2832,21 +2946,28 @@ class MlClient(NamespacedClient):
         reassign: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create or update a trained model alias. A trained model alias is a logical name
-        used to reference a single trained model. You can use aliases instead of trained
-        model identifiers to make it easier to reference your models. For example, you
-        can use aliases in inference aggregations and processors. An alias must be unique
-        and refer to only a single trained model. However, you can have multiple aliases
-        for each trained model. If you use this API to update an alias such that it references
-        a different trained model ID and the model uses a different type of data frame
-        analytics, an error occurs. For example, this situation occurs if you have a
-        trained model for regression analysis and a trained model for classification
-        analysis; you cannot reassign an alias from one type of trained model to another.
-        If you use this API to update an alias and there are very few input fields in
-        common between the old and new trained models for the model alias, the API returns
-        a warning.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/put-trained-models-aliases.html>`_
+          <p>Create or update a trained model alias.
+          A trained model alias is a logical name used to reference a single trained
+          model.
+          You can use aliases instead of trained model identifiers to make it easier to
+          reference your models. For example, you can use aliases in inference
+          aggregations and processors.
+          An alias must be unique and refer to only a single trained model. However,
+          you can have multiple aliases for each trained model.
+          If you use this API to update an alias such that it references a different
+          trained model ID and the model uses a different type of data frame analytics,
+          an error occurs. For example, this situation occurs if you have a trained
+          model for regression analysis and a trained model for classification
+          analysis; you cannot reassign an alias from one type of trained model to
+          another.
+          If you use this API to update an alias and there are very few input fields in
+          common between the old and new trained models for the model alias, the API
+          returns a warning.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-put-trained-model-alias>`_
 
         :param model_id: The identifier for the trained model that the alias refers to.
         :param model_alias: The alias to create or update. This value cannot end in numbers.
@@ -2902,9 +3023,12 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create part of a trained model definition.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/put-trained-model-definition-part.html>`_
+          <p>Create part of a trained model definition.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-put-trained-model-definition-part>`_
 
         :param model_id: The unique identifier of the trained model.
         :param part: The definition part number. When the definition is loaded for inference
@@ -2979,11 +3103,14 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create a trained model vocabulary. This API is supported only for natural language
-        processing (NLP) models. The vocabulary is stored in the index as described in
-        `inference_config.*.vocabulary` of the trained model definition.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/put-trained-model-vocabulary.html>`_
+          <p>Create a trained model vocabulary.
+          This API is supported only for natural language processing (NLP) models.
+          The vocabulary is stored in the index as described in <code>inference_config.*.vocabulary</code> of the trained model definition.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-put-trained-model-vocabulary>`_
 
         :param model_id: The unique identifier of the trained model.
         :param vocabulary: The model vocabulary, which must not be empty.
@@ -3037,11 +3164,16 @@ class MlClient(NamespacedClient):
         wait_for_completion: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Reset an anomaly detection job. All model state and results are deleted. The
-        job is ready to start over as if it had just been created. It is not currently
-        possible to reset multiple jobs using wildcards or a comma separated list.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-reset-job.html>`_
+          <p>Reset an anomaly detection job.
+          All model state and results are deleted. The job is ready to start over as if
+          it had just been created.
+          It is not currently possible to reset multiple jobs using wildcards or a
+          comma separated list.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-reset-job>`_
 
         :param job_id: The ID of the job to reset.
         :param delete_user_annotations: Specifies whether annotations that have been
@@ -3089,18 +3221,23 @@ class MlClient(NamespacedClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Start a data frame analytics job. A data frame analytics job can be started and
-        stopped multiple times throughout its lifecycle. If the destination index does
-        not exist, it is created automatically the first time you start the data frame
-        analytics job. The `index.number_of_shards` and `index.number_of_replicas` settings
-        for the destination index are copied from the source index. If there are multiple
-        source indices, the destination index copies the highest setting values. The
-        mappings for the destination index are also copied from the source indices. If
-        there are any mapping conflicts, the job fails to start. If the destination index
-        exists, it is used as is. You can therefore set up the destination index in advance
-        with custom settings and mappings.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/start-dfanalytics.html>`_
+          <p>Start a data frame analytics job.
+          A data frame analytics job can be started and stopped multiple times
+          throughout its lifecycle.
+          If the destination index does not exist, it is created automatically the
+          first time you start the data frame analytics job. The
+          <code>index.number_of_shards</code> and <code>index.number_of_replicas</code> settings for the
+          destination index are copied from the source index. If there are multiple
+          source indices, the destination index copies the highest setting values. The
+          mappings for the destination index are also copied from the source indices.
+          If there are any mapping conflicts, the job fails to start.
+          If the destination index exists, it is used as is. You can therefore set up
+          the destination index in advance with custom settings and mappings.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-start-data-frame-analytics>`_
 
         :param id: Identifier for the data frame analytics job. This identifier can contain
             lowercase alphanumeric characters (a-z and 0-9), hyphens, and underscores.
@@ -3150,19 +3287,20 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Start datafeeds. A datafeed must be started in order to retrieve data from Elasticsearch.
-        A datafeed can be started and stopped multiple times throughout its lifecycle.
-        Before you can start a datafeed, the anomaly detection job must be open. Otherwise,
-        an error occurs. If you restart a stopped datafeed, it continues processing input
-        data from the next millisecond after it was stopped. If new data was indexed
-        for that exact millisecond between stopping and starting, it will be ignored.
-        When Elasticsearch security features are enabled, your datafeed remembers which
-        roles the last user to create or update it had at the time of creation or update
-        and runs the query using those same roles. If you provided secondary authorization
-        headers when you created or updated the datafeed, those credentials are used
-        instead.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-start-datafeed.html>`_
+          <p>Start datafeeds.</p>
+          <p>A datafeed must be started in order to retrieve data from Elasticsearch. A datafeed can be started and stopped
+          multiple times throughout its lifecycle.</p>
+          <p>Before you can start a datafeed, the anomaly detection job must be open. Otherwise, an error occurs.</p>
+          <p>If you restart a stopped datafeed, it continues processing input data from the next millisecond after it was stopped.
+          If new data was indexed for that exact millisecond between stopping and starting, it will be ignored.</p>
+          <p>When Elasticsearch security features are enabled, your datafeed remembers which roles the last user to create or
+          update it had at the time of creation or update and runs the query using those same roles. If you provided secondary
+          authorization headers when you created or updated the datafeed, those credentials are used instead.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-start-datafeed>`_
 
         :param datafeed_id: A numerical character string that uniquely identifies the
             datafeed. This identifier can contain lowercase alphanumeric characters (a-z
@@ -3208,11 +3346,14 @@ class MlClient(NamespacedClient):
             path_parts=__path_parts,
         )
 
-    @_rewrite_parameters()
+    @_rewrite_parameters(
+        body_fields=("adaptive_allocations",),
+    )
     async def start_trained_model_deployment(
         self,
         *,
         model_id: str,
+        adaptive_allocations: t.Optional[t.Mapping[str, t.Any]] = None,
         cache_size: t.Optional[t.Union[int, str]] = None,
         deployment_id: t.Optional[str] = None,
         error_trace: t.Optional[bool] = None,
@@ -3227,15 +3368,22 @@ class MlClient(NamespacedClient):
         wait_for: t.Optional[
             t.Union[str, t.Literal["fully_allocated", "started", "starting"]]
         ] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Start a trained model deployment. It allocates the model to every machine learning
-        node.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/start-trained-model-deployment.html>`_
+          <p>Start a trained model deployment.
+          It allocates the model to every machine learning node.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-start-trained-model-deployment>`_
 
         :param model_id: The unique identifier of the trained model. Currently, only
             PyTorch models are supported.
+        :param adaptive_allocations: Adaptive allocations configuration. When enabled,
+            the number of allocations is set based on the current load. If adaptive_allocations
+            is enabled, do not set the number of allocations manually.
         :param cache_size: The inference cache size (in memory outside the JVM heap)
             per node for the model. The default value is the same size as the `model_size_bytes`.
             To disable the cache, `0b` can be provided.
@@ -3245,7 +3393,8 @@ class MlClient(NamespacedClient):
             model in memory but use a separate set of threads to evaluate the model.
             Increasing this value generally increases the throughput. If this setting
             is greater than the number of hardware threads it will automatically be changed
-            to a value less than the number of hardware threads.
+            to a value less than the number of hardware threads. If adaptive_allocations
+            is enabled, do not set this value, because it’s automatically set.
         :param priority: The deployment priority.
         :param queue_capacity: Specifies the number of inference requests that are allowed
             in the queue. After the number of requests exceeds this value, new requests
@@ -3265,6 +3414,7 @@ class MlClient(NamespacedClient):
         __path_parts: t.Dict[str, str] = {"model_id": _quote(model_id)}
         __path = f'/_ml/trained_models/{__path_parts["model_id"]}/deployment/_start'
         __query: t.Dict[str, t.Any] = {}
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if cache_size is not None:
             __query["cache_size"] = cache_size
         if deployment_id is not None:
@@ -3289,12 +3439,20 @@ class MlClient(NamespacedClient):
             __query["timeout"] = timeout
         if wait_for is not None:
             __query["wait_for"] = wait_for
+        if not __body:
+            if adaptive_allocations is not None:
+                __body["adaptive_allocations"] = adaptive_allocations
+        if not __body:
+            __body = None  # type: ignore[assignment]
         __headers = {"accept": "application/json"}
+        if __body is not None:
+            __headers["content-type"] = "application/json"
         return await self.perform_request(  # type: ignore[return-value]
             "POST",
             __path,
             params=__query,
             headers=__headers,
+            body=__body,
             endpoint_id="ml.start_trained_model_deployment",
             path_parts=__path_parts,
         )
@@ -3313,10 +3471,14 @@ class MlClient(NamespacedClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Stop data frame analytics jobs. A data frame analytics job can be started and
-        stopped multiple times throughout its lifecycle.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/stop-dfanalytics.html>`_
+          <p>Stop data frame analytics jobs.
+          A data frame analytics job can be started and stopped multiple times
+          throughout its lifecycle.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-stop-data-frame-analytics>`_
 
         :param id: Identifier for the data frame analytics job. This identifier can contain
             lowercase alphanumeric characters (a-z and 0-9), hyphens, and underscores.
@@ -3379,10 +3541,14 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Stop datafeeds. A datafeed that is stopped ceases to retrieve data from Elasticsearch.
-        A datafeed can be started and stopped multiple times throughout its lifecycle.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-stop-datafeed.html>`_
+          <p>Stop datafeeds.
+          A datafeed that is stopped ceases to retrieve data from Elasticsearch. A datafeed can be started and stopped
+          multiple times throughout its lifecycle.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-stop-datafeed>`_
 
         :param datafeed_id: Identifier for the datafeed. You can stop multiple datafeeds
             in a single API request by using a comma-separated list of datafeeds or a
@@ -3442,9 +3608,12 @@ class MlClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Stop a trained model deployment.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/stop-trained-model-deployment.html>`_
+          <p>Stop a trained model deployment.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-stop-trained-model-deployment>`_
 
         :param model_id: The unique identifier of the trained model.
         :param allow_no_match: Specifies what to do when the request: contains wildcard
@@ -3507,9 +3676,12 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update a data frame analytics job.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/update-dfanalytics.html>`_
+          <p>Update a data frame analytics job.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-update-data-frame-analytics>`_
 
         :param id: Identifier for the data frame analytics job. This identifier can contain
             lowercase alphanumeric characters (a-z and 0-9), hyphens, and underscores.
@@ -3615,13 +3787,16 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update a datafeed. You must stop and start the datafeed for the changes to be
-        applied. When Elasticsearch security features are enabled, your datafeed remembers
-        which roles the user who updated it had at the time of the update and runs the
-        query using those same roles. If you provide secondary authorization headers,
-        those credentials are used instead.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-update-datafeed.html>`_
+          <p>Update a datafeed.
+          You must stop and start the datafeed for the changes to be applied.
+          When Elasticsearch security features are enabled, your datafeed remembers which roles the user who updated it had at
+          the time of the update and runs the query using those same roles. If you provide secondary authorization headers,
+          those credentials are used instead.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-update-datafeed>`_
 
         :param datafeed_id: A numerical character string that uniquely identifies the
             datafeed. This identifier can contain lowercase alphanumeric characters (a-z
@@ -3782,10 +3957,13 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update a filter. Updates the description of a filter, adds items, or removes
-        items from the list.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-update-filter.html>`_
+          <p>Update a filter.
+          Updates the description of a filter, adds items, or removes items from the list.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-update-filter>`_
 
         :param filter_id: A string that uniquely identifies a filter.
         :param add_items: The items to add to the filter.
@@ -3873,10 +4051,13 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update an anomaly detection job. Updates certain properties of an anomaly detection
-        job.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/ml-update-job.html>`_
+          <p>Update an anomaly detection job.
+          Updates certain properties of an anomaly detection job.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-update-job>`_
 
         :param job_id: Identifier for the job.
         :param allow_lazy_open: Advanced configuration option. Specifies whether this
@@ -3986,13 +4167,14 @@ class MlClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_fields=("number_of_allocations",),
+        body_fields=("adaptive_allocations", "number_of_allocations"),
     )
     @_stability_warning(Stability.BETA)
     async def update_trained_model_deployment(
         self,
         *,
         model_id: str,
+        adaptive_allocations: t.Optional[t.Mapping[str, t.Any]] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
@@ -4001,18 +4183,25 @@ class MlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update a trained model deployment.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/update-trained-model-deployment.html>`_
+          <p>Update a trained model deployment.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-ml-update-trained-model-deployment>`_
 
         :param model_id: The unique identifier of the trained model. Currently, only
             PyTorch models are supported.
+        :param adaptive_allocations: Adaptive allocations configuration. When enabled,
+            the number of allocations is set based on the current load. If adaptive_allocations
+            is enabled, do not set the number of allocations manually.
         :param number_of_allocations: The number of model allocations on each node where
             the model is deployed. All allocations on a node share the same copy of the
             model in memory but use a separate set of threads to evaluate the model.
             Increasing this value generally increases the throughput. If this setting
             is greater than the number of hardware threads it will automatically be changed
-            to a value less than the number of hardware threads.
+            to a value less than the number of hardware threads. If adaptive_allocations
+            is enabled, do not set this value, because it’s automatically set.
         """
         if model_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'model_id'")
@@ -4029,6 +4218,8 @@ class MlClient(NamespacedClient):
         if pretty is not None:
             __query["pretty"] = pretty
         if not __body:
+            if adaptive_allocations is not None:
+                __body["adaptive_allocations"] = adaptive_allocations
             if number_of_allocations is not None:
                 __body["number_of_allocations"] = number_of_allocations
         if not __body:

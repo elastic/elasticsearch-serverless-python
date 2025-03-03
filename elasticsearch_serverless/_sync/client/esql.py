@@ -30,6 +30,7 @@ class EsqlClient(NamespacedClient):
             "query",
             "columnar",
             "filter",
+            "include_ccs_metadata",
             "locale",
             "params",
             "profile",
@@ -56,10 +57,9 @@ class EsqlClient(NamespacedClient):
             ]
         ] = None,
         human: t.Optional[bool] = None,
+        include_ccs_metadata: t.Optional[bool] = None,
         locale: t.Optional[str] = None,
-        params: t.Optional[
-            t.Sequence[t.Union[None, bool, float, int, str, t.Any]]
-        ] = None,
+        params: t.Optional[t.Sequence[t.Union[None, bool, float, int, str]]] = None,
         pretty: t.Optional[bool] = None,
         profile: t.Optional[bool] = None,
         tables: t.Optional[
@@ -68,8 +68,11 @@ class EsqlClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Run an ES|QL query. Get search results for an ES|QL (Elasticsearch query language)
-        query.
+        .. raw:: html
+
+          <p>Run an ES|QL query.
+          Get search results for an ES|QL (Elasticsearch query language) query.</p>
+
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/esql-rest.html>`_
 
@@ -88,6 +91,10 @@ class EsqlClient(NamespacedClient):
         :param filter: Specify a Query DSL query in the filter parameter to filter the
             set of documents that an ES|QL query runs on.
         :param format: A short version of the Accept header, e.g. json, yaml.
+        :param include_ccs_metadata: When set to `true` and performing a cross-cluster
+            query, the response will include an extra `_clusters` object with information
+            about the clusters that participated in the search along with info such as
+            shards count.
         :param locale:
         :param params: To avoid any attempts of hacking or code injection, extract the
             values in a separate list of parameters. Use question mark placeholders (?)
@@ -126,6 +133,8 @@ class EsqlClient(NamespacedClient):
                 __body["columnar"] = columnar
             if filter is not None:
                 __body["filter"] = filter
+            if include_ccs_metadata is not None:
+                __body["include_ccs_metadata"] = include_ccs_metadata
             if locale is not None:
                 __body["locale"] = locale
             if params is not None:
