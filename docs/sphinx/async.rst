@@ -2,6 +2,7 @@ Using Asyncio with Elasticsearch
 ================================
 
  .. py:module:: elasticsearch
+    :noindex:
 
 For Python 3.6+ the ``elasticsearch_serverless`` package supports async/await with
 `Asyncio <https://docs.python.org/3/library/asyncio.html>`_ and `Aiohttp <https://docs.aiohttp.org>`_.
@@ -117,6 +118,7 @@ All async helpers that accept an iterator or generator also accept async iterato
 and async generators.
 
  .. py:module:: elasticsearch_serverless.helpers
+    :noindex:
 
 Bulk and Streaming Bulk
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -206,6 +208,8 @@ API Reference
 -------------
 
  .. py:module:: elasticsearch_serverless
+    :noindex:
+
 
 The API of :class:`~elasticsearch_serverless.AsyncElasticsearch` is nearly identical
 to the API of :class:`~elasticsearch_serverless.Elasticsearch` with the exception that
