@@ -1,10 +1,10 @@
 # Elasticsearch Serverless Python Client
 
 <p align="center">
-  <a href="https://pypi.org/project/elasticsearch"><img alt="PyPI Version" src="https://img.shields.io/pypi/v/elasticsearch" /></a>
-  <a href="https://pypi.org/project/elasticsearch"><img alt="Python Versions" src="https://img.shields.io/pypi/pyversions/elasticsearch" /></a>
-  <a href="https://pepy.tech/project/elasticsearch?versions=*"><img alt="Downloads" src="https://static.pepy.tech/badge/elasticsearch" /></a>
-  <a href="https://elasticsearch-py.readthedocs.io"><img alt="Documentation Status" src="https://readthedocs.org/projects/elasticsearch-py/badge/?version=latest" /></a>
+  <a href="https://pypi.org/project/elasticsearch-serverless/"><img alt="PyPI Version" src="https://img.shields.io/pypi/v/elasticsearch-serverless" /></a>
+  <a href="https://pypi.org/project/elasticsearch-serverless/"><img alt="Python Versions" src="https://img.shields.io/pypi/pyversions/elasticsearch-serverless" /></a>
+  <a href="https://pepy.tech/project/elasticsearch-serverless?versions=*"><img alt="Downloads" src="https://static.pepy.tech/badge/elasticsearch-serverless" /></a>
+  <a href="https://elasticsearch-serverless-python.readthedocs.io/"><img alt="Documentation Status" src="https://readthedocs.org/projects/elasticsearch-serverless-python/badge/?version=latest" /></a>
 </p>
 
 > [!WARNING]
