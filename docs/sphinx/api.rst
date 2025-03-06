@@ -32,7 +32,6 @@ arguments are required for all
    api/license
    api/logstash
    api/ml
-   api/nodes
    api/query-rules
    api/search-application
    api/security
