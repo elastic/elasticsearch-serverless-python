@@ -15,4 +15,4 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-__versionstr__ = "0.7.0.20231031"
+__versionstr__ = "0.8.0.20231031"
