@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "elasticsearch-serverless"
 version = "0.7.0.20231031"
 description = "Python client for Elasticsearch Serverless"
-readme = "README.rst"
+readme = "README.md"
 license = "Apache-2.0"
 requires-python = ">=3.9"
 authors = [
@@ -90,7 +90,7 @@ include = [
     "/CONTRIBUTING.md",
     "/LICENSE",
     "/NOTICE",
-    "/README.rst",
+    "/README.md",
     "/setup.cfg",
     "/docs/sphinx",
 ]

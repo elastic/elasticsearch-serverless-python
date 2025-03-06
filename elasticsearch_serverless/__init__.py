@@ -42,6 +42,14 @@ VERSION = __version__ = (_major, _minor, _patch)
 logger = logging.getLogger("elasticsearch")
 logger.addHandler(logging.NullHandler())
 
+warnings.warn(
+    "elasticsearch-serverless is deprecated and will be discontinued with the 9.0.0 release of the Elastic Stack. "
+    "Please migrate to the official elasticsearch-py package for continued support and improved features: "
+    "https://github.com/elastic/elasticsearch-py",
+    category=DeprecationWarning,
+    stacklevel=2,
+)
+
 from ._async.client import AsyncElasticsearch as AsyncElasticsearch
 from ._sync.client import Elasticsearch as Elasticsearch
 from .exceptions import ElasticsearchDeprecationWarning  # noqa: F401
