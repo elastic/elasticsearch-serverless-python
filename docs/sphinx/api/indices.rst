@@ -3,7 +3,7 @@
 Indices
 -------
 .. py:module:: elasticsearch_serverless.client
-   :no-index:
+   :noindex:
 
 .. autoclass:: IndicesClient
    :members:

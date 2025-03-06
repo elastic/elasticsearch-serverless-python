@@ -3,7 +3,7 @@
 Cluster
 -------
 .. py:module:: elasticsearch_serverless.client
-   :no-index:
+   :noindex:
 
 .. autoclass:: ClusterClient
    :members:

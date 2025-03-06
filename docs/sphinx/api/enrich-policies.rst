@@ -3,7 +3,7 @@
 Enrich Policies
 ---------------
 .. py:module:: elasticsearch_serverless.client
-   :no-index:
+   :noindex:
 
 .. autoclass:: EnrichClient
    :members:

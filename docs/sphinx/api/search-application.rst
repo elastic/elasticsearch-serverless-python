@@ -3,7 +3,7 @@
 Search Applications
 -------------------
 .. py:module:: elasticsearch_serverless.client
-   :no-index:
+   :noindex:
 
 .. autoclass:: SearchApplicationClient
    :members:

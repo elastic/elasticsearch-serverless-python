@@ -3,7 +3,7 @@
 Synonyms
 --------
 .. py:module:: elasticsearch_serverless.client
-   :no-index:
+   :noindex:
 
 .. autoclass:: SynonymsClient
    :members:

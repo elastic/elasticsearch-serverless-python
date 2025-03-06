@@ -3,7 +3,7 @@
 Ingest Pipelines
 ----------------
 .. py:module:: elasticsearch_serverless.client
-   :no-index:
+   :noindex:
 
 .. autoclass:: IngestClient
    :members:

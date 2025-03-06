@@ -4,7 +4,7 @@ Async Search
 ------------
 
 .. py:module:: elasticsearch_serverless.client
-   :no-index:
+   :noindex:
 
 .. autoclass:: AsyncSearchClient 
    :members:

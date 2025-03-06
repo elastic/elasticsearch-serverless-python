@@ -3,7 +3,7 @@
 Machine Learning (ML)
 ---------------------
 .. py:module:: elasticsearch_serverless.client
-   :no-index:
+   :noindex:
 
 .. autoclass:: MlClient
    :members:

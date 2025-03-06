@@ -3,7 +3,7 @@
 License
 -------
 .. py:module:: elasticsearch_serverless.client
-   :no-index:
+   :noindex:
 
 .. autoclass:: LicenseClient
    :members:
