@@ -35,9 +35,9 @@ from ._sync.client.license import LicenseClient as LicenseClient  # noqa: F401
 from ._sync.client.logstash import LogstashClient as LogstashClient  # noqa: F401
 from ._sync.client.ml import MlClient as MlClient  # noqa: F401
 from ._sync.client.query_rules import QueryRulesClient as QueryRulesClient  # noqa: F401
-from ._sync.client.search_application import (
+from ._sync.client.search_application import (  # noqa: F401
     SearchApplicationClient as SearchApplicationClient,
-)  # noqa: F401
+)
 from ._sync.client.security import SecurityClient as SecurityClient  # noqa: F401
 from ._sync.client.sql import SqlClient as SqlClient  # noqa: F401
 from ._sync.client.synonyms import SynonymsClient as SynonymsClient  # noqa: F401
