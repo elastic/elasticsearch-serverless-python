@@ -40,7 +40,3 @@ spec:
         build_pull_requests: true
         build_branches: true
       cancel_intermediate_builds: false
-      schedules:
-        main_daily:
-          branch: 'main'
-          cronline: '0 2 * * *'
