@@ -38,10 +38,13 @@ class ClusterClient(NamespacedClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete component templates. Component templates are building blocks for constructing
-        index templates that specify index mappings, settings, and aliases.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-component-template.html>`_
+          <p>Delete component templates.
+          Component templates are building blocks for constructing index templates that specify index mappings, settings, and aliases.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-put-component-template>`_
 
         :param name: Comma-separated list or wildcard expression of component template
             names used to limit the request.
@@ -91,10 +94,13 @@ class ClusterClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> HeadApiResponse:
         """
-        Check component templates. Returns information about whether a particular component
-        template exists.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-component-template.html>`_
+          <p>Check component templates.
+          Returns information about whether a particular component template exists.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-put-component-template>`_
 
         :param name: Comma-separated list of component template names used to limit the
             request. Wildcard (*) expressions are supported.
@@ -147,9 +153,13 @@ class ClusterClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get component templates. Get information about component templates.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-component-template.html>`_
+          <p>Get component templates.
+          Get information about component templates.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-put-component-template>`_
 
         :param name: Comma-separated list of component template names used to limit the
             request. Wildcard (`*`) expressions are supported.
@@ -214,9 +224,13 @@ class ClusterClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get cluster info. Returns basic information about the cluster.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cluster-info.html>`_
+          <p>Get cluster info.
+          Returns basic information about the cluster.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-info>`_
 
         :param target: Limits the information returned to the specific target. Supports
             a comma-separated list, such as http,ingest.
@@ -265,23 +279,25 @@ class ClusterClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create or update a component template. Component templates are building blocks
-        for constructing index templates that specify index mappings, settings, and aliases.
-        An index template can be composed of multiple component templates. To use a component
-        template, specify it in an index template’s `composed_of` list. Component templates
-        are only applied to new data streams and indices as part of a matching index
-        template. Settings and mappings specified directly in the index template or the
-        create index request override any settings or mappings specified in a component
-        template. Component templates are only used during index creation. For data streams,
-        this includes data stream creation and the creation of a stream’s backing indices.
-        Changes to component templates do not affect existing indices, including a stream’s
-        backing indices. You can use C-style `/* *\\/` block comments in component templates.
-        You can include comments anywhere in the request body except before the opening
-        curly bracket. **Applying component templates** You cannot directly apply a component
-        template to a data stream or index. To be applied, a component template must
-        be included in an index template's `composed_of` list.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-component-template.html>`_
+          <p>Create or update a component template.
+          Component templates are building blocks for constructing index templates that specify index mappings, settings, and aliases.</p>
+          <p>An index template can be composed of multiple component templates.
+          To use a component template, specify it in an index template’s <code>composed_of</code> list.
+          Component templates are only applied to new data streams and indices as part of a matching index template.</p>
+          <p>Settings and mappings specified directly in the index template or the create index request override any settings or mappings specified in a component template.</p>
+          <p>Component templates are only used during index creation.
+          For data streams, this includes data stream creation and the creation of a stream’s backing indices.
+          Changes to component templates do not affect existing indices, including a stream’s backing indices.</p>
+          <p>You can use C-style <code>/* *\\/</code> block comments in component templates.
+          You can include comments anywhere in the request body except before the opening curly bracket.</p>
+          <p><strong>Applying component templates</strong></p>
+          <p>You cannot directly apply a component template to a data stream or index.
+          To be applied, a component template must be included in an index template's <code>composed_of</code> list.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cluster-put-component-template>`_
 
         :param name: Name of the component template to create. Elasticsearch includes
             the following built-in component templates: `logs-mappings`; `logs-settings`;

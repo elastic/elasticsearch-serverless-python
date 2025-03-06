@@ -49,22 +49,42 @@ class IndicesClient(NamespacedClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Add an index block. Limits the operations allowed on an index by blocking specific
-        operation types.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/index-modules-blocks.html>`_
+          <p>Add an index block.</p>
+          <p>Add an index block to an index.
+          Index blocks limit the operations allowed on an index by blocking specific operation types.</p>
 
-        :param index: A comma separated list of indices to add a block to
-        :param block: The block to add (one of read, write, read_only or metadata)
-        :param allow_no_indices: Whether to ignore if a wildcard indices expression resolves
-            into no concrete indices. (This includes `_all` string or when no indices
-            have been specified)
-        :param expand_wildcards: Whether to expand wildcard expression to concrete indices
-            that are open, closed or both.
-        :param ignore_unavailable: Whether specified concrete indices should be ignored
-            when unavailable (missing or closed)
-        :param master_timeout: Specify timeout for connection to master
-        :param timeout: Explicit operation timeout
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-add-block>`_
+
+        :param index: A comma-separated list or wildcard expression of index names used
+            to limit the request. By default, you must explicitly name the indices you
+            are adding blocks to. To allow the adding of blocks to indices with `_all`,
+            `*`, or other wildcard expressions, change the `action.destructive_requires_name`
+            setting to `false`. You can update this setting in the `elasticsearch.yml`
+            file or by using the cluster update settings API.
+        :param block: The block type to add to the index.
+        :param allow_no_indices: If `false`, the request returns an error if any wildcard
+            expression, index alias, or `_all` value targets only missing or closed indices.
+            This behavior applies even if the request targets other open indices. For
+            example, a request targeting `foo*,bar*` returns an error if an index starts
+            with `foo` but no index starts with `bar`.
+        :param expand_wildcards: The type of index that wildcard patterns can match.
+            If the request can target data streams, this argument determines whether
+            wildcard expressions match hidden data streams. It supports comma-separated
+            values, such as `open,hidden`.
+        :param ignore_unavailable: If `false`, the request returns an error if it targets
+            a missing or closed index.
+        :param master_timeout: The period to wait for the master node. If the master
+            node is not available before the timeout expires, the request fails and returns
+            an error. It can also be set to `-1` to indicate that the request should
+            never timeout.
+        :param timeout: The period to wait for a response from all relevant nodes in
+            the cluster after updating the cluster metadata. If no response is received
+            before the timeout expires, the cluster metadata update still applies but
+            the response will indicate that it was not completely acknowledged. It can
+            also be set to `-1` to indicate that the request should never timeout.
         """
         if index in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'index'")
@@ -137,14 +157,17 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get tokens from text analysis. The analyze API performs analysis on a text string
-        and returns the resulting tokens. Generating excessive amount of tokens may cause
-        a node to run out of memory. The `index.analyze.max_token_count` setting enables
-        you to limit the number of tokens that can be produced. If more than this limit
-        of tokens gets generated, an error occurs. The `_analyze` endpoint without a
-        specified index will always use `10000` as its limit.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-analyze.html>`_
+          <p>Get tokens from text analysis.
+          The analyze API performs analysis on a text string and returns the resulting tokens.</p>
+          <p>Generating excessive amount of tokens may cause a node to run out of memory.
+          The <code>index.analyze.max_token_count</code> setting enables you to limit the number of tokens that can be produced.
+          If more than this limit of tokens gets generated, an error occurs.
+          The <code>_analyze</code> endpoint without a specified index will always use <code>10000</code> as its limit.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-analyze>`_
 
         :param index: Index used to derive the analyzer. If specified, the `analyzer`
             or field parameter overrides this value. If no index is specified or the
@@ -240,28 +263,29 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create an index. You can use the create index API to add a new index to an Elasticsearch
-        cluster. When creating an index, you can specify the following: * Settings for
-        the index. * Mappings for fields in the index. * Index aliases **Wait for active
-        shards** By default, index creation will only return a response to the client
-        when the primary copies of each shard have been started, or the request times
-        out. The index creation response will indicate what happened. For example, `acknowledged`
-        indicates whether the index was successfully created in the cluster, `while shards_acknowledged`
-        indicates whether the requisite number of shard copies were started for each
-        shard in the index before timing out. Note that it is still possible for either
-        `acknowledged` or `shards_acknowledged` to be `false`, but for the index creation
-        to be successful. These values simply indicate whether the operation completed
-        before the timeout. If `acknowledged` is false, the request timed out before
-        the cluster state was updated with the newly created index, but it probably will
-        be created sometime soon. If `shards_acknowledged` is false, then the request
-        timed out before the requisite number of shards were started (by default just
-        the primaries), even if the cluster state was successfully updated to reflect
-        the newly created index (that is to say, `acknowledged` is `true`). You can change
-        the default of only waiting for the primary shards to start through the index
-        setting `index.write.wait_for_active_shards`. Note that changing this setting
-        will also affect the `wait_for_active_shards` value on all subsequent write operations.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-create-index.html>`_
+          <p>Create an index.
+          You can use the create index API to add a new index to an Elasticsearch cluster.
+          When creating an index, you can specify the following:</p>
+          <ul>
+          <li>Settings for the index.</li>
+          <li>Mappings for fields in the index.</li>
+          <li>Index aliases</li>
+          </ul>
+          <p><strong>Wait for active shards</strong></p>
+          <p>By default, index creation will only return a response to the client when the primary copies of each shard have been started, or the request times out.
+          The index creation response will indicate what happened.
+          For example, <code>acknowledged</code> indicates whether the index was successfully created in the cluster, <code>while shards_acknowledged</code> indicates whether the requisite number of shard copies were started for each shard in the index before timing out.
+          Note that it is still possible for either <code>acknowledged</code> or <code>shards_acknowledged</code> to be <code>false</code>, but for the index creation to be successful.
+          These values simply indicate whether the operation completed before the timeout.
+          If <code>acknowledged</code> is false, the request timed out before the cluster state was updated with the newly created index, but it probably will be created sometime soon.
+          If <code>shards_acknowledged</code> is false, then the request timed out before the requisite number of shards were started (by default just the primaries), even if the cluster state was successfully updated to reflect the newly created index (that is to say, <code>acknowledged</code> is <code>true</code>).</p>
+          <p>You can change the default of only waiting for the primary shards to start through the index setting <code>index.write.wait_for_active_shards</code>.
+          Note that changing this setting will also affect the <code>wait_for_active_shards</code> value on all subsequent write operations.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-create>`_
 
         :param index: Name of the index you wish to create.
         :param aliases: Aliases for the index.
@@ -332,10 +356,13 @@ class IndicesClient(NamespacedClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create a data stream. Creates a data stream. You must have a matching index template
-        with data stream enabled.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
+          <p>Create a data stream.</p>
+          <p>You must have a matching index template with data stream enabled.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-create-data-stream>`_
 
         :param name: Name of the data stream, which must meet the following criteria:
             Lowercase only; Cannot include `\\`, `/`, `*`, `?`, `"`, `<`, `>`, `|`, `,`,
@@ -398,13 +425,17 @@ class IndicesClient(NamespacedClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete indices. Deleting an index deletes its documents, shards, and metadata.
-        It does not delete related Kibana components, such as data views, visualizations,
-        or dashboards. You cannot delete the current write index of a data stream. To
-        delete the index, you must roll over the data stream so a new write index is
-        created. You can then use the delete index API to delete the previous write index.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-delete-index.html>`_
+          <p>Delete indices.
+          Deleting an index deletes its documents, shards, and metadata.
+          It does not delete related Kibana components, such as data views, visualizations, or dashboards.</p>
+          <p>You cannot delete the current write index of a data stream.
+          To delete the index, you must roll over the data stream so a new write index is created.
+          You can then use the delete index API to delete the previous write index.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-delete>`_
 
         :param index: Comma-separated list of indices to delete. You cannot specify index
             aliases. By default, this parameter does not support wildcards (`*`) or `_all`.
@@ -472,9 +503,13 @@ class IndicesClient(NamespacedClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete an alias. Removes a data stream or index from an alias.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-delete-alias.html>`_
+          <p>Delete an alias.
+          Removes a data stream or index from an alias.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-delete-alias>`_
 
         :param index: Comma-separated list of data streams or indices used to limit the
             request. Supports wildcards (`*`).
@@ -535,9 +570,13 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete data streams. Deletes one or more data streams and their backing indices.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
+          <p>Delete data streams.
+          Deletes one or more data streams and their backing indices.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-delete-data-stream>`_
 
         :param name: Comma-separated list of data streams to delete. Wildcard (`*`) expressions
             are supported.
@@ -587,12 +626,15 @@ class IndicesClient(NamespacedClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete an index template. The provided <index-template> may contain multiple
-        template names separated by a comma. If multiple template names are specified
-        then there is no wildcard support and the provided names should match completely
-        with existing templates.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-delete-template.html>`_
+          <p>Delete an index template.
+          The provided <!-- raw HTML omitted --> may contain multiple template names separated by a comma. If multiple template
+          names are specified then there is no wildcard support and the provided names should match completely with
+          existing templates.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-delete-index-template>`_
 
         :param name: Comma-separated list of index template names used to limit the request.
             Wildcard (*) expressions are supported.
@@ -653,9 +695,13 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> HeadApiResponse:
         """
-        Check indices. Check if one or more indices, index aliases, or data streams exist.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-exists.html>`_
+          <p>Check indices.
+          Check if one or more indices, index aliases, or data streams exist.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-exists>`_
 
         :param index: Comma-separated list of data streams, indices, and aliases. Supports
             wildcards (`*`).
@@ -731,9 +777,13 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> HeadApiResponse:
         """
-        Check aliases. Checks if one or more data stream or index aliases exist.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html>`_
+          <p>Check aliases.</p>
+          <p>Check if one or more data stream or index aliases exist.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-exists-alias>`_
 
         :param name: Comma-separated list of aliases to check. Supports wildcards (`*`).
         :param index: Comma-separated list of data streams or indices used to limit the
@@ -802,9 +852,13 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> HeadApiResponse:
         """
-        Check index templates. Check whether index templates exist.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/index-templates.html>`_
+          <p>Check index templates.</p>
+          <p>Check whether index templates exist.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-exists-index-template>`_
 
         :param name: Comma-separated list of index template names used to limit the request.
             Wildcard (*) expressions are supported.
@@ -850,12 +904,13 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get the status for a data stream lifecycle. Get information about an index or
-        data stream's current data stream lifecycle status, such as time since index
-        creation, time since rollover, the lifecycle configuration managing the index,
-        or any errors encountered during lifecycle execution.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams-explain-lifecycle.html>`_
+          <p>Get the status for a data stream lifecycle.
+          Get information about an index or data stream's current data stream lifecycle status, such as time since index creation, time since rollover, the lifecycle configuration managing the index, or any errors encountered during lifecycle execution.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-explain-data-lifecycle>`_
 
         :param index: The name of the index to explain
         :param include_defaults: indicates if the API should return the default values
@@ -920,10 +975,14 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get index information. Get information about one or more indices. For data streams,
-        the API returns information about the stream’s backing indices.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-index.html>`_
+          <p>Get index information.
+          Get information about one or more indices. For data streams, the API returns information about the
+          stream’s backing indices.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-get>`_
 
         :param index: Comma-separated list of data streams, indices, and index aliases
             used to limit the request. Wildcard expressions (*) are supported.
@@ -1010,7 +1069,13 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get aliases. Retrieves information for one or more data stream or index aliases.
+        .. raw:: html
+
+          <p>Get aliases.
+          Retrieves information for one or more data stream or index aliases.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-get-alias>`_
 
         :param index: Comma-separated list of data streams or indices used to limit the
             request. Supports wildcards (`*`). To target all data streams and indices,
@@ -1091,10 +1156,13 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get data stream lifecycles. Retrieves the data stream lifecycle configuration
-        of one or more data streams.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams-get-lifecycle.html>`_
+          <p>Get data stream lifecycles.</p>
+          <p>Get the data stream lifecycle configuration of one or more data streams.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-get-data-lifecycle>`_
 
         :param name: Comma-separated list of data streams to limit the request. Supports
             wildcards (`*`). To target all data streams, omit this parameter or use `*`
@@ -1158,9 +1226,13 @@ class IndicesClient(NamespacedClient):
         verbose: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get data streams. Retrieves information about one or more data streams.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
+          <p>Get data streams.</p>
+          <p>Get information about one or more data streams.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-get-data-stream>`_
 
         :param name: Comma-separated list of data stream names used to limit the request.
             Wildcard (`*`) expressions are supported. If omitted, all data streams are
@@ -1224,9 +1296,13 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get index templates. Get information about one or more index templates.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-template.html>`_
+          <p>Get index templates.
+          Get information about one or more index templates.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-get-index-template>`_
 
         :param name: Comma-separated list of index template names used to limit the request.
             Wildcard (*) expressions are supported.
@@ -1297,10 +1373,13 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get mapping definitions. For data streams, the API retrieves mappings for the
-        stream’s backing indices.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-mapping.html>`_
+          <p>Get mapping definitions.
+          For data streams, the API retrieves mappings for the stream’s backing indices.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-get-mapping>`_
 
         :param index: Comma-separated list of data streams, indices, and aliases used
             to limit the request. Supports wildcards (`*`). To target all data streams
@@ -1382,10 +1461,14 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get index settings. Get setting information for one or more indices. For data
-        streams, it returns setting information for the stream's backing indices.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-get-settings.html>`_
+          <p>Get index settings.
+          Get setting information for one or more indices.
+          For data streams, it returns setting information for the stream's backing indices.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-get-settings>`_
 
         :param index: Comma-separated list of data streams, indices, and aliases used
             to limit the request. Supports wildcards (`*`). To target all data streams
@@ -1469,14 +1552,20 @@ class IndicesClient(NamespacedClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Convert an index alias to a data stream. Converts an index alias to a data stream.
-        You must have a matching index template that is data stream enabled. The alias
-        must meet the following criteria: The alias must have a write index; All indices
-        for the alias must have a `@timestamp` field mapping of a `date` or `date_nanos`
-        field type; The alias must not have any filters; The alias must not use custom
-        routing. If successful, the request removes the alias and creates a data stream
-        with the same name. The indices for the alias become hidden backing indices for
-        the stream. The write index for the alias becomes the write index for the stream.
+        .. raw:: html
+
+          <p>Convert an index alias to a data stream.
+          Converts an index alias to a data stream.
+          You must have a matching index template that is data stream enabled.
+          The alias must meet the following criteria:
+          The alias must have a write index;
+          All indices for the alias must have a <code>@timestamp</code> field mapping of a <code>date</code> or <code>date_nanos</code> field type;
+          The alias must not have any filters;
+          The alias must not use custom routing.
+          If successful, the request removes the alias and creates a data stream with the same name.
+          The indices for the alias become hidden backing indices for the stream.
+          The write index for the alias becomes the write index for the stream.</p>
+
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
 
@@ -1528,8 +1617,11 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update data streams. Performs one or more data stream modification actions in
-        a single atomic operation.
+        .. raw:: html
+
+          <p>Update data streams.
+          Performs one or more data stream modification actions in a single atomic operation.</p>
+
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
 
@@ -1591,7 +1683,11 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create or update an alias. Adds a data stream or index to an alias.
+        .. raw:: html
+
+          <p>Create or update an alias.
+          Adds a data stream or index to an alias.</p>
+
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html>`_
 
@@ -1668,14 +1764,15 @@ class IndicesClient(NamespacedClient):
         )
 
     @_rewrite_parameters(
-        body_name="lifecycle",
+        body_fields=("data_retention", "downsampling", "enabled"),
     )
     async def put_data_lifecycle(
         self,
         *,
         name: t.Union[str, t.Sequence[str]],
-        lifecycle: t.Optional[t.Mapping[str, t.Any]] = None,
-        body: t.Optional[t.Mapping[str, t.Any]] = None,
+        data_retention: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
+        downsampling: t.Optional[t.Mapping[str, t.Any]] = None,
+        enabled: t.Optional[bool] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
             t.Union[
@@ -1690,16 +1787,28 @@ class IndicesClient(NamespacedClient):
         master_timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
         pretty: t.Optional[bool] = None,
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
+        body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update data stream lifecycles. Update the data stream lifecycle of the specified
-        data streams.
+        .. raw:: html
+
+          <p>Update data stream lifecycles.
+          Update the data stream lifecycle of the specified data streams.</p>
+
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams-put-lifecycle.html>`_
 
         :param name: Comma-separated list of data streams used to limit the request.
             Supports wildcards (`*`). To target all data streams use `*` or `_all`.
-        :param lifecycle:
+        :param data_retention: If defined, every document added to this data stream will
+            be stored at least for this time frame. Any time after this duration the
+            document could be deleted. When empty, every document in this data stream
+            will be stored indefinitely.
+        :param downsampling: The downsampling configuration to execute for the managed
+            backing index after rollover.
+        :param enabled: If defined, it turns data stream lifecycle on/off (`true`/`false`)
+            for this data stream. A data stream lifecycle that's disabled (enabled: `false`)
+            will have no effect on the data stream.
         :param expand_wildcards: Type of data stream that wildcard patterns can match.
             Supports comma-separated values, such as `open,hidden`. Valid values are:
             `all`, `hidden`, `open`, `closed`, `none`.
@@ -1711,15 +1820,10 @@ class IndicesClient(NamespacedClient):
         """
         if name in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'name'")
-        if lifecycle is None and body is None:
-            raise ValueError(
-                "Empty value passed for parameters 'lifecycle' and 'body', one of them should be set."
-            )
-        elif lifecycle is not None and body is not None:
-            raise ValueError("Cannot set both 'lifecycle' and 'body'")
         __path_parts: t.Dict[str, str] = {"name": _quote(name)}
         __path = f'/_data_stream/{__path_parts["name"]}/_lifecycle'
         __query: t.Dict[str, t.Any] = {}
+        __body: t.Dict[str, t.Any] = body if body is not None else {}
         if error_trace is not None:
             __query["error_trace"] = error_trace
         if expand_wildcards is not None:
@@ -1734,8 +1838,18 @@ class IndicesClient(NamespacedClient):
             __query["pretty"] = pretty
         if timeout is not None:
             __query["timeout"] = timeout
-        __body = lifecycle if lifecycle is not None else body
-        __headers = {"accept": "application/json", "content-type": "application/json"}
+        if not __body:
+            if data_retention is not None:
+                __body["data_retention"] = data_retention
+            if downsampling is not None:
+                __body["downsampling"] = downsampling
+            if enabled is not None:
+                __body["enabled"] = enabled
+        if not __body:
+            __body = None  # type: ignore[assignment]
+        __headers = {"accept": "application/json"}
+        if __body is not None:
+            __headers["content-type"] = "application/json"
         return await self.perform_request(  # type: ignore[return-value]
             "PUT",
             __path,
@@ -1785,34 +1899,30 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create or update an index template. Index templates define settings, mappings,
-        and aliases that can be applied automatically to new indices. Elasticsearch applies
-        templates to new indices based on an wildcard pattern that matches the index
-        name. Index templates are applied during data stream or index creation. For data
-        streams, these settings and mappings are applied when the stream's backing indices
-        are created. Settings and mappings specified in a create index API request override
-        any settings or mappings specified in an index template. Changes to index templates
-        do not affect existing indices, including the existing backing indices of a data
-        stream. You can use C-style `/* *\\/` block comments in index templates. You
-        can include comments anywhere in the request body, except before the opening
-        curly bracket. **Multiple matching templates** If multiple index templates match
-        the name of a new index or data stream, the template with the highest priority
-        is used. Multiple templates with overlapping index patterns at the same priority
-        are not allowed and an error will be thrown when attempting to create a template
-        matching an existing index template at identical priorities. **Composing aliases,
-        mappings, and settings** When multiple component templates are specified in the
-        `composed_of` field for an index template, they are merged in the order specified,
-        meaning that later component templates override earlier component templates.
-        Any mappings, settings, or aliases from the parent index template are merged
-        in next. Finally, any configuration on the index request itself is merged. Mapping
-        definitions are merged recursively, which means that later mapping components
-        can introduce new field mappings and update the mapping configuration. If a field
-        mapping is already contained in an earlier component, its definition will be
-        completely overwritten by the later one. This recursive merging strategy applies
-        not only to field mappings, but also root options like `dynamic_templates` and
-        `meta`. If an earlier component contains a `dynamic_templates` block, then by
-        default new `dynamic_templates` entries are appended onto the end. If an entry
-        already exists with the same key, then it is overwritten by the new definition.
+        .. raw:: html
+
+          <p>Create or update an index template.
+          Index templates define settings, mappings, and aliases that can be applied automatically to new indices.</p>
+          <p>Elasticsearch applies templates to new indices based on an wildcard pattern that matches the index name.
+          Index templates are applied during data stream or index creation.
+          For data streams, these settings and mappings are applied when the stream's backing indices are created.
+          Settings and mappings specified in a create index API request override any settings or mappings specified in an index template.
+          Changes to index templates do not affect existing indices, including the existing backing indices of a data stream.</p>
+          <p>You can use C-style <code>/* *\\/</code> block comments in index templates.
+          You can include comments anywhere in the request body, except before the opening curly bracket.</p>
+          <p><strong>Multiple matching templates</strong></p>
+          <p>If multiple index templates match the name of a new index or data stream, the template with the highest priority is used.</p>
+          <p>Multiple templates with overlapping index patterns at the same priority are not allowed and an error will be thrown when attempting to create a template matching an existing index template at identical priorities.</p>
+          <p><strong>Composing aliases, mappings, and settings</strong></p>
+          <p>When multiple component templates are specified in the <code>composed_of</code> field for an index template, they are merged in the order specified, meaning that later component templates override earlier component templates.
+          Any mappings, settings, or aliases from the parent index template are merged in next.
+          Finally, any configuration on the index request itself is merged.
+          Mapping definitions are merged recursively, which means that later mapping components can introduce new field mappings and update the mapping configuration.
+          If a field mapping is already contained in an earlier component, its definition will be completely overwritten by the later one.
+          This recursive merging strategy applies not only to field mappings, but also root options like <code>dynamic_templates</code> and <code>meta</code>.
+          If an earlier component contains a <code>dynamic_templates</code> block, then by default new <code>dynamic_templates</code> entries are appended onto the end.
+          If an entry already exists with the same key, then it is overwritten by the new definition.</p>
+
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-template.html>`_
 
@@ -1945,10 +2055,7 @@ class IndicesClient(NamespacedClient):
         ] = None,
         dynamic_date_formats: t.Optional[t.Sequence[str]] = None,
         dynamic_templates: t.Optional[
-            t.Union[
-                t.Mapping[str, t.Mapping[str, t.Any]],
-                t.Sequence[t.Mapping[str, t.Mapping[str, t.Any]]],
-            ]
+            t.Sequence[t.Mapping[str, t.Mapping[str, t.Any]]]
         ] = None,
         error_trace: t.Optional[bool] = None,
         expand_wildcards: t.Optional[
@@ -1976,29 +2083,31 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update field mappings. Add new fields to an existing data stream or index. You
-        can also use this API to change the search settings of existing fields and add
-        new properties to existing object fields. For data streams, these changes are
-        applied to all backing indices by default. **Add multi-fields to an existing
-        field** Multi-fields let you index the same field in different ways. You can
-        use this API to update the fields mapping parameter and enable multi-fields for
-        an existing field. WARNING: If an index (or data stream) contains documents when
-        you add a multi-field, those documents will not have values for the new multi-field.
-        You can populate the new multi-field with the update by query API. **Change supported
-        mapping parameters for an existing field** The documentation for each mapping
-        parameter indicates whether you can update it for an existing field using this
-        API. For example, you can use the update mapping API to update the `ignore_above`
-        parameter. **Change the mapping of an existing field** Except for supported mapping
-        parameters, you can't change the mapping or field type of an existing field.
-        Changing an existing field could invalidate data that's already indexed. If you
-        need to change the mapping of a field in a data stream's backing indices, refer
-        to documentation about modifying data streams. If you need to change the mapping
-        of a field in other indices, create a new index with the correct mapping and
-        reindex your data into that index. **Rename a field** Renaming a field would
-        invalidate data already indexed under the old field name. Instead, add an alias
-        field to create an alternate field name.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-mapping.html>`_
+          <p>Update field mappings.
+          Add new fields to an existing data stream or index.
+          You can also use this API to change the search settings of existing fields and add new properties to existing object fields.
+          For data streams, these changes are applied to all backing indices by default.</p>
+          <p><strong>Add multi-fields to an existing field</strong></p>
+          <p>Multi-fields let you index the same field in different ways.
+          You can use this API to update the fields mapping parameter and enable multi-fields for an existing field.
+          WARNING: If an index (or data stream) contains documents when you add a multi-field, those documents will not have values for the new multi-field.
+          You can populate the new multi-field with the update by query API.</p>
+          <p><strong>Change supported mapping parameters for an existing field</strong></p>
+          <p>The documentation for each mapping parameter indicates whether you can update it for an existing field using this API.
+          For example, you can use the update mapping API to update the <code>ignore_above</code> parameter.</p>
+          <p><strong>Change the mapping of an existing field</strong></p>
+          <p>Except for supported mapping parameters, you can't change the mapping or field type of an existing field.
+          Changing an existing field could invalidate data that's already indexed.</p>
+          <p>If you need to change the mapping of a field in a data stream's backing indices, refer to documentation about modifying data streams.
+          If you need to change the mapping of a field in other indices, create a new index with the correct mapping and reindex your data into that index.</p>
+          <p><strong>Rename a field</strong></p>
+          <p>Renaming a field would invalidate data already indexed under the old field name.
+          Instead, add an alias field to create an alternate field name.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-put-mapping>`_
 
         :param index: A comma-separated list of index names the mapping should be added
             to (supports wildcards); use `_all` or omit to add the mapping on all indices.
@@ -2125,23 +2234,25 @@ class IndicesClient(NamespacedClient):
         timeout: t.Optional[t.Union[str, t.Literal[-1], t.Literal[0]]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update index settings. Changes dynamic index settings in real time. For data
-        streams, index setting changes are applied to all backing indices by default.
-        To revert a setting to the default value, use a null value. The list of per-index
-        settings that can be updated dynamically on live indices can be found in index
-        module documentation. To preserve existing settings from being updated, set the
-        `preserve_existing` parameter to `true`. NOTE: You can only define new analyzers
-        on closed indices. To add an analyzer, you must close the index, define the analyzer,
-        and reopen the index. You cannot close the write index of a data stream. To update
-        the analyzer for a data stream's write index and future backing indices, update
-        the analyzer in the index template used by the stream. Then roll over the data
-        stream to apply the new analyzer to the stream's write index and future backing
-        indices. This affects searches and any new data added to the stream after the
-        rollover. However, it does not affect the data stream's backing indices or their
-        existing data. To change the analyzer for existing backing indices, you must
-        create a new data stream and reindex your data into it.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-update-settings.html>`_
+          <p>Update index settings.
+          Changes dynamic index settings in real time.
+          For data streams, index setting changes are applied to all backing indices by default.</p>
+          <p>To revert a setting to the default value, use a null value.
+          The list of per-index settings that can be updated dynamically on live indices can be found in index module documentation.
+          To preserve existing settings from being updated, set the <code>preserve_existing</code> parameter to <code>true</code>.</p>
+          <p>NOTE: You can only define new analyzers on closed indices.
+          To add an analyzer, you must close the index, define the analyzer, and reopen the index.
+          You cannot close the write index of a data stream.
+          To update the analyzer for a data stream's write index and future backing indices, update the analyzer in the index template used by the stream.
+          Then roll over the data stream to apply the new analyzer to the stream's write index and future backing indices.
+          This affects searches and any new data added to the stream after the rollover.
+          However, it does not affect the data stream's backing indices or their existing data.
+          To change the analyzer for existing backing indices, you must create a new data stream and reindex your data into it.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-put-settings>`_
 
         :param settings:
         :param index: Comma-separated list of data streams, indices, and aliases used
@@ -2234,21 +2345,21 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Refresh an index. A refresh makes recent operations performed on one or more
-        indices available for search. For data streams, the API runs the refresh operation
-        on the stream’s backing indices. By default, Elasticsearch periodically refreshes
-        indices every second, but only on indices that have received one search request
-        or more in the last 30 seconds. You can change this default interval with the
-        `index.refresh_interval` setting. Refresh requests are synchronous and do not
-        return a response until the refresh operation completes. Refreshes are resource-intensive.
-        To ensure good cluster performance, it's recommended to wait for Elasticsearch's
-        periodic refresh rather than performing an explicit refresh when possible. If
-        your application workflow indexes documents and then runs a search to retrieve
-        the indexed document, it's recommended to use the index API's `refresh=wait_for`
-        query parameter option. This option ensures the indexing operation waits for
-        a periodic refresh before running the search.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-refresh.html>`_
+          <p>Refresh an index.
+          A refresh makes recent operations performed on one or more indices available for search.
+          For data streams, the API runs the refresh operation on the stream’s backing indices.</p>
+          <p>By default, Elasticsearch periodically refreshes indices every second, but only on indices that have received one search request or more in the last 30 seconds.
+          You can change this default interval with the <code>index.refresh_interval</code> setting.</p>
+          <p>Refresh requests are synchronous and do not return a response until the refresh operation completes.</p>
+          <p>Refreshes are resource-intensive.
+          To ensure good cluster performance, it's recommended to wait for Elasticsearch's periodic refresh rather than performing an explicit refresh when possible.</p>
+          <p>If your application workflow indexes documents and then runs a search to retrieve the indexed document, it's recommended to use the index API's <code>refresh=wait_for</code> query parameter option.
+          This option ensures the indexing operation waits for a periodic refresh before running the search.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-refresh>`_
 
         :param index: Comma-separated list of data streams, indices, and aliases used
             to limit the request. Supports wildcards (`*`). To target all data streams
@@ -2316,10 +2427,14 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Resolve indices. Resolve the names and/or index patterns for indices, aliases,
-        and data streams. Multiple patterns and remote clusters are supported.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-resolve-index-api.html>`_
+          <p>Resolve indices.
+          Resolve the names and/or index patterns for indices, aliases, and data streams.
+          Multiple patterns and remote clusters are supported.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-resolve-index>`_
 
         :param name: Comma-separated name(s) or index pattern(s) of the indices, aliases,
             and data streams to resolve. Resources on remote clusters can be specified
@@ -2390,35 +2505,37 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Roll over to a new index. TIP: It is recommended to use the index lifecycle rollover
-        action to automate rollovers. The rollover API creates a new index for a data
-        stream or index alias. The API behavior depends on the rollover target. **Roll
-        over a data stream** If you roll over a data stream, the API creates a new write
-        index for the stream. The stream's previous write index becomes a regular backing
-        index. A rollover also increments the data stream's generation. **Roll over an
-        index alias with a write index** TIP: Prior to Elasticsearch 7.9, you'd typically
-        use an index alias with a write index to manage time series data. Data streams
-        replace this functionality, require less maintenance, and automatically integrate
-        with data tiers. If an index alias points to multiple indices, one of the indices
-        must be a write index. The rollover API creates a new write index for the alias
-        with `is_write_index` set to `true`. The API also `sets is_write_index` to `false`
-        for the previous write index. **Roll over an index alias with one index** If
-        you roll over an index alias that points to only one index, the API creates a
-        new index for the alias and removes the original index from the alias. NOTE:
-        A rollover creates a new index and is subject to the `wait_for_active_shards`
-        setting. **Increment index names for an alias** When you roll over an index alias,
-        you can specify a name for the new index. If you don't specify a name and the
-        current index ends with `-` and a number, such as `my-index-000001` or `my-index-3`,
-        the new index name increments that number. For example, if you roll over an alias
-        with a current index of `my-index-000001`, the rollover creates a new index named
-        `my-index-000002`. This number is always six characters and zero-padded, regardless
-        of the previous index's name. If you use an index alias for time series data,
-        you can use date math in the index name to track the rollover date. For example,
-        you can create an alias that points to an index named `<my-index-{now/d}-000001>`.
-        If you create the index on May 6, 2099, the index's name is `my-index-2099.05.06-000001`.
-        If you roll over the alias on May 7, 2099, the new index's name is `my-index-2099.05.07-000002`.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-rollover-index.html>`_
+          <p>Roll over to a new index.
+          TIP: It is recommended to use the index lifecycle rollover action to automate rollovers.</p>
+          <p>The rollover API creates a new index for a data stream or index alias.
+          The API behavior depends on the rollover target.</p>
+          <p><strong>Roll over a data stream</strong></p>
+          <p>If you roll over a data stream, the API creates a new write index for the stream.
+          The stream's previous write index becomes a regular backing index.
+          A rollover also increments the data stream's generation.</p>
+          <p><strong>Roll over an index alias with a write index</strong></p>
+          <p>TIP: Prior to Elasticsearch 7.9, you'd typically use an index alias with a write index to manage time series data.
+          Data streams replace this functionality, require less maintenance, and automatically integrate with data tiers.</p>
+          <p>If an index alias points to multiple indices, one of the indices must be a write index.
+          The rollover API creates a new write index for the alias with <code>is_write_index</code> set to <code>true</code>.
+          The API also <code>sets is_write_index</code> to <code>false</code> for the previous write index.</p>
+          <p><strong>Roll over an index alias with one index</strong></p>
+          <p>If you roll over an index alias that points to only one index, the API creates a new index for the alias and removes the original index from the alias.</p>
+          <p>NOTE: A rollover creates a new index and is subject to the <code>wait_for_active_shards</code> setting.</p>
+          <p><strong>Increment index names for an alias</strong></p>
+          <p>When you roll over an index alias, you can specify a name for the new index.
+          If you don't specify a name and the current index ends with <code>-</code> and a number, such as <code>my-index-000001</code> or <code>my-index-3</code>, the new index name increments that number.
+          For example, if you roll over an alias with a current index of <code>my-index-000001</code>, the rollover creates a new index named <code>my-index-000002</code>.
+          This number is always six characters and zero-padded, regardless of the previous index's name.</p>
+          <p>If you use an index alias for time series data, you can use date math in the index name to track the rollover date.
+          For example, you can create an alias that points to an index named <code>&lt;my-index-{now/d}-000001&gt;</code>.
+          If you create the index on May 6, 2099, the index's name is <code>my-index-2099.05.06-000001</code>.
+          If you roll over the alias on May 7, 2099, the new index's name is <code>my-index-2099.05.07-000002</code>.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-rollover>`_
 
         :param alias: Name of the data stream or index alias to roll over.
         :param new_index: Name of the index to create. Supports date math. Data streams
@@ -2512,10 +2629,13 @@ class IndicesClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Simulate an index. Get the index configuration that would be applied to the specified
-        index from an existing index template.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-simulate-index.html>`_
+          <p>Simulate an index.
+          Get the index configuration that would be applied to the specified index from an existing index template.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-simulate-index-template>`_
 
         :param name: Name of the index to simulate
         :param include_defaults: If true, returns all relevant default configurations
@@ -2590,10 +2710,13 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Simulate an index template. Get the index configuration that would be applied
-        by a particular index template.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-simulate-template.html>`_
+          <p>Simulate an index template.
+          Get the index configuration that would be applied by a particular index template.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-simulate-template>`_
 
         :param name: Name of the index template to simulate. To test a template configuration
             before you add it to the cluster, omit this parameter and specify the template
@@ -2716,7 +2839,11 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create or update an alias. Adds a data stream or index to an alias.
+        .. raw:: html
+
+          <p>Create or update an alias.
+          Adds a data stream or index to an alias.</p>
+
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html>`_
 
@@ -2791,7 +2918,11 @@ class IndicesClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Validate a query. Validates a query without running it.
+        .. raw:: html
+
+          <p>Validate a query.
+          Validates a query without running it.</p>
+
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-validate.html>`_
 

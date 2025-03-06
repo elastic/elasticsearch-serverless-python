@@ -36,11 +36,14 @@ class LogstashClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete a Logstash pipeline. Delete a pipeline that is used for Logstash Central
-        Management. If the request succeeds, you receive an empty response with an appropriate
-        status code.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/logstash-api-delete-pipeline.html>`_
+          <p>Delete a Logstash pipeline.
+          Delete a pipeline that is used for Logstash Central Management.
+          If the request succeeds, you receive an empty response with an appropriate status code.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-logstash-delete-pipeline>`_
 
         :param id: An identifier for the pipeline.
         """
@@ -78,9 +81,13 @@ class LogstashClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get Logstash pipelines. Get pipelines that are used for Logstash Central Management.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/logstash-api-get-pipeline.html>`_
+          <p>Get Logstash pipelines.
+          Get pipelines that are used for Logstash Central Management.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-logstash-get-pipeline>`_
 
         :param id: A comma-separated list of pipeline identifiers.
         """
@@ -125,10 +132,14 @@ class LogstashClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create or update a Logstash pipeline. Create a pipeline that is used for Logstash
-        Central Management. If the specified pipeline exists, it is replaced.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/logstash-api-put-pipeline.html>`_
+          <p>Create or update a Logstash pipeline.</p>
+          <p>Create a pipeline that is used for Logstash Central Management.
+          If the specified pipeline exists, it is replaced.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-logstash-put-pipeline>`_
 
         :param id: An identifier for the pipeline.
         :param pipeline:

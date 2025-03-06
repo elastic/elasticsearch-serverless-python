@@ -43,12 +43,15 @@ class SearchApplicationClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete a search application. Remove a search application and its associated alias.
-        Indices attached to the search application are not removed.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-search-application.html>`_
+          <p>Delete a search application.</p>
+          <p>Remove a search application and its associated alias. Indices attached to the search application are not removed.</p>
 
-        :param name: The name of the search application to delete
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-search-application-delete>`_
+
+        :param name: The name of the search application to delete.
         """
         if name in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'name'")
@@ -85,10 +88,13 @@ class SearchApplicationClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete a behavioral analytics collection. The associated data stream is also
-        deleted.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-analytics-collection.html>`_
+          <p>Delete a behavioral analytics collection.
+          The associated data stream is also deleted.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-search-application-delete-behavioral-analytics>`_
 
         :param name: The name of the analytics collection to be deleted
         """
@@ -127,9 +133,12 @@ class SearchApplicationClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get search application details.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-search-application.html>`_
+          <p>Get search application details.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-search-application-get>`_
 
         :param name: The name of the search application
         """
@@ -168,9 +177,12 @@ class SearchApplicationClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get behavioral analytics collections.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/list-analytics-collection.html>`_
+          <p>Get behavioral analytics collections.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-search-application-get-behavioral-analytics>`_
 
         :param name: A list of analytics collections to limit the returned information
         """
@@ -216,9 +228,13 @@ class SearchApplicationClient(NamespacedClient):
         size: t.Optional[int] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get search applications. Get information about search applications.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/list-search-applications.html>`_
+          <p>Get search applications.
+          Get information about search applications.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-search-application-get-behavioral-analytics>`_
 
         :param from_: Starting offset.
         :param q: Query in the Lucene query string syntax.
@@ -268,9 +284,12 @@ class SearchApplicationClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create or update a search application.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/put-search-application.html>`_
+          <p>Create or update a search application.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-search-application-put>`_
 
         :param name: The name of the search application to be created or updated.
         :param search_application:
@@ -322,9 +341,12 @@ class SearchApplicationClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create a behavioral analytics collection.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/put-analytics-collection.html>`_
+          <p>Create a behavioral analytics collection.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-search-application-put-behavioral-analytics>`_
 
         :param name: The name of the analytics collection to be created or updated.
         """
@@ -369,12 +391,14 @@ class SearchApplicationClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Run a search application search. Generate and run an Elasticsearch query that
-        uses the specified query parameteter and the search template associated with
-        the search application or default template. Unspecified template parameters are
-        assigned their default values if applicable.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-application-search.html>`_
+          <p>Run a search application search.
+          Generate and run an Elasticsearch query that uses the specified query parameteter and the search template associated with the search application or default template.
+          Unspecified template parameters are assigned their default values if applicable.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-search-application-search>`_
 
         :param name: The name of the search application to be searched.
         :param params: Query parameters specific to this request, which will override

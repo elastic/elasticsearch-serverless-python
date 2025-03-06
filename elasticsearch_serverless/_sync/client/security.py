@@ -35,14 +35,16 @@ class SecurityClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Authenticate a user. Authenticates a user and returns information about the authenticated
-        user. Include the user information in a [basic auth header](https://en.wikipedia.org/wiki/Basic_access_authentication).
-        A successful call returns a JSON structure that shows user information such as
-        their username, the roles that are assigned to the user, any assigned metadata,
-        and information about the realms that authenticated and authorized the user.
-        If the user cannot be authenticated, this API returns a 401 status code.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-authenticate.html>`_
+          <p>Authenticate a user.</p>
+          <p>Authenticates a user and returns information about the authenticated user.
+          Include the user information in a <a href="https://en.wikipedia.org/wiki/Basic_access_authentication">basic auth header</a>.
+          A successful call returns a JSON structure that shows user information such as their username, the roles that are assigned to the user, any assigned metadata, and information about the realms that authenticated and authorized the user.
+          If the user cannot be authenticated, this API returns a 401 status code.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-security-authenticate>`_
         """
         __path_parts: t.Dict[str, str] = {}
         __path = "/_security/_authenticate"
@@ -85,31 +87,43 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create an API key. Create an API key for access without requiring basic authentication.
-        A successful request returns a JSON structure that contains the API key, its
-        unique id, and its name. If applicable, it also returns expiration information
-        for the API key in milliseconds. NOTE: By default, API keys never expire. You
-        can specify expiration information when you create the API keys.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-create-api-key.html>`_
+          <p>Create an API key.</p>
+          <p>Create an API key for access without requiring basic authentication.</p>
+          <p>IMPORTANT: If the credential that is used to authenticate this request is an API key, the derived API key cannot have any privileges.
+          If you specify privileges, the API returns an error.</p>
+          <p>A successful request returns a JSON structure that contains the API key, its unique id, and its name.
+          If applicable, it also returns expiration information for the API key in milliseconds.</p>
+          <p>NOTE: By default, API keys never expire. You can specify expiration information when you create the API keys.</p>
+          <p>The API keys are created by the Elasticsearch API key service, which is automatically enabled.
+          To configure or turn off the API key service, refer to API key service setting documentation.</p>
 
-        :param expiration: Expiration time for the API key. By default, API keys never
-            expire.
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-security-create-api-key>`_
+
+        :param expiration: The expiration time for the API key. By default, API keys
+            never expire.
         :param metadata: Arbitrary metadata that you want to associate with the API key.
             It supports nested data structure. Within the metadata object, keys beginning
             with `_` are reserved for system usage.
-        :param name: Specifies the name for this API key.
+        :param name: A name for the API key.
         :param refresh: If `true` (the default) then refresh the affected shards to make
             this operation visible to search, if `wait_for` then wait for a refresh to
             make this operation visible to search, if `false` then do nothing with refreshes.
-        :param role_descriptors: An array of role descriptors for this API key. This
-            parameter is optional. When it is not specified or is an empty array, then
-            the API key will have a point in time snapshot of permissions of the authenticated
-            user. If you supply role descriptors then the resultant permissions would
-            be an intersection of API keys permissions and authenticated user’s permissions
-            thereby limiting the access scope for API keys. The structure of role descriptor
-            is the same as the request for create role API. For more details, see create
-            or update roles API.
+        :param role_descriptors: An array of role descriptors for this API key. When
+            it is not specified or it is an empty array, the API key will have a point
+            in time snapshot of permissions of the authenticated user. If you supply
+            role descriptors, the resultant permissions are an intersection of API keys
+            permissions and the authenticated user's permissions thereby limiting the
+            access scope for API keys. The structure of role descriptor is the same as
+            the request for the create role API. For more details, refer to the create
+            or update roles API. NOTE: Due to the way in which this permission intersection
+            is calculated, it is not possible to create an API key that is a child of
+            another API key, unless the derived key is created without any privileges.
+            In this case, you must explicitly specify a role descriptor with no privileges.
+            The derived API key can be used for authentication; it will not have authority
+            to call Elasticsearch APIs.
         """
         __path_parts: t.Dict[str, str] = {}
         __path = "/_security/api_key"
@@ -159,11 +173,17 @@ class SecurityClient(NamespacedClient):
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete roles. Delete roles in the native realm.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-delete-role.html>`_
+          <p>Delete roles.</p>
+          <p>Delete roles in the native realm.
+          The role management APIs are generally the preferred way to manage roles, rather than using file-based role management.
+          The delete roles API cannot remove roles that are defined in roles files.</p>
 
-        :param name: Role name
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-security-delete-role>`_
+
+        :param name: The name of the role.
         :param refresh: If `true` (the default) then refresh the affected shards to make
             this operation visible to search, if `wait_for` then wait for a refresh to
             make this operation visible to search, if `false` then do nothing with refreshes.
@@ -211,13 +231,15 @@ class SecurityClient(NamespacedClient):
         with_profile_uid: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get API key information. Retrieves information for one or more API keys. NOTE:
-        If you have only the `manage_own_api_key` privilege, this API returns only the
-        API keys that you own. If you have `read_security`, `manage_api_key` or greater
-        privileges (including `manage_security`), this API returns all API keys regardless
-        of ownership.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-get-api-key.html>`_
+          <p>Get API key information.</p>
+          <p>Retrieves information for one or more API keys.
+          NOTE: If you have only the <code>manage_own_api_key</code> privilege, this API returns only the API keys that you own.
+          If you have <code>read_security</code>, <code>manage_api_key</code> or greater privileges (including <code>manage_security</code>), this API returns all API keys regardless of ownership.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-security-get-api-key>`_
 
         :param active_only: A boolean flag that can be used to query API keys that are
             currently active. An API key is considered active if it is neither invalidated,
@@ -289,10 +311,13 @@ class SecurityClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get builtin privileges. Get the list of cluster privileges and index privileges
-        that are available in this version of Elasticsearch.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-get-builtin-privileges.html>`_
+          <p>Get builtin privileges.</p>
+          <p>Get the list of cluster privileges and index privileges that are available in this version of Elasticsearch.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-security-get-builtin-privileges>`_
         """
         __path_parts: t.Dict[str, str] = {}
         __path = "/_security/privilege/_builtin"
@@ -326,9 +351,15 @@ class SecurityClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get roles. Get roles in the native realm.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-get-role.html>`_
+          <p>Get roles.</p>
+          <p>Get roles in the native realm.
+          The role management APIs are generally the preferred way to manage roles, rather than using file-based role management.
+          The get roles API cannot retrieve roles that are defined in roles files.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-security-get-role>`_
 
         :param name: The name of the role. You can specify multiple roles as a comma-separated
             list. If you do not specify this parameter, the API returns information about
@@ -444,10 +475,15 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Check user privileges. Determine whether the specified user has a specified list
-        of privileges.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-has-privileges.html>`_
+          <p>Check user privileges.</p>
+          <p>Determine whether the specified user has a specified list of privileges.
+          All users can use this API, but only to determine their own privileges.
+          To check the privileges of other users, you must use the run as feature.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-security-has-privileges>`_
 
         :param user: Username
         :param application:
@@ -508,33 +544,39 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Invalidate API keys. This API invalidates API keys created by the create API
-        key or grant API key APIs. Invalidated API keys fail authentication, but they
-        can still be viewed using the get API key information and query API key information
-        APIs, for at least the configured retention period, until they are automatically
-        deleted. The `manage_api_key` privilege allows deleting any API keys. The `manage_own_api_key`
-        only allows deleting API keys that are owned by the user. In addition, with the
-        `manage_own_api_key` privilege, an invalidation request must be issued in one
-        of the three formats: - Set the parameter `owner=true`. - Or, set both `username`
-        and `realm_name` to match the user’s identity. - Or, if the request is issued
-        by an API key, that is to say an API key invalidates itself, specify its ID in
-        the `ids` field.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-invalidate-api-key.html>`_
+          <p>Invalidate API keys.</p>
+          <p>This API invalidates API keys created by the create API key or grant API key APIs.
+          Invalidated API keys fail authentication, but they can still be viewed using the get API key information and query API key information APIs, for at least the configured retention period, until they are automatically deleted.</p>
+          <p>To use this API, you must have at least the <code>manage_security</code>, <code>manage_api_key</code>, or <code>manage_own_api_key</code> cluster privileges.
+          The <code>manage_security</code> privilege allows deleting any API key, including both REST and cross cluster API keys.
+          The <code>manage_api_key</code> privilege allows deleting any REST API key, but not cross cluster API keys.
+          The <code>manage_own_api_key</code> only allows deleting REST API keys that are owned by the user.
+          In addition, with the <code>manage_own_api_key</code> privilege, an invalidation request must be issued in one of the three formats:</p>
+          <ul>
+          <li>Set the parameter <code>owner=true</code>.</li>
+          <li>Or, set both <code>username</code> and <code>realm_name</code> to match the user's identity.</li>
+          <li>Or, if the request is issued by an API key, that is to say an API key invalidates itself, specify its ID in the <code>ids</code> field.</li>
+          </ul>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-security-invalidate-api-key>`_
 
         :param id:
         :param ids: A list of API key ids. This parameter cannot be used with any of
             `name`, `realm_name`, or `username`.
         :param name: An API key name. This parameter cannot be used with any of `ids`,
             `realm_name` or `username`.
-        :param owner: Can be used to query API keys owned by the currently authenticated
-            user. The `realm_name` or `username` parameters cannot be specified when
-            this parameter is set to `true` as they are assumed to be the currently authenticated
-            ones.
+        :param owner: Query API keys owned by the currently authenticated user. The `realm_name`
+            or `username` parameters cannot be specified when this parameter is set to
+            `true` as they are assumed to be the currently authenticated ones. NOTE:
+            At least one of `ids`, `name`, `username`, and `realm_name` must be specified
+            if `owner` is `false`.
         :param realm_name: The name of an authentication realm. This parameter cannot
             be used with either `ids` or `name`, or when `owner` flag is set to `true`.
         :param username: The username of a user. This parameter cannot be used with either
-            `ids` or `name`, or when `owner` flag is set to `true`.
+            `ids` or `name` or when `owner` flag is set to `true`.
         """
         __path_parts: t.Dict[str, str] = {}
         __path = "/_security/api_key"
@@ -678,12 +720,15 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create or update roles. The role management APIs are generally the preferred
-        way to manage roles in the native realm, rather than using file-based role management.
-        The create or update roles API cannot update roles that are defined in roles
-        files. File-based role management is not available in Elastic Serverless.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-put-role.html>`_
+          <p>Create or update roles.</p>
+          <p>The role management APIs are generally the preferred way to manage roles in the native realm, rather than using file-based role management.
+          The create or update roles API cannot update roles that are defined in roles files.
+          File-based role management is not available in Elastic Serverless.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-security-put-role>`_
 
         :param name: The name of the role that is being created or updated. On Elasticsearch
             Serverless, the role name must begin with a letter or digit and can only
@@ -703,7 +748,10 @@ class SecurityClient(NamespacedClient):
             this operation visible to search, if `wait_for` then wait for a refresh to
             make this operation visible to search, if `false` then do nothing with refreshes.
         :param remote_cluster: A list of remote cluster permissions entries.
-        :param remote_indices: A list of remote indices permissions entries.
+        :param remote_indices: A list of remote indices permissions entries. NOTE: Remote
+            indices are effective for remote clusters configured with the API key based
+            model. They have no effect for remote clusters configured with the certificate
+            based model.
         :param run_as: A list of users that the owners of this role can impersonate.
             *Note*: in Serverless, the run-as feature is disabled. For API compatibility,
             you can still specify an empty `run_as` field, but a non-empty list will
@@ -787,7 +835,7 @@ class SecurityClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         query: t.Optional[t.Mapping[str, t.Any]] = None,
         search_after: t.Optional[
-            t.Sequence[t.Union[None, bool, float, int, str, t.Any]]
+            t.Sequence[t.Union[None, bool, float, int, str]]
         ] = None,
         size: t.Optional[int] = None,
         sort: t.Optional[
@@ -802,10 +850,17 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Find API keys with a query. Get a paginated list of API keys and their information.
-        You can optionally filter the results with a query.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-query-api-key.html>`_
+          <p>Find API keys with a query.</p>
+          <p>Get a paginated list of API keys and their information.
+          You can optionally filter the results with a query.</p>
+          <p>To use this API, you must have at least the <code>manage_own_api_key</code> or the <code>read_security</code> cluster privileges.
+          If you have only the <code>manage_own_api_key</code> privilege, this API returns only the API keys that you own.
+          If you have the <code>read_security</code>, <code>manage_api_key</code>, or greater privileges (including <code>manage_security</code>), this API returns all API keys regardless of ownership.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-security-query-api-keys>`_
 
         :param aggregations: Any aggregations to run over the corpus of returned API
             keys. Aggregations and queries work together. Aggregations are computed only
@@ -819,30 +874,39 @@ class SecurityClient(NamespacedClient):
             `terms`, `range`, `date_range`, `missing`, `cardinality`, `value_count`,
             `composite`, `filter`, and `filters`. Additionally, aggregations only run
             over the same subset of fields that query works with.
-        :param from_: Starting document offset. By default, you cannot page through more
-            than 10,000 hits using the from and size parameters. To page through more
-            hits, use the `search_after` parameter.
+        :param from_: The starting document offset. It must not be negative. By default,
+            you cannot page through more than 10,000 hits using the `from` and `size`
+            parameters. To page through more hits, use the `search_after` parameter.
         :param query: A query to filter which API keys to return. If the query parameter
             is missing, it is equivalent to a `match_all` query. The query supports a
             subset of query types, including `match_all`, `bool`, `term`, `terms`, `match`,
             `ids`, `prefix`, `wildcard`, `exists`, `range`, and `simple_query_string`.
             You can query the following public information associated with an API key:
             `id`, `type`, `name`, `creation`, `expiration`, `invalidated`, `invalidation`,
-            `username`, `realm`, and `metadata`.
-        :param search_after: Search after definition
-        :param size: The number of hits to return. By default, you cannot page through
-            more than 10,000 hits using the `from` and `size` parameters. To page through
-            more hits, use the `search_after` parameter.
-        :param sort: Other than `id`, all public fields of an API key are eligible for
-            sorting. In addition, sort can also be applied to the `_doc` field to sort
-            by index order.
+            `username`, `realm`, and `metadata`. NOTE: The queryable string values associated
+            with API keys are internally mapped as keywords. Consequently, if no `analyzer`
+            parameter is specified for a `match` query, then the provided match query
+            string is interpreted as a single keyword value. Such a match query is hence
+            equivalent to a `term` query.
+        :param search_after: The search after definition.
+        :param size: The number of hits to return. It must not be negative. The `size`
+            parameter can be set to `0`, in which case no API key matches are returned,
+            only the aggregation results. By default, you cannot page through more than
+            10,000 hits using the `from` and `size` parameters. To page through more
+            hits, use the `search_after` parameter.
+        :param sort: The sort definition. Other than `id`, all public fields of an API
+            key are eligible for sorting. In addition, sort can also be applied to the
+            `_doc` field to sort by index order.
         :param typed_keys: Determines whether aggregation names are prefixed by their
             respective types in the response.
         :param with_limited_by: Return the snapshot of the owner user's role descriptors
             associated with the API key. An API key's actual permission is the intersection
-            of its assigned role descriptors and the owner user's role descriptors.
-        :param with_profile_uid: Determines whether to also retrieve the profile uid,
-            for the API key owner principal, if it exists.
+            of its assigned role descriptors and the owner user's role descriptors (effectively
+            limited by it). An API key cannot retrieve any API key’s limited-by role
+            descriptors (including itself) unless it has `manage_api_key` or higher privileges.
+        :param with_profile_uid: Determines whether to also retrieve the profile UID
+            for the API key owner principal. If it exists, the profile UID is returned
+            under the `profile_uid` response field for each API key.
         """
         __path_parts: t.Dict[str, str] = {}
         __path = "/_security/_query/api_key"
@@ -917,7 +981,7 @@ class SecurityClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
         query: t.Optional[t.Mapping[str, t.Any]] = None,
         search_after: t.Optional[
-            t.Sequence[t.Union[None, bool, float, int, str, t.Any]]
+            t.Sequence[t.Union[None, bool, float, int, str]]
         ] = None,
         size: t.Optional[int] = None,
         sort: t.Optional[
@@ -929,26 +993,34 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Find roles with a query. Get roles in a paginated manner. You can optionally
-        filter the results with a query.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-query-role.html>`_
+          <p>Find roles with a query.</p>
+          <p>Get roles in a paginated manner.
+          The role management APIs are generally the preferred way to manage roles, rather than using file-based role management.
+          The query roles API does not retrieve roles that are defined in roles files, nor built-in ones.
+          You can optionally filter the results with a query.
+          Also, the results can be paginated and sorted.</p>
 
-        :param from_: Starting document offset. By default, you cannot page through more
-            than 10,000 hits using the from and size parameters. To page through more
-            hits, use the `search_after` parameter.
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-security-query-role>`_
+
+        :param from_: The starting document offset. It must not be negative. By default,
+            you cannot page through more than 10,000 hits using the `from` and `size`
+            parameters. To page through more hits, use the `search_after` parameter.
         :param query: A query to filter which roles to return. If the query parameter
             is missing, it is equivalent to a `match_all` query. The query supports a
             subset of query types, including `match_all`, `bool`, `term`, `terms`, `match`,
             `ids`, `prefix`, `wildcard`, `exists`, `range`, and `simple_query_string`.
             You can query the following information associated with roles: `name`, `description`,
-            `metadata`, `applications.application`, `applications.privileges`, `applications.resources`.
-        :param search_after: Search after definition
-        :param size: The number of hits to return. By default, you cannot page through
-            more than 10,000 hits using the `from` and `size` parameters. To page through
-            more hits, use the `search_after` parameter.
-        :param sort: All public fields of a role are eligible for sorting. In addition,
-            sort can also be applied to the `_doc` field to sort by index order.
+            `metadata`, `applications.application`, `applications.privileges`, and `applications.resources`.
+        :param search_after: The search after definition.
+        :param size: The number of hits to return. It must not be negative. By default,
+            you cannot page through more than 10,000 hits using the `from` and `size`
+            parameters. To page through more hits, use the `search_after` parameter.
+        :param sort: The sort definition. You can sort on `username`, `roles`, or `enabled`.
+            In addition, sort can also be applied to the `_doc` field to sort by index
+            order.
         """
         __path_parts: t.Dict[str, str] = {}
         __path = "/_security/_query/role"
@@ -1005,38 +1077,43 @@ class SecurityClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update an API key. Updates attributes of an existing API key. Users can only
-        update API keys that they created or that were granted to them. Use this API
-        to update API keys created by the create API Key or grant API Key APIs. If you
-        need to apply the same update to many API keys, you can use bulk update API Keys
-        to reduce overhead. It’s not possible to update expired API keys, or API keys
-        that have been invalidated by invalidate API Key. This API supports updates to
-        an API key’s access scope and metadata. The access scope of an API key is derived
-        from the `role_descriptors` you specify in the request, and a snapshot of the
-        owner user’s permissions at the time of the request. The snapshot of the owner’s
-        permissions is updated automatically on every call. If you don’t specify `role_descriptors`
-        in the request, a call to this API might still change the API key’s access scope.
-        This change can occur if the owner user’s permissions have changed since the
-        API key was created or last modified. To update another user’s API key, use the
-        `run_as` feature to submit a request on behalf of another user. IMPORTANT: It’s
-        not possible to use an API key as the authentication credential for this API.
-        To update an API key, the owner user’s credentials are required.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/security-api-update-api-key.html>`_
+          <p>Update an API key.</p>
+          <p>Update attributes of an existing API key.
+          This API supports updates to an API key's access scope, expiration, and metadata.</p>
+          <p>To use this API, you must have at least the <code>manage_own_api_key</code> cluster privilege.
+          Users can only update API keys that they created or that were granted to them.
+          To update another user’s API key, use the <code>run_as</code> feature to submit a request on behalf of another user.</p>
+          <p>IMPORTANT: It's not possible to use an API key as the authentication credential for this API. The owner user’s credentials are required.</p>
+          <p>Use this API to update API keys created by the create API key or grant API Key APIs.
+          If you need to apply the same update to many API keys, you can use the bulk update API keys API to reduce overhead.
+          It's not possible to update expired API keys or API keys that have been invalidated by the invalidate API key API.</p>
+          <p>The access scope of an API key is derived from the <code>role_descriptors</code> you specify in the request and a snapshot of the owner user's permissions at the time of the request.
+          The snapshot of the owner's permissions is updated automatically on every call.</p>
+          <p>IMPORTANT: If you don't specify <code>role_descriptors</code> in the request, a call to this API might still change the API key's access scope.
+          This change can occur if the owner user's permissions have changed since the API key was created or last modified.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-security-update-api-key>`_
 
         :param id: The ID of the API key to update.
-        :param expiration: Expiration time for the API key.
+        :param expiration: The expiration time for the API key. By default, API keys
+            never expire. This property can be omitted to leave the expiration unchanged.
         :param metadata: Arbitrary metadata that you want to associate with the API key.
-            It supports nested data structure. Within the metadata object, keys beginning
-            with _ are reserved for system usage.
-        :param role_descriptors: An array of role descriptors for this API key. This
-            parameter is optional. When it is not specified or is an empty array, then
-            the API key will have a point in time snapshot of permissions of the authenticated
-            user. If you supply role descriptors then the resultant permissions would
-            be an intersection of API keys permissions and authenticated user’s permissions
-            thereby limiting the access scope for API keys. The structure of role descriptor
-            is the same as the request for create role API. For more details, see create
-            or update roles API.
+            It supports a nested data structure. Within the metadata object, keys beginning
+            with `_` are reserved for system usage. When specified, this value fully
+            replaces the metadata previously associated with the API key.
+        :param role_descriptors: The role descriptors to assign to this API key. The
+            API key's effective permissions are an intersection of its assigned privileges
+            and the point in time snapshot of permissions of the owner user. You can
+            assign new privileges by specifying them in this parameter. To remove assigned
+            privileges, you can supply an empty `role_descriptors` parameter, that is
+            to say, an empty object `{}`. If an API key has no assigned privileges, it
+            inherits the owner user's full permissions. The snapshot of the owner's permissions
+            is always updated, whether you supply the `role_descriptors` parameter or
+            not. The structure of a role descriptor is the same as the request for the
+            create API keys API.
         """
         if id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'id'")

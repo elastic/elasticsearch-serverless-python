@@ -37,13 +37,18 @@ class LicenseClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get license information. Get information about your Elastic license including
-        its type, its status, when it was issued, and when it expires. NOTE: If the master
-        node is generating a new cluster state, the get license API may return a `404
-        Not Found` response. If you receive an unexpected 404 response after cluster
-        startup, wait a short period and retry the request.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-license.html>`_
+          <p>Get license information.</p>
+          <p>Get information about your Elastic license including its type, its status, when it was issued, and when it expires.</p>
+          <blockquote>
+          <p>info
+          If the master node is generating a new cluster state, the get license API may return a <code>404 Not Found</code> response.
+          If you receive an unexpected 404 response after cluster startup, wait a short period and retry the request.</p>
+          </blockquote>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-license-get>`_
 
         :param accept_enterprise: If `true`, this parameter returns enterprise for Enterprise
             license types. If `false`, this parameter returns platinum for both platinum
