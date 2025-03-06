@@ -45,16 +45,17 @@ class GraphClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Explore graph analytics. Extract and summarize information about the documents
-        and terms in an Elasticsearch data stream or index. The easiest way to understand
-        the behavior of this API is to use the Graph UI to explore connections. An initial
-        request to the `_explore` API contains a seed query that identifies the documents
-        of interest and specifies the fields that define the vertices and connections
-        you want to include in the graph. Subsequent requests enable you to spider out
-        from one more vertices of interest. You can exclude vertices that have already
-        been returned.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/graph-explore-api.html>`_
+          <p>Explore graph analytics.
+          Extract and summarize information about the documents and terms in an Elasticsearch data stream or index.
+          The easiest way to understand the behavior of this API is to use the Graph UI to explore connections.
+          An initial request to the <code>_explore</code> API contains a seed query that identifies the documents of interest and specifies the fields that define the vertices and connections you want to include in the graph.
+          Subsequent requests enable you to spider out from one more vertices of interest.
+          You can exclude vertices that have already been returned.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-graph>`_
 
         :param index: Name of the index.
         :param connections: Specifies or more fields from which you want to extract terms

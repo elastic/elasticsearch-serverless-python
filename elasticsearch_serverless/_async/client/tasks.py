@@ -45,13 +45,20 @@ class TasksClient(NamespacedClient):
         wait_for_completion: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get task information. Get information about a task currently running in the cluster.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html>`_
+          <p>Get task information.
+          Get information about a task currently running in the cluster.</p>
+          <p>WARNING: The task management API is new and should still be considered a beta feature.
+          The API may change in ways that are not backwards compatible.</p>
+          <p>If the task identifier is not found, a 404 response code indicates that there are no resources that match the request.</p>
 
-        :param task_id: ID of the task.
-        :param timeout: Period to wait for a response. If no response is received before
-            the timeout expires, the request fails and returns an error.
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/group/endpoint-tasks>`_
+
+        :param task_id: The task identifier.
+        :param timeout: The period to wait for a response. If no response is received
+            before the timeout expires, the request fails and returns an error.
         :param wait_for_completion: If `true`, the request blocks until the task has
             completed.
         """

@@ -14,129 +14,28 @@ arguments are required for all
    aliased as ``from_``.
 
 
-Elasticsearch
--------------
 
-.. py:module:: elasticsearch_serverless
+.. toctree::
+   :maxdepth: 1
 
-.. autoclass:: Elasticsearch
-   :members:
-
-.. py:module:: elasticsearch_serverless.client
-
-Async Search
-------------
-
-.. autoclass:: AsyncSearchClient
-   :members:
-
-Cat
----
-
-.. autoclass:: CatClient
-   :members:
-
-Cluster
--------
-
-.. autoclass:: ClusterClient
-   :members:
-
-Connector
----------
-.. py:module:: elasticsearch.client
-   :noindex:
-
-.. autoclass:: ConnectorClient
-   :members:
-
-Enrich Policies
----------------
-
-.. autoclass:: EnrichClient
-   :members:
-
-Event Query Language (EQL)
---------------------------
-
-.. autoclass:: EqlClient
-   :members:
-
-
-ES|QL
------
-
-.. autoclass:: EqlClient
-   :members:
-
-Graph Explore
--------------
-
-.. autoclass:: GraphClient
-   :members:
-
-Indices
--------
-
-.. autoclass:: IndicesClient
-   :members:
-
-Inference
----------
-
-.. autoclass:: InferenceClient
-   :members:
-
-Ingest Pipelines
-----------------
-
-.. autoclass:: IngestClient
-   :members:
-
-License
--------
-
-.. autoclass:: LicenseClient
-   :members:
-
-Logstash
---------
-
-.. autoclass:: LogstashClient
-   :members:
-
-Machine Learning (ML)
----------------------
-
-.. autoclass:: MlClient
-   :members:
-
-Monitoring
-----------
-
-.. autoclass:: MonitoringClient
-   :members:
-
-Security
---------
-
-.. autoclass:: SecurityClient
-   :members:
-
-SQL
----
-
-.. autoclass:: SqlClient
-   :members:
-
-Tasks
------
-
-.. autoclass:: TasksClient
-   :members:
-
-Transforms
-----------
-
-.. autoclass:: TransformClient
-   :members:
+   api/elasticsearch
+   api/async-search
+   api/cat
+   api/cluster
+   api/connector
+   api/enrich-policies
+   api/eql
+   api/esql
+   api/indices
+   api/inference
+   api/ingest-pipelines
+   api/license
+   api/logstash
+   api/ml
+   api/query-rules
+   api/search-application
+   api/security
+   api/sql
+   api/synonyms
+   api/tasks
+   api/transforms

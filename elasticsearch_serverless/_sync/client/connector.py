@@ -43,10 +43,13 @@ class ConnectorClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Check in a connector. Update the `last_seen` field in the connector and set it
-        to the current timestamp.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/check-in-connector-api.html>`_
+          <p>Check in a connector.</p>
+          <p>Update the <code>last_seen</code> field in the connector and set it to the current timestamp.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-check-in>`_
 
         :param connector_id: The unique identifier of the connector to be checked in
         """
@@ -82,20 +85,26 @@ class ConnectorClient(NamespacedClient):
         delete_sync_jobs: t.Optional[bool] = None,
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
+        hard: t.Optional[bool] = None,
         human: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete a connector. Removes a connector and associated sync jobs. This is a destructive
-        action that is not recoverable. NOTE: This action doesn’t delete any API keys,
-        ingest pipelines, or data indices associated with the connector. These need to
-        be removed manually.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-connector-api.html>`_
+          <p>Delete a connector.</p>
+          <p>Removes a connector and associated sync jobs.
+          This is a destructive action that is not recoverable.
+          NOTE: This action doesn’t delete any API keys, ingest pipelines, or data indices associated with the connector.
+          These need to be removed manually.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-delete>`_
 
         :param connector_id: The unique identifier of the connector to be deleted
         :param delete_sync_jobs: A flag indicating if associated sync jobs should be
             also removed. Defaults to false.
+        :param hard: A flag indicating if the connector should be hard deleted.
         """
         if connector_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'connector_id'")
@@ -108,6 +117,8 @@ class ConnectorClient(NamespacedClient):
             __query["error_trace"] = error_trace
         if filter_path is not None:
             __query["filter_path"] = filter_path
+        if hard is not None:
+            __query["hard"] = hard
         if human is not None:
             __query["human"] = human
         if pretty is not None:
@@ -131,14 +142,21 @@ class ConnectorClient(NamespacedClient):
         error_trace: t.Optional[bool] = None,
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         human: t.Optional[bool] = None,
+        include_deleted: t.Optional[bool] = None,
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get a connector. Get the details about a connector.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-connector-api.html>`_
+          <p>Get a connector.</p>
+          <p>Get the details about a connector.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-get>`_
 
         :param connector_id: The unique identifier of the connector
+        :param include_deleted: A flag to indicate if the desired connector should be
+            fetched, even if it was soft-deleted.
         """
         if connector_id in SKIP_IN_PATH:
             raise ValueError("Empty value passed for parameter 'connector_id'")
@@ -151,6 +169,8 @@ class ConnectorClient(NamespacedClient):
             __query["filter_path"] = filter_path
         if human is not None:
             __query["human"] = human
+        if include_deleted is not None:
+            __query["include_deleted"] = include_deleted
         if pretty is not None:
             __query["pretty"] = pretty
         __headers = {"accept": "application/json"}
@@ -175,6 +195,7 @@ class ConnectorClient(NamespacedClient):
         filter_path: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         from_: t.Optional[int] = None,
         human: t.Optional[bool] = None,
+        include_deleted: t.Optional[bool] = None,
         index_name: t.Optional[t.Union[str, t.Sequence[str]]] = None,
         pretty: t.Optional[bool] = None,
         query: t.Optional[str] = None,
@@ -182,13 +203,19 @@ class ConnectorClient(NamespacedClient):
         size: t.Optional[int] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get all connectors. Get information about all connectors.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/list-connector-api.html>`_
+          <p>Get all connectors.</p>
+          <p>Get information about all connectors.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-list>`_
 
         :param connector_name: A comma-separated list of connector names to fetch connector
             documents for
         :param from_: Starting offset (default: 0)
+        :param include_deleted: A flag to indicate if the desired connector should be
+            fetched, even if it was soft-deleted.
         :param index_name: A comma-separated list of connector index names to fetch connector
             documents for
         :param query: A wildcard query string that filters connectors with matching name,
@@ -210,6 +237,8 @@ class ConnectorClient(NamespacedClient):
             __query["from"] = from_
         if human is not None:
             __query["human"] = human
+        if include_deleted is not None:
+            __query["include_deleted"] = include_deleted
         if index_name is not None:
             __query["index_name"] = index_name
         if pretty is not None:
@@ -257,13 +286,15 @@ class ConnectorClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create a connector. Connectors are Elasticsearch integrations that bring content
-        from third-party data sources, which can be deployed on Elastic Cloud or hosted
-        on your own infrastructure. Elastic managed connectors (Native connectors) are
-        a managed service on Elastic Cloud. Self-managed connectors (Connector clients)
-        are self-managed on your infrastructure.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/create-connector-api.html>`_
+          <p>Create a connector.</p>
+          <p>Connectors are Elasticsearch integrations that bring content from third-party data sources, which can be deployed on Elastic Cloud or hosted on your own infrastructure.
+          Elastic managed connectors (Native connectors) are a managed service on Elastic Cloud.
+          Self-managed connectors (Connector clients) are self-managed on your infrastructure.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-put>`_
 
         :param description:
         :param index_name:
@@ -340,9 +371,12 @@ class ConnectorClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create or update a connector.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/create-connector-api.html>`_
+          <p>Create or update a connector.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-put>`_
 
         :param connector_id: The unique identifier of the connector to be created or
             updated. ID is auto-generated if not provided.
@@ -410,12 +444,14 @@ class ConnectorClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Cancel a connector sync job. Cancel a connector sync job, which sets the status
-        to cancelling and updates `cancellation_requested_at` to the current time. The
-        connector service is then responsible for setting the status of connector sync
-        jobs to cancelled.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/cancel-connector-sync-job-api.html>`_
+          <p>Cancel a connector sync job.</p>
+          <p>Cancel a connector sync job, which sets the status to cancelling and updates <code>cancellation_requested_at</code> to the current time.
+          The connector service is then responsible for setting the status of connector sync jobs to cancelled.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-sync-job-cancel>`_
 
         :param connector_sync_job_id: The unique identifier of the connector sync job
         """
@@ -458,10 +494,14 @@ class ConnectorClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete a connector sync job. Remove a connector sync job and its associated data.
-        This is a destructive action that is not recoverable.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-connector-sync-job-api.html>`_
+          <p>Delete a connector sync job.</p>
+          <p>Remove a connector sync job and its associated data.
+          This is a destructive action that is not recoverable.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-sync-job-delete>`_
 
         :param connector_sync_job_id: The unique identifier of the connector sync job
             to be deleted
@@ -503,9 +543,12 @@ class ConnectorClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get a connector sync job.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-connector-sync-job-api.html>`_
+          <p>Get a connector sync job.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-sync-job-get>`_
 
         :param connector_sync_job_id: The unique identifier of the connector sync job
         """
@@ -572,10 +615,13 @@ class ConnectorClient(NamespacedClient):
         ] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get all connector sync jobs. Get information about all stored connector sync
-        jobs listed by their creation date in ascending order.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/list-connector-sync-jobs-api.html>`_
+          <p>Get all connector sync jobs.</p>
+          <p>Get information about all stored connector sync jobs listed by their creation date in ascending order.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-sync-job-list>`_
 
         :param connector_id: A connector id to fetch connector sync jobs for
         :param from_: Starting offset (default: 0)
@@ -635,10 +681,13 @@ class ConnectorClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create a connector sync job. Create a connector sync job document in the internal
-        index and initialize its counters and timestamps with default values.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/create-connector-sync-job-api.html>`_
+          <p>Create a connector sync job.</p>
+          <p>Create a connector sync job document in the internal index and initialize its counters and timestamps with default values.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-sync-job-post>`_
 
         :param id: The id of the associated connector
         :param job_type:
@@ -688,10 +737,13 @@ class ConnectorClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Activate the connector draft filter. Activates the valid draft filtering for
-        a connector.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/update-connector-filtering-api.html>`_
+          <p>Activate the connector draft filter.</p>
+          <p>Activates the valid draft filtering for a connector.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-update-filtering>`_
 
         :param connector_id: The unique identifier of the connector to be updated
         """
@@ -735,13 +787,16 @@ class ConnectorClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update the connector API key ID. Update the `api_key_id` and `api_key_secret_id`
-        fields of a connector. You can specify the ID of the API key used for authorization
-        and the ID of the connector secret where the API key is stored. The connector
-        secret ID is required only for Elastic managed (native) connectors. Self-managed
-        connectors (connector clients) do not use this field.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/update-connector-api-key-id-api.html>`_
+          <p>Update the connector API key ID.</p>
+          <p>Update the <code>api_key_id</code> and <code>api_key_secret_id</code> fields of a connector.
+          You can specify the ID of the API key used for authorization and the ID of the connector secret where the API key is stored.
+          The connector secret ID is required only for Elastic managed (native) connectors.
+          Self-managed connectors (connector clients) do not use this field.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-update-api-key-id>`_
 
         :param connector_id: The unique identifier of the connector to be updated
         :param api_key_id:
@@ -794,10 +849,13 @@ class ConnectorClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update the connector configuration. Update the configuration field in the connector
-        document.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/update-connector-configuration-api.html>`_
+          <p>Update the connector configuration.</p>
+          <p>Update the configuration field in the connector document.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-update-configuration>`_
 
         :param connector_id: The unique identifier of the connector to be updated
         :param configuration:
@@ -849,12 +907,15 @@ class ConnectorClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update the connector error field. Set the error field for the connector. If the
-        error provided in the request body is non-null, the connector’s status is updated
-        to error. Otherwise, if the error is reset to null, the connector status is updated
-        to connected.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/update-connector-error-api.html>`_
+          <p>Update the connector error field.</p>
+          <p>Set the error field for the connector.
+          If the error provided in the request body is non-null, the connector’s status is updated to error.
+          Otherwise, if the error is reset to null, the connector status is updated to connected.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-update-error>`_
 
         :param connector_id: The unique identifier of the connector to be updated
         :param error:
@@ -907,12 +968,15 @@ class ConnectorClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update the connector filtering. Update the draft filtering configuration of a
-        connector and marks the draft validation state as edited. The filtering draft
-        is activated once validated by the running Elastic connector service. The filtering
-        property is used to configure sync rules (both basic and advanced) for a connector.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/update-connector-filtering-api.html>`_
+          <p>Update the connector filtering.</p>
+          <p>Update the draft filtering configuration of a connector and marks the draft validation state as edited.
+          The filtering draft is activated once validated by the running Elastic connector service.
+          The filtering property is used to configure sync rules (both basic and advanced) for a connector.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-update-filtering>`_
 
         :param connector_id: The unique identifier of the connector to be updated
         :param advanced_snippet:
@@ -967,8 +1031,11 @@ class ConnectorClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update the connector draft filtering validation. Update the draft filtering validation
-        info for a connector.
+        .. raw:: html
+
+          <p>Update the connector draft filtering validation.</p>
+          <p>Update the draft filtering validation info for a connector.</p>
+
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/update-connector-filtering-validation-api.html>`_
 
@@ -1021,10 +1088,13 @@ class ConnectorClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update the connector index name. Update the `index_name` field of a connector,
-        specifying the index where the data ingested by the connector is stored.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/update-connector-index-name-api.html>`_
+          <p>Update the connector index name.</p>
+          <p>Update the <code>index_name</code> field of a connector, specifying the index where the data ingested by the connector is stored.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-update-index-name>`_
 
         :param connector_id: The unique identifier of the connector to be updated
         :param index_name:
@@ -1076,9 +1146,12 @@ class ConnectorClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update the connector name and description.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/update-connector-name-description-api.html>`_
+          <p>Update the connector name and description.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-update-name>`_
 
         :param connector_id: The unique identifier of the connector to be updated
         :param description:
@@ -1130,7 +1203,10 @@ class ConnectorClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update the connector is_native flag.
+        .. raw:: html
+
+          <p>Update the connector is_native flag.</p>
+
 
         `<https://www.elastic.co/guide/en/elasticsearch/reference/master/update-connector-native-api.html>`_
 
@@ -1183,10 +1259,13 @@ class ConnectorClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update the connector pipeline. When you create a new connector, the configuration
-        of an ingest pipeline is populated with default settings.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/update-connector-pipeline-api.html>`_
+          <p>Update the connector pipeline.</p>
+          <p>When you create a new connector, the configuration of an ingest pipeline is populated with default settings.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-update-pipeline>`_
 
         :param connector_id: The unique identifier of the connector to be updated
         :param pipeline:
@@ -1237,9 +1316,12 @@ class ConnectorClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update the connector scheduling.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/update-connector-scheduling-api.html>`_
+          <p>Update the connector scheduling.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-update-scheduling>`_
 
         :param connector_id: The unique identifier of the connector to be updated
         :param scheduling:
@@ -1290,9 +1372,12 @@ class ConnectorClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update the connector service type.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/update-connector-service-type-api.html>`_
+          <p>Update the connector service type.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-update-service-type>`_
 
         :param connector_id: The unique identifier of the connector to be updated
         :param service_type:
@@ -1350,9 +1435,12 @@ class ConnectorClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Update the connector status.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/update-connector-status-api.html>`_
+          <p>Update the connector status.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-connector-update-status>`_
 
         :param connector_id: The unique identifier of the connector to be updated
         :param status:

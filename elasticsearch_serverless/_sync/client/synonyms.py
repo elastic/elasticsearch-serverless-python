@@ -36,23 +36,24 @@ class SynonymsClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete a synonym set. You can only delete a synonyms set that is not in use by
-        any index analyzer. Synonyms sets can be used in synonym graph token filters
-        and synonym token filters. These synonym filters can be used as part of search
-        analyzers. Analyzers need to be loaded when an index is restored (such as when
-        a node starts, or the index becomes open). Even if the analyzer is not used on
-        any field mapping, it still needs to be loaded on the index recovery phase. If
-        any analyzers cannot be loaded, the index becomes unavailable and the cluster
-        status becomes red or yellow as index shards are not available. To prevent that,
-        synonyms sets that are used in analyzers can't be deleted. A delete request in
-        this case will return a 400 response code. To remove a synonyms set, you must
-        first remove all indices that contain analyzers using it. You can migrate an
-        index by creating a new index that does not contain the token filter with the
-        synonyms set, and use the reindex API in order to copy over the index data. Once
-        finished, you can delete the index. When the synonyms set is not used in analyzers,
-        you will be able to delete it.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-synonyms-set.html>`_
+          <p>Delete a synonym set.</p>
+          <p>You can only delete a synonyms set that is not in use by any index analyzer.</p>
+          <p>Synonyms sets can be used in synonym graph token filters and synonym token filters.
+          These synonym filters can be used as part of search analyzers.</p>
+          <p>Analyzers need to be loaded when an index is restored (such as when a node starts, or the index becomes open).
+          Even if the analyzer is not used on any field mapping, it still needs to be loaded on the index recovery phase.</p>
+          <p>If any analyzers cannot be loaded, the index becomes unavailable and the cluster status becomes red or yellow as index shards are not available.
+          To prevent that, synonyms sets that are used in analyzers can't be deleted.
+          A delete request in this case will return a 400 response code.</p>
+          <p>To remove a synonyms set, you must first remove all indices that contain analyzers using it.
+          You can migrate an index by creating a new index that does not contain the token filter with the synonyms set, and use the reindex API in order to copy over the index data.
+          Once finished, you can delete the index.
+          When the synonyms set is not used in analyzers, you will be able to delete it.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-delete-synonym>`_
 
         :param id: The synonyms set identifier to delete.
         """
@@ -91,9 +92,13 @@ class SynonymsClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Delete a synonym rule. Delete a synonym rule from a synonym set.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/delete-synonym-rule.html>`_
+          <p>Delete a synonym rule.
+          Delete a synonym rule from a synonym set.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-delete-synonym-rule>`_
 
         :param set_id: The ID of the synonym set to update.
         :param rule_id: The ID of the synonym rule to delete.
@@ -141,9 +146,12 @@ class SynonymsClient(NamespacedClient):
         size: t.Optional[int] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get a synonym set.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-synonyms-set.html>`_
+          <p>Get a synonym set.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-get-synonym>`_
 
         :param id: The synonyms set identifier to retrieve.
         :param from_: The starting offset for query rules to retrieve.
@@ -188,9 +196,13 @@ class SynonymsClient(NamespacedClient):
         pretty: t.Optional[bool] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get a synonym rule. Get a synonym rule from a synonym set.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-synonym-rule.html>`_
+          <p>Get a synonym rule.
+          Get a synonym rule from a synonym set.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-get-synonym-rule>`_
 
         :param set_id: The ID of the synonym set to retrieve the synonym rule from.
         :param rule_id: The ID of the synonym rule to retrieve.
@@ -237,9 +249,13 @@ class SynonymsClient(NamespacedClient):
         size: t.Optional[int] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Get all synonym sets. Get a summary of all defined synonym sets.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/get-synonyms-set.html>`_
+          <p>Get all synonym sets.
+          Get a summary of all defined synonym sets.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-get-synonym>`_
 
         :param from_: The starting offset for synonyms sets to retrieve.
         :param size: The maximum number of synonyms sets to retrieve.
@@ -286,14 +302,16 @@ class SynonymsClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create or update a synonym set. Synonyms sets are limited to a maximum of 10,000
-        synonym rules per set. If you need to manage more synonym rules, you can create
-        multiple synonym sets. When an existing synonyms set is updated, the search analyzers
-        that use the synonyms set are reloaded automatically for all indices. This is
-        equivalent to invoking the reload search analyzers API for all indices that use
-        the synonyms set.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/put-synonyms-set.html>`_
+          <p>Create or update a synonym set.
+          Synonyms sets are limited to a maximum of 10,000 synonym rules per set.
+          If you need to manage more synonym rules, you can create multiple synonym sets.</p>
+          <p>When an existing synonyms set is updated, the search analyzers that use the synonyms set are reloaded automatically for all indices.
+          This is equivalent to invoking the reload search analyzers API for all indices that use the synonyms set.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-put-synonym>`_
 
         :param id: The ID of the synonyms set to be created or updated.
         :param synonyms_set: The synonym rules definitions for the synonyms set.
@@ -344,12 +362,15 @@ class SynonymsClient(NamespacedClient):
         body: t.Optional[t.Dict[str, t.Any]] = None,
     ) -> ObjectApiResponse[t.Any]:
         """
-        Create or update a synonym rule. Create or update a synonym rule in a synonym
-        set. If any of the synonym rules included is invalid, the API returns an error.
-        When you update a synonym rule, all analyzers using the synonyms set will be
-        reloaded automatically to reflect the new rule.
+        .. raw:: html
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/put-synonym-rule.html>`_
+          <p>Create or update a synonym rule.
+          Create or update a synonym rule in a synonym set.</p>
+          <p>If any of the synonym rules included is invalid, the API returns an error.</p>
+          <p>When you update a synonym rule, all analyzers using the synonyms set will be reloaded automatically to reflect the new rule.</p>
+
+
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-synonyms-put-synonym-rule>`_
 
         :param set_id: The ID of the synonym set.
         :param rule_id: The ID of the synonym rule to be updated or created.
