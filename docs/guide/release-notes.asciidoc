@@ -1,6 +1,30 @@
 [[release-notes]]
 == Release notes
 
+=== 0.8.0.20231031 (2025-03-06)
+
+- Deprecate client (https://github.com/elastic/elasticsearch-serverless-python/pull/108[#108])
+- Render Markdown in documentation (https://github.com/elastic/elasticsearch-serverless-python/pull/107[#107])
+- Update APIs
+ * Add Query Role API
+ * Add `list_executed_pipelines` and `require_data_stream` to Bulk API
+ * Add `include_model_definition` to Get trained models API
+ * Add `meta` to Create data frame analytics API
+ * Add `aggs` to Create datafeeds API
+ * Add `allow_no_indices`, `expand_wildcards`, `ignore_throttled` and `ignore_unavailable` to Create anomaly detection jobs API
+ * Add `allow_partial_search_results` and `allow_partial_sequence_results` to the EQL Search API
+ * Add `master_timeout` to Enrich policy APIs
+ * Add `timeout` to Delete trained model API and Reset transform API
+ * Add `allow_partial_search_results` to Get async SQL search status API
+ * Add `include_source_on_error` to Create, Index, Update and Bulk APIs
+ * Add `keep_alive` to Run an async search API
+ * Add `hard` to Delete a connector API
+ * Add `include_deleted` to Get a connector API and List connectors API
+ * Add `include_ccs_metadata` to ES|QL query and async query APIs
+ * Add `data_retention`, `downsampling` and `enabled` to Update data stream lifecycles API
+ * Add `adaptive_allocations` body field to Start and Update a trained model deployment API
+ * Fix available parameters for cat APIs
+
 === 0.7.0.20231031 (2024-12-11)
 
 - Fix import when trace is missing from opentelemetry (https://github.com/elastic/elasticsearch-serverless-python/pull/99[#99])
