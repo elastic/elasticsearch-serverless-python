@@ -1567,7 +1567,7 @@ class IndicesClient(NamespacedClient):
           The write index for the alias becomes the write index for the stream.</p>
 
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-migrate-to-data-stream>`_
 
         :param name: Name of the index alias to convert to a data stream.
         :param master_timeout: Period to wait for a connection to the master node. If
@@ -1623,7 +1623,7 @@ class IndicesClient(NamespacedClient):
           Performs one or more data stream modification actions in a single atomic operation.</p>
 
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams.html>`_
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-modify-data-stream>`_
 
         :param actions: Actions to perform.
         """
@@ -1689,7 +1689,7 @@ class IndicesClient(NamespacedClient):
           Adds a data stream or index to an alias.</p>
 
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html>`_
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-put-alias>`_
 
         :param index: Comma-separated list of data streams or indices to add. Supports
             wildcards (`*`). Wildcard patterns that match both data streams and indices
@@ -1796,7 +1796,7 @@ class IndicesClient(NamespacedClient):
           Update the data stream lifecycle of the specified data streams.</p>
 
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/data-streams-put-lifecycle.html>`_
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-put-data-lifecycle>`_
 
         :param name: Comma-separated list of data streams used to limit the request.
             Supports wildcards (`*`). To target all data streams use `*` or `_all`.
@@ -1924,7 +1924,7 @@ class IndicesClient(NamespacedClient):
           If an entry already exists with the same key, then it is overwritten by the new definition.</p>
 
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-put-template.html>`_
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-put-index-template>`_
 
         :param name: Index or template name
         :param allow_auto_create: This setting overrides the value of the `action.auto_create_index`
@@ -2845,7 +2845,7 @@ class IndicesClient(NamespacedClient):
           Adds a data stream or index to an alias.</p>
 
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-aliases.html>`_
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-update-aliases>`_
 
         :param actions: Actions to perform.
         :param master_timeout: Period to wait for a connection to the master node. If
@@ -2924,7 +2924,7 @@ class IndicesClient(NamespacedClient):
           Validates a query without running it.</p>
 
 
-        `<https://www.elastic.co/guide/en/elasticsearch/reference/master/search-validate.html>`_
+        `<https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-indices-validate-query>`_
 
         :param index: Comma-separated list of data streams, indices, and aliases to search.
             Supports wildcards (`*`). To search all data streams or indices, omit this
