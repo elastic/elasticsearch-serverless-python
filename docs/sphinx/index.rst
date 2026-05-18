@@ -1,6 +1,10 @@
 Python Elasticsearch Serverless Client
 ======================================
 
+.. warning::
+
+   Starting with the release of the Elastic Stack 9.0.0, this client will be discontinued. Instead, you can use the latest version of the `Elasticsearch Python Client <https://www.elastic.co/docs/reference/elasticsearch/clients/python>`_ to build your Elasticsearch Serverless Python applications.
+
 Official low-level client for Elasticsearch Serverless. Its goal is to provide common
 ground for all Elasticsearch-related code in Python; because of this it tries
 to be opinion-free and very extendable.
